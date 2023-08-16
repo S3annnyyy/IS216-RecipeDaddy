@@ -1,10 +1,13 @@
 <script setup>
-
+  import Sidebar from './components/SideBar.vue'
+  import Navbar from './components/NavBar.vue'
 </script>
 
 <template>
   <div class="app">
-
+    <Navbar v-if="$route.meta.hideNavbar !== true"/>
+    <Sidebar v-if="$route.meta.hideSidebar !== true"/>
+    <router-view/>
   </div>
 </template>
 
