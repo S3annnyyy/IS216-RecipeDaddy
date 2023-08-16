@@ -50,4 +50,20 @@
   .app {
     display: flex;
   }
+
+  /* custom scroll-bar */
+  body::-webkit-scrollbar {
+    width: 12px;
+  }
+
+  body::-webkit-scrollbar-track {
+    background: var(--light);
+  }
+
+  body::-webkit-scrollbar-thumb {
+    background: var(--grey);
+    border-radius: 1.625rem;
+    border: 4px solid rgba(0, 0, 0, 0);
+    background-clip: padding-box
+  }
 </style>
