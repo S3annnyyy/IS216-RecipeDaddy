@@ -45,7 +45,7 @@
             const initialPointB = new THREE.Vector3(0, 0, 0);
             pointsArray[i].push(initialPointA, initialPointB);
 
-            const color = `#${Math.floor(Math.random() * 16777215).toString(16)}`;
+            const color = `#${Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0')}`;
 
             const geometry = new THREE.BufferGeometry().setFromPoints(pointsArray[i]);
             const material = new THREE.MeshBasicMaterial({
