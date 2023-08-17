@@ -19,6 +19,13 @@ const router = createRouter({
       name: 'signup',
       meta: {hideSidebar:true, hideNavbar:true},
       component: () => import('../views/SignUp.vue')
+    },
+    // error 404
+    {
+      path:'/:catchAll(.*)',
+      name: 'error404',
+      meta: {hideSidebar:true, hideNavbar:true},
+      component: () => import('../views/error404.vue')
     }
   ]
 })
