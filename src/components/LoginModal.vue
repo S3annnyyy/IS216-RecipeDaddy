@@ -2,8 +2,16 @@
     import { onMounted, ref } from 'vue'
     import { onClickOutside } from '@vueuse/core'
 
-    const isModalOpen = ref(false)
+    // saving state of specific user event loginModal > signup > loginModal
+    // Implementation allows modal to remain popped up until told to disappear\
+    // ***Placeholder for backend also once logged in set to false and change to alternate alias
+    const isModalOpen = ref(localStorage.getItem("isModalOpened") === "true")
     const modal = ref(null)
+    const toggleModal = () => {
+        isModalOpen.value = !isModalOpen.value
+        localStorage.setItem("isModalOpened", isModalOpen.value)
+    }
+    
 
     onClickOutside(modal, () => (isModalOpen.value = false))
 
@@ -24,7 +32,7 @@
 </script>
 
 <template>
-    <button @click="isModalOpen = true" class="navbar-login-button">
+    <button @click="toggleModal" class="navbar-login-button">
         <span class="material-icons-outlined">account_circle</span>
         Sign in
     </button>
@@ -54,7 +62,7 @@
                                 Login
                                 </span>
                             </button>
-                            <router-link class="signup-redirect" :to="{ name: 'signup' }" @click="isModalOpen = false">Create account</router-link>
+                            <router-link class="signup-redirect" :to="{ name: 'signup' }">Create account</router-link>
                         </div>
                     </form>
                 </div>
