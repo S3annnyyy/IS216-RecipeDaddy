@@ -1,6 +1,11 @@
 <script setup>
 import { ref } from 'vue';
 
+// custom v-focus param <==> autofocus in html input tag 
+const vFocus = {
+        mounted: (el) => el.focus()
+    }
+
 // placeholder while backend is being implemented
 const signUpEmail = ref("");
 const name = ref("");
@@ -33,7 +38,7 @@ function handleSignUp() {
                                 <div class="signup-form">
                                     <div class='divider'></div>
                                     <div class="form-group">
-                                        <input type="email" id="input-email" class="form-control" placeholder=" " required v-model="signUpEmail">
+                                        <input type="email" id="input-email" class="form-control" placeholder=" " required v-model="signUpEmail" v-focus>
                                         <label for="input-email" class="form-label">Your Email</label>
                                     </div>
                                     <div class="form-group">

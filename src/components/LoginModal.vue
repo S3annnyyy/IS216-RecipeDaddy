@@ -7,6 +7,11 @@
 
     onClickOutside(modal, () => (isModalOpen.value = false))
 
+    // custom v-focus param <==> autofocus in html input tag 
+    const vFocus = {
+        mounted: (el) => el.focus()
+    }
+
     // placeholder while backend is being implemented
     const email = ref("")
     const password = ref("")
@@ -33,7 +38,7 @@
                         <h1 class="login-header">Login</h1>
                         <div class='divider'></div>
                         <div class='form-group'>
-                            <input type="email" placeholder=" " required="required" class='form-control' v-model='email'/>
+                            <input type="email" placeholder=" " required="required" class='form-control' v-model='email' v-focus/>
                             <label class='form-label'>Your Email</label>
                         </div>
                         <div class='form-group'>
