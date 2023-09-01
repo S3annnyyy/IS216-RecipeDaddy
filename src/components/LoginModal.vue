@@ -5,15 +5,14 @@
     // saving state of specific user event loginModal > signup > loginModal
     // Implementation allows modal to remain popped up until told to disappear\
     // ***Placeholder for backend also once logged in set to false and change to alternate alias
-    const isModalOpen = ref(localStorage.getItem("isModalOpened") === "true")
-    const modal = ref(null)
+    const isModalOpen = ref(localStorage.getItem("isModalOpen") === "true")
     const toggleModal = () => {
         isModalOpen.value = !isModalOpen.value
-        localStorage.setItem("isModalOpened", isModalOpen.value)
+        localStorage.setItem("isModalOpen", isModalOpen.value)
     }
     
-
-    onClickOutside(modal, () => (isModalOpen.value = false))
+    const modal = ref(null)
+    onClickOutside(modal, () => (toggleModal()))
 
     // custom v-focus param <==> autofocus in html input tag 
     const vFocus = {
@@ -27,8 +26,6 @@
     function handleLogin() {
         console.log('Form submitted');
     }
-
-    
 </script>
 
 <template>
@@ -40,7 +37,7 @@
         <Transition name="modal">
         <div class="login-modal-bg" v-if="isModalOpen">
             <div class="login-modal" ref="modal">
-                <span class="material-icons" @click="isModalOpen = false">close</span>
+                <span class="material-icons" @click="toggleModal">close</span>
                 <div class='login-form-wrapper'>
                     <form class="login-form" @submit.prevent="handleLogin">
                         <h1 class="login-header">Login</h1>
@@ -67,7 +64,6 @@
                     </form>
                 </div>
             </div>
-            
         </div>
         </Transition>
     </Teleport>
