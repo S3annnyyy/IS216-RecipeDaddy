@@ -9,7 +9,7 @@
 <template>
     <div class="navbar">
         <router-link class="logo" :to="{ name: 'home' }">
-            <img src="../assets/logo.svg" alt="placeholder-logo">
+            <img src="../assets/logo.png" alt="website-logo" style="max-width: 200px;">
         </router-link>
         <div class="search-bar">
         <input id="searchQueryInput" type="text" name="searchQueryInput" placeholder="Search" value="" />
@@ -36,7 +36,7 @@
         width: 100vw;
         height: calc(1rem + 32px);
         position: fixed;
-        padding: 0 calc(1rem + 32px);
+        padding: 0 calc(2rem + 32px);
         background-color: var(--light);
         z-index: 99;
     }
