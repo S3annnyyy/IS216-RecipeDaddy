@@ -1,6 +1,6 @@
 <script setup>
-  import Sidebar from './components/SideBar.vue'
-  import Navbar from './components/NavBar.vue'
+  // import Sidebar from './components/SideBar.vue'
+  import Navbar from './components/NavBar2.vue'
 </script>
 
 <template>
@@ -40,6 +40,7 @@
     margin: 0;
     padding: 0;
     background: var(--light);
+    overflow-x: hidden;
   }
 
   button {

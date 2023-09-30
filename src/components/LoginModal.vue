@@ -1,5 +1,5 @@
 <script setup>
-    import { onMounted, ref } from 'vue'
+    import { onMounted, ref, defineProps } from 'vue'
     import { onClickOutside } from '@vueuse/core'
 
     // saving state of specific user event loginModal > signup > loginModal
@@ -26,9 +26,16 @@
     function handleLogin() {
         console.log('Form submitted');
     }
+
+    // Props parsed from navbar
+    const props = defineProps({
+        scrolledPastVideo: Boolean,
+    });
+
 </script>
 
 <template>
+    <div :class="{ scrolled: scrolledPastVideo }">
     <button @click="toggleModal" class="navbar-login-button">
         <span class="material-icons-outlined">account_circle</span>
         Sign in
@@ -67,6 +74,7 @@
         </div>
         </Transition>
     </Teleport>
+</div>
   </template>
   
 <style scoped>
@@ -75,19 +83,29 @@
        align-items: center;
        flex-direction: row;
        font-size: 1rem;
-       border: 1px solid var(--border-grey);
-       border-radius: 1.5rem;
+       color: var(--light);
+       border: 2px solid var(--border-grey);
+       border-radius: .8rem;
        padding: 0.5rem 0.8rem;
        cursor: pointer;
+       transition: color 0.3s ease; 
 
        .material-icons-outlined {
         padding-right: 0.2rem;
         font-weight: 100;
        }
 
-       &:hover {
+       /* &:hover {
         background-color: var(--primary-alt2);
-       }
+       } */
+    }
+
+    .scrolled {
+        .navbar-login-button {
+            color: var(--dark);
+            border: 2px solid var(--dark);
+        }
+        
     }
 
     .login-modal-bg {
