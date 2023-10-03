@@ -1,12 +1,10 @@
 <script setup>
-  // import Sidebar from './components/SideBar.vue'
   import Navbar from './components/NavBar2.vue'
 </script>
 
 <template>
   <div class="app">
     <Navbar v-if="$route.meta.hideNavbar !== true"/>
-    <Sidebar v-if="$route.meta.hideSidebar !== true"/>
     <router-view/>
   </div>
 </template>
@@ -19,8 +17,10 @@
     --primary-alt2: #cff7ff;
     --blur-color-scheme: #00000066;
     --dark: #1e293b;
+    --dark-svg: invert(13%) sepia(22%) saturate(975%) hue-rotate(177deg) brightness(101%) contrast(95%);
     --dark-alt: #334155;
     --light: #f1f5f9;
+    --light-svg:invert(93%) sepia(7%) saturate(160%) hue-rotate(174deg) brightness(104%) contrast(95%); 
     --text-light-primary: #fff;
     --text-light-secondary: #9ca2a8;
     --sidebar-width: 300px;

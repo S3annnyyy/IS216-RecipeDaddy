@@ -23,31 +23,36 @@
 
         <!-- Mobile navigation bar -->
         <button class="menu-toggle" @click="toggleMenu">
-            <svg width="28" height="28" viewBox="0 0 24 24" aria-hidden="true" class="menu-icon" :class="{ open: isMenuOpen }">
+            <svg width="28" height="28" viewBox="0 0 24 24" aria-hidden="true" class="menu-icon" :class="{ open: isMenuOpen, scrolled: scrolledPastVideo }">
                 <path d="M22 6H2V4h20v2zM2 13h16v-2H2v2zm0 7h20v-2H2v2z"></path>
             </svg>
         </button>
-        <div class="mobile-menu" :class="{ open: isMenuOpen }">
+        <div class="mobile-content" :class="{ open: isMenuOpen }">
+            <div class="close-btn" @click="toggleMenu">
+                <span class="material-icons">close</span>
+            </div>
             <router-link
                 v-for="(el, i) in contents"
                 :key="i"
                 :to="{ path: el.link }"
-                class="mobile-button">
-                <span class="text" :class="{ scrolled: scrolledPastVideo }">{{ el.textName }}</span>
+                class="mobile-button"
+                @click="toggleMenu">
+                <span class="text">{{ el.textName }}</span>
             </router-link>
 
-            <div class="profile" :class="{ scrolled: scrolledPastVideo }" v-if="isLoggedIn">
+            <div class="profile" v-if="isLoggedIn">
                 <span class="material-icons">account_circle</span>
             </div>
             <div class="profile" v-else>
-                <LoginModal :class="{ scrolled: scrolledPastVideo }"/>
+                <LoginModal/>
             </div>
         </div>
     </div>
   </template>
   
 <script setup>
-    import { ref, onMounted, onBeforeUnmount } from 'vue';
+    import { ref, onMounted, onBeforeUnmount, watch } from 'vue';
+    import { useRoute } from 'vue-router'
     import LoginModal from './LoginModal.vue';
 
     const isLoggedIn = ref(false); // placeholder for backend 
@@ -57,27 +62,42 @@
     { textName: 'Team', icon: 'group', link: '/team' },
     { textName: 'Contact Us', icon: 'email', link: '/contact' }
     ]; // routing contents + icons for navigation bar
-    const scrolledPastVideo = ref(false); // Initialization for navbar video scroll navigation transition
-    const isMenuOpen = ref(false); // Initialization for Mobile Navigation bar
+    const isMenuOpen = ref(localStorage.getItem("isMenuOpen") === true); // Initialization for Mobile Navigation bar
+    const route = useRoute(); // Initialization to access route for navbar video scroll navigation transition
+    const scrolledPastVideo = ref(localStorage.getItem("scrolledPastVideo") === true); // Initialization for navbar video scroll navigation transition
 
     const toggleMenu = () => {
         isMenuOpen.value = !isMenuOpen.value;
+        localStorage.setItem("isMenuOpen", isMenuOpen.value)
     };
 
     // This code segment depicts the Navbar scroll navigation transition
+    // Comprises of 2 partsL handleScroll() and watch
     // Colour of text + loginModal in navbar changes colour once scrolled past the video element
     // handleScroll() function retrieves video id element and checks if scroll pixel is nearing bottom or null
     // Condition fulfilled will change scrolledPastVideo boolean indicator
     onMounted(() => {window.addEventListener('scroll', handleScroll);});
     onBeforeUnmount(() => {window.removeEventListener('scroll', handleScroll);});
     const handleScroll = () => {
-    var videoElement = document.getElementById("video-obj")
-    if (videoElement.getBoundingClientRect().bottom <= 100 || videoElement == null) {
-        scrolledPastVideo.value = true
-    } else if (videoElement.getBoundingClientRect().bottom >= 0) {
-        scrolledPastVideo.value = false
-        }
+        var videoElement = document.getElementById("video-obj")
+        if (videoElement == null || videoElement.getBoundingClientRect().bottom <= 100) {
+            scrolledPastVideo.value = true
+        } else if (videoElement.getBoundingClientRect().bottom >= 0) {
+            scrolledPastVideo.value = false
+            }
+        localStorage.setItem("scrolledPastVideo", scrolledPastVideo.value)
     };
+
+    // Watch for route changes and set scrolledPastVideo to true for the About page
+    // Set to false if it goes to HomePage
+    watch(() => route.path, (newPath) => {
+        if (newPath === '/home' || newPath === '/') {
+            scrolledPastVideo.value = false;
+        } else {
+            scrolledPastVideo.value = true;
+        }
+        localStorage.setItem("scrolledPastVideo", scrolledPastVideo.value)
+    });
 </script>
   
 <style scoped>
@@ -151,22 +171,31 @@
         display: none; 
     }
 
-    .mobile-menu {
+    .mobile-content {
         position: fixed;
-        display: none;
         flex-direction: column;
         background-color: var(--dark);
         transition: right 0.3s ease-out;
-
-        top: 4rem;
-        right: -30rem;
+        top: 0;
+        right: -300rem;
         width: 80%;
         min-height: 100vh;
+        padding: 3rem 1rem 0 1rem;
+        &.open {
+            display: flex;
+            right: 0;
+        }
     }
 
-    .mobile-menu.open {
-        display: flex;
+    .close-btn {
+        position: absolute;
         right: 0;
+        top: 0;
+        padding: 1rem 2.6rem 1rem 1rem;
+
+        .material-icons {
+        font-size: 2rem;
+        }
     }
 
     .mobile-button {
@@ -179,7 +208,11 @@
 
     .menu-icon {
         transition: transform 0.3s ease;
-        filter: invert(93%) sepia(7%) saturate(160%) hue-rotate(174deg) brightness(104%) contrast(95%);
+        filter: var(--light-svg)
+    }
+
+    .menu-icon.scrolled {
+        filter: var(--dark-svg);
     }
 
     .menu-icon.open {
@@ -189,15 +222,19 @@
     /* Add media query for mobile responsiveness */
     @media (max-width: 768px) {
         .navbar {
-            padding: 1rem calc(0.5rem + 32px);;
+            padding: 1rem calc(0.5rem + 32px);
+            color: var(--light);
         }
         .menu-toggle {
             display: block; /* Display the menu button on smaller screens */
         }
-
         .section {
             display: none; /* Hide the desktop menu items on smaller screens */
         }
+        .router-link-exact-active {
+            .text {
+                color: var(--primary);
+            }
+        }
     }
-</style>
-  
+</style> 
