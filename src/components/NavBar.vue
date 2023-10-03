@@ -58,8 +58,8 @@
     const isLoggedIn = ref(false); // placeholder for backend 
     const contents = [
     { textName: 'Home', icon: 'home', link: '/' },
-    { textName: 'About', icon: 'visibility', link: '/about' },
-    { textName: 'Team', icon: 'group', link: '/team' },
+    { textName: 'Recipe Search', icon: 'visibility', link: '/recipeSearch' },
+    { textName: 'Meal Prep', icon: 'group', link: '/mealPrep' },
     { textName: 'Contact Us', icon: 'email', link: '/contact' }
     ]; // routing contents + icons for navigation bar
     const isMenuOpen = ref(localStorage.getItem("isMenuOpen") === true); // Initialization for Mobile Navigation bar
