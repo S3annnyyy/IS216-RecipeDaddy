@@ -59,7 +59,7 @@
     const contents = [
     { textName: 'Home', icon: 'home', link: '/' },
     { textName: 'Recipe Search', icon: 'visibility', link: '/recipeSearch' },
-    { textName: 'Meal Prep', icon: 'group', link: '/mealPrep' },
+    { textName: 'Meal Prep', icon: 'group', link: '/mealprep' },
     { textName: 'Contact Us', icon: 'email', link: '/contact' }
     ]; // routing contents + icons for navigation bar
     const isMenuOpen = ref(localStorage.getItem("isMenuOpen") === true); // Initialization for Mobile Navigation bar
@@ -107,10 +107,8 @@
         align-items: center;
         justify-content: space-between;
         width: 100vw;
-        position: fixed;
         padding: 0.5rem calc(2rem + 32px);
         z-index: 99;
-
         transition: background-color border-bottom  0.3s ease;
     }
 

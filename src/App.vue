@@ -4,8 +4,13 @@
 
 <template>
   <div class="app">
-    <Navbar v-if="$route.meta.hideNavbar !== true"/>
-    <router-view/>
+    <div class="container-fluid">
+      <div class="row">
+        <Navbar v-if="$route.meta.hideNavbar !== true"/>
+      </div>
+      <router-view/>
+    </div>
+    
   </div>
 </template>
 
