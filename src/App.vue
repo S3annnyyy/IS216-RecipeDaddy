@@ -1,11 +1,16 @@
 <script setup>
-  import Navbar from './components/NavBar2.vue'
+  import Navbar from './components/NavBar.vue'
 </script>
 
 <template>
   <div class="app">
-    <Navbar v-if="$route.meta.hideNavbar !== true"/>
-    <router-view/>
+    <div class="container-fluid">
+      <div class="row">
+        <Navbar v-if="$route.meta.hideNavbar !== true"/>
+      </div>
+      <router-view/>
+    </div>
+    
   </div>
 </template>
 
