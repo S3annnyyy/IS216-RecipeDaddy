@@ -1,12 +1,17 @@
 <template>
-    <div class="row">
-        <div class="col-10">
-            <div class="box">hello</div>
-        </div>
+    <div class="input-group mb-3">
+        <input type="text" class="form-control">
+        <button class="btn btn-outline-secondary" type="button">Button</button>
     </div>
 </template>
 
 <script>
+    export default {
+        props: [
+            'placeholder',
+
+        ]
+    }
 
 </script>
 
