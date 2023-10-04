@@ -217,8 +217,8 @@
         transform: rotate(180deg);
     }
 
-    /* Add media query for mobile responsiveness */
-    @media (max-width: 768px) {
+    /* Mobile responsiveness */
+    @media (max-width: 900px) {
         .navbar {
             padding: 1rem calc(0.5rem + 32px);
             color: var(--light);

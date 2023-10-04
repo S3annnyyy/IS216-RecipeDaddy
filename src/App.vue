@@ -5,7 +5,7 @@
 <template>
   <div class="app">
     <div class="container-fluid">
-      <div class="row">
+      <div class="row sticky-top">
         <Navbar v-if="$route.meta.hideNavbar !== true"/>
       </div>
       <router-view/>
@@ -56,9 +56,9 @@
     background: none;
   }
 
-  .app {
+  /* .app {
     display: flex;
-  }
+  } */
 
   /* custom scroll-bar */
   body::-webkit-scrollbar {
