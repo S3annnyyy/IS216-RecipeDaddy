@@ -1,5 +1,4 @@
 <template>
-    <SearchBar />
     <main class="row">
         <div class="col-4">
             <SearchBar />
