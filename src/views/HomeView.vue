@@ -1,5 +1,6 @@
 <template>
-  <div class="video-container">
+  <main class="row">
+    <div class="video-container">
     <video src="../assets/video.mp4" muted loop autoplay class="video-obj" id="video-obj"></video>
   </div>
 
@@ -44,6 +45,7 @@
           <p>Odio magnam voluptatum aliquam porro aliquid, ipsum vero ab accusantium asperiores eum sed, impedit saepe iste nemo possimus mollitia fuga aut laboriosam et laborum fugiat dolorum repellat maiores? Dolor, laboriosam.</p>
         </div>
       </div>
+  </main>
 </template>
 
 <script setup>

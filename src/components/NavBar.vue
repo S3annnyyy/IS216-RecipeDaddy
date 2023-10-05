@@ -58,7 +58,7 @@
     const isLoggedIn = ref(false); // placeholder for backend 
     const contents = [
     { textName: 'Home', icon: 'home', link: '/' },
-    { textName: 'Recipe Search', icon: 'visibility', link: '/recipeSearch' },
+    { textName: 'Recipe Search', icon: 'visibility', link: '/recipesearch' },
     { textName: 'Meal Prep', icon: 'group', link: '/mealprep' },
     { textName: 'Contact Us', icon: 'email', link: '/contact' }
     ]; // routing contents + icons for navigation bar
@@ -217,8 +217,8 @@
         transform: rotate(180deg);
     }
 
-    /* Add media query for mobile responsiveness */
-    @media (max-width: 768px) {
+    /* Mobile responsiveness */
+    @media (max-width: 900px) {
         .navbar {
             padding: 1rem calc(0.5rem + 32px);
             color: var(--light);
