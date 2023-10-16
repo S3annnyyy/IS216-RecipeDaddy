@@ -30,6 +30,11 @@ const router = createRouter({
       meta: {hideNavbar:true},
       component: () => import('../views/SignUp.vue')
     },
+    {
+      path: '/mealschedule',
+      name: 'mealschedule',
+      component: () => import('../views/MealSchedule.vue')
+    },
     // error 404
     {
       path:'/:catchAll(.*)',
