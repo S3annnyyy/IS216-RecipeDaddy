@@ -35,7 +35,7 @@ const props = defineProps(); // Define props
   <main class="about-page">
     <!-- THE PROBLEM section -->
     <section class="section" id="the-problem">
-      <div class="container">
+      <div class="container mx-0 p-0">
         <div class="row">
           <div class="col-md-8 p-0">
             <div class="image-container">
@@ -43,12 +43,16 @@ const props = defineProps(); // Define props
             </div>
           </div>
           <div class="col-md-4">
-            <div class="content">
-              <h1>THE PROBLEM</h1>
+            <div class="content p-0">
               <!-- Add your existing content here -->
               <div class="container">
                 <div class="row">
-                  <h2 class="col">
+                  <div class="col">
+                    <h1 style="font-size: 75px;width: 100%;">THE PROBLEM</h1>
+                  </div>
+                </div>
+                <div class="row mt-5">
+                  <h2 class="col" style="font-size: 50px;font-weight: 900;">
                     20%
                   </h2>
                   <div class="col">
@@ -56,16 +60,16 @@ const props = defineProps(); // Define props
                   </div>
                 </div>
               </div>
-              <div class="container">
-                <div class="row">
-                  <h2 class="col">
-                    744m
-                  </h2>
-                  <div class="col">
-                    Kg of food wasted in 2019 alone
-                  </div>
+
+              <div class="row mt-5">
+                <h2 class="col" style="font-size: 50px;font-weight: 900;">
+                  744m
+                </h2>
+                <div class="col">
+                  Kg of food wasted in 2019 alone
                 </div>
               </div>
+
             </div>
           </div>
         </div>
@@ -74,29 +78,31 @@ const props = defineProps(); // Define props
 
     <!-- OUR MISSION section -->
     <section class="section" id="our-mission">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-6">
-            <h1>OUR MISSION</h1>
+      <div class="container mt-5 p-3">
+        <div class="row" style="flex-wrap: nowrap;">
+          <div class="col-md-6 mx-3">
+            <h1 class="p-3" style="font-size: 75px;width: 100%;">OUR MISSION</h1>
             <p>RecipeDaddy addresses this issue by leveraging generative AI to provide you with creative recipes, ensuring
               that the ingredients are put to good use before they spoil. By doing so, we contribute to the reduction of
               overall food wastage in Singapore, aligning with the United Nations Sustainable Development Goal 12.</p>
           </div>
-          <div class="col-md-6">
-            <img :src="unsdgSVG" alt="UNSDG logo" id="unsdg">
+          <div class="col-md-6 order-md-12 mt-5" style="margin-left: 20%;">
+            <img :src="unsdgSVG" style="width:fit-content;" alt="UNSDG logo" id="unsdg">
+          
           </div>
         </div>
       </div>
     </section>
+
 
     <!-- ABOUT US section -->
     <section class="section" id="about-us">
       <div class="container">
         <div class="row">
           <div class="col-md-12">
-            <h1>ABOUT US</h1>
-            <p>We are a group of individuals from SMU who are inspired to effect a change in the environment!
-              Our main goal is to reduce environmental waste and be greener.</p>
+            <h1 class="text-center" style="font-size: 60px;margin-top: 60px;">ABOUT US</h1>
+            <p class="text-center mt-5 mb-5">We are a group of individuals from SMU who are inspired to effect a change in the environment!
+              <br>Our main goal is to reduce environmental waste and be greener.</p>
           </div>
         </div>
       </div>
@@ -107,7 +113,7 @@ const props = defineProps(); // Define props
       <div class="container">
         <div class="row">
           <div class="col-md-12">
-            <h1>MEET THE TEAM</h1>
+            <h1 class="text-center p-5" style="font-size: 75px;">MEET THE TEAM</h1>
 
             <!-- Card container with three columns -->
             <div class="row team-cards">
