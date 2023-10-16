@@ -1,11 +1,12 @@
 <template>
-    <main class="row d-flex justify-content-center">
+    <main class="row d-flex justify-content-center align-content-center">
         <div class="col-4">
-            <div className="d-flex align-items-center justify-content-center" style="height:100vh">
-                <searchBar dropDown="false"/>
+            <div>
+                <h1>Meal Planner</h1>
+                <p>Get meal plans specially curated for you !</p>
             </div>
         </div>
-    </main>
+    </main> 
 </template>
 
 <script>
