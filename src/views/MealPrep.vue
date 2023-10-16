@@ -1,12 +1,13 @@
 <template>
-    <main class="row d-flex justify-content-center align-content-center">
-        <div class="col-4">
-            <div>
-                <h1>Meal Planner</h1>
-                <p>Get meal plans specially curated for you !</p>
+        <div class="row d-flex justify-content-center align-items-center" style="height: 100vh;">
+            <div class="col-4">
+                <div class="text-center">
+                    <h1>Meal Planner</h1>
+                    <p>Get meal plans specially curated for you !</p>
+                    <a href="#" class="btn btn-secondary">Get Started</a>
+                </div>
             </div>
         </div>
-    </main> 
 </template>
 
 <script>
