@@ -27,7 +27,9 @@
                 </button>
             </div>
             <ul class="list-container">
-                <li v-for="(item, index) in ingredientList" :key="index" class="ingredients">{{ item }}</li>
+                <li v-for="(item, index) in ingredientList" :key="index" class="ingredients ">
+                    {{ item }}<span class="material-icons-outlined" @click="removeItem(item)">close</span>                    
+                </li>
             </ul>
         </div>        
     </main>
@@ -61,24 +63,38 @@ export default {
             } else {
                 console.log("empty")
             }
+        },
+        removeItem(item) {
+            console.log(`rm btn clicked for ${item} list item`)     
+            
+            // remove item for ingredientList
+            let item_index = this.ingredientList.indexOf(item)
+            this.ingredientList.splice(item_index, 1)
         }
     } 
 };
 </script>
 
-<style scoped>
+<style scoped>  
     .list-container {
         display: flex;
         flex-direction: row;       
-        overflow-x: scroll;     
+        overflow-x: auto;        
     }
 
     .ingredients {
+        display: flex;
+        align-items: center;
+        flex-direction: row;
+
         margin: 1rem;
-        padding: 1rem;
+        padding: 0.7rem;
         border-radius: 5px;
         list-style: none;
-        background-color: var(--grey);
-        
+        background-color: var(--grey);                
+    }
+
+    .material-icons-outlined {
+        cursor: pointer;
     }
 </style>
