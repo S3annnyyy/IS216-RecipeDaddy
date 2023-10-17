@@ -180,10 +180,10 @@
         width: 80%;
         min-height: 100vh;
         padding: 3rem 1rem 0 1rem;
-        &.open {
+        /* &.open {
             display: flex;
             right: 0;
-        }
+        } */
     }
 
     .close-btn {
@@ -192,9 +192,9 @@
         top: 0;
         padding: 1rem 2.6rem 1rem 1rem;
 
-        .material-icons {
+        /* .material-icons {
         font-size: 2rem;
-        }
+        } */
     }
 
     .mobile-button {
@@ -230,10 +230,11 @@
         .section {
             display: none; /* Hide the desktop menu items on smaller screens */
         }
-        .router-link-exact-active {
+        /* .router-link-exact-active {
             .text {
                 color: var(--primary);
             }
         }
+         */
     }
 </style> 
