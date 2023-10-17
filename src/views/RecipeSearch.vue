@@ -1,6 +1,6 @@
 <template>
     <main class="row justify-content-center align-items-center " style="height: 80vh;">
-        <div class="col-10">
+        <div class="col-8">
             <div class="input-group input-group-lg">
 
                 <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Input type</button>
@@ -17,7 +17,7 @@
                     <li><a class="dropdown-item" href="#">French</a></li>
                     <li><a class="dropdown-item" href="#">Asian</a></li>
                 </ul>
-                <input type="text" class="form-control" aria-label="Text input with 2 dropdown buttons">
+                <input type="text" class="form-control" aria-label="Text input for users to add in their ingredients" v-model="searchInput" @keydown.enter="handleEnter">
                 <button class="btn btn-outline-secondary" type="submit" aria-expanded="false">
                     <span class="submit-button-content">
                         <svg width="32" height="32" viewBox="0 0 24 24" class="arrow">
@@ -26,16 +26,59 @@
                     </span>
                 </button>
             </div>
-        </div>
+            <ul class="list-container">
+                <li v-for="(item, index) in ingredientList" :key="index" class="ingredients">{{ item }}</li>
+            </ul>
+        </div>        
     </main>
 </template>
 
 <script>
+export default {
+    data() {
+        return {
+            searchInput: '',
+            ingredientList: [],
+        };
+    },
+    methods: {
+        handleEnter() {
 
+            // Add the input value to the search history array
+            this.ingredientList.push(this.searchInput);
 
+            // Clear the input box
+            this.searchInput = '';
 
+            console.log('Search History:', this.ingredientList);
+            // populate input as boxes
+            this.populateInput()
+        },
+        populateInput() {
+            // check if ingredientList is empty first, if it is do nothing else populate items as text boxes
+            if (this.ingredientList.length !== 0) {
+                console.log(`Filled with ${this.ingredientList.length} item(s)`)
+            } else {
+                console.log("empty")
+            }
+        }
+    } 
+};
 </script>
 
 <style scoped>
+    .list-container {
+        display: flex;
+        flex-direction: row;       
+        overflow-x: scroll;     
+    }
 
+    .ingredients {
+        margin: 1rem;
+        padding: 1rem;
+        border-radius: 5px;
+        list-style: none;
+        background-color: var(--grey);
+        
+    }
 </style>
