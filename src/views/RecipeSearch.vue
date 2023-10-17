@@ -1,12 +1,12 @@
 <template>
     <main class="row justify-content-center align-items-center " style="height: 80vh;">
         <div class="col-8">
-            <div class="input-group input-group-lg">
+            <div class="input-group input-group-lg search-bar">
 
                 <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Input type</button>
                 <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">Action before</a></li>
-                    <li><a class="dropdown-item" href="#">Another action before</a></li>               
+                    <li><a class="dropdown-item" href="#">Text</a></li>
+                    <li><a class="dropdown-item" href="#">OCR</a></li>               
                 </ul>
 
                 
@@ -26,11 +26,13 @@
                     </span>
                 </button>
             </div>
-            <ul class="list-container">
+            <div class="list-wrapper">
+                <ul class="list-container">
                 <li v-for="(item, index) in ingredientList" :key="index" class="ingredients ">
                     {{ item }}<span class="material-icons-outlined" @click="removeItem(item)">close</span>                    
                 </li>
             </ul>
+            </div>
         </div>        
     </main>
 </template>
@@ -45,7 +47,6 @@ export default {
     },
     methods: {
         handleEnter() {
-
             // Add the input value to the search history array
             this.ingredientList.push(this.searchInput);
 
@@ -79,7 +80,7 @@ export default {
     .list-container {
         display: flex;
         flex-direction: row;       
-        overflow-x: auto;        
+        overflow-x: auto;  
     }
 
     .ingredients {
@@ -91,10 +92,15 @@ export default {
         padding: 0.7rem;
         border-radius: 5px;
         list-style: none;
-        background-color: var(--grey);                
+        background-color: #194252;        
+        color: var(--light);     
     }
 
     .material-icons-outlined {
         cursor: pointer;
+    }
+
+    .list-wrapper {
+        height: 4rem;
     }
 </style>
