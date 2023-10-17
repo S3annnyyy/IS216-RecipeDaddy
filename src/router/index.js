@@ -25,6 +25,11 @@ const router = createRouter({
       component: () => import('../views/RecipeSearch.vue')
     },
     {
+      path: '/preferences',
+      name: 'preferences',
+      component: () => import('../views/Preferences.vue')
+    },
+    {
       path: '/signup',
       name: 'signup',
       meta: {hideNavbar:true},
