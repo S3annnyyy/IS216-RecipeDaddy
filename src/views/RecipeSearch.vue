@@ -1,5 +1,5 @@
 <template>
-    <main class="row">
+    <main class="row justify-content-center align-items-center " style="height: 80vh;">
         <div class="col-10">
             <div class="input-group input-group-lg">
 
@@ -20,7 +20,7 @@
                 <input type="text" class="form-control" aria-label="Text input with 2 dropdown buttons">
                 <button class="btn btn-outline-secondary" type="submit" aria-expanded="false">
                     <span class="submit-button-content">
-                        <svg width="24" height="24" viewBox="0 0 24 24" class="arrow">
+                        <svg width="32" height="32" viewBox="0 0 24 24" class="arrow">
                         <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2 .01 7z"/>
                         </svg>
                     </span>
