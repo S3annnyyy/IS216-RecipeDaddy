@@ -1,18 +1,18 @@
 <template>
     <main class="row justify-content-center">
-        <div class="col-lg-4 col-md-10 image-menu-schedule">
+        <div class="col-lg-4 col-md-10 col-sm-10 col-xs-10 image-menu-schedule">
             <div class="row">
                 <h3 class="result-title">Result:</h3>
             </div>
             <div class="row">
-                <img src="../assets/test_image.jpg" style="max-height: 500px; max-width: 500px; border-radius: 30px;">
+                <img src="../assets/test_image.jpg" class="recipe-look">
             </div>
             <div class="row meal-schedule">
                 MealRecipe schedule#TODO
             </div>
             
         </div>
-        <div class="col-lg-6 col-md-10 recipe-steps">
+        <div class="col-lg-6 col-md-10 col-sm-10 col-xs-10 recipe-steps">
             <div class="recipe-desc"></div>
             <h3 class="recipe-title">{{ placeholder.testRecipe.guide }}</h3>
             <ul class="recipe-guide">
@@ -27,6 +27,8 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
     data() {
         return {
@@ -86,36 +88,63 @@ export default {
 
     },
     mounted() {
-        this.userId = this.$route.params.id           
-    }            
+        // get userId
+        this.userId = this.$route.params.id
+        
+        // make API calls here
+        // axios.get("https://api.kanye.rest/")
+        // .then((res) => {
+        //     console.log(res.data)
+        // })
+        // .catch((err) => {
+        //     console.log("API Call Not successful")
+        // }) 
+    }               
 }
 </script>
 
 <style scoped>
-    .image-menu-schedule {
-        /* background-color: var(--border-grey); */
-        height: 92vh;
-        margin-right: 1rem;
-        .result-title {
-            margin-bottom: 1rem ;
-        }       
+.image-menu-schedule {
+    /* background-color: var(--border-grey); */
+    max-height: 92vh;
+    margin-right: 1rem;    
+    .result-title {
+        margin-bottom: 1rem ;
     }
-    .recipe-steps {
-        /* background-color: var(--border-grey); */
-        .recipe-guide {
-            list-style: none;
-            margin-left: -2rem;
+    .recipe-look {
+        border-radius: 30px;
+        padding-left: 0;
+        padding-right: 0;
+        padding: 5px;
+        border: 3px solid #194252;      
+        box-shadow: 0 8px 2px -2px var(--text-light-secondary); 
+    }       
+}
+.recipe-steps {
+    /* background-color: var(--border-grey); */
+    .recipe-guide {
+        list-style: none;
+        margin-left: -2rem;
+    }
+    .step {
+        font-size: 1.5rem;
+        background-color:#194252;
+        color: var(--light);
+        padding: 1rem;
+        border-radius: 10px;
+        margin-bottom: 2rem;
+        box-shadow: 0 8px 2px -2px var(--text-light-secondary);
+    }
+    .recipe-title {
+        margin-bottom: 1rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .image-menu-schedule {
+        .recipe-look {
+            margin-left: 0.5rem;
         }
-        .step {
-            font-size: 1.5rem;
-            background-color:#194252;
-            color: var(--light);
-            padding: 1rem;
-            border-radius: 10px;
-            margin-bottom: 2rem;
-        }
-        .recipe-title {
-            margin-bottom: 1rem;
-        }
-    }   
+    }
+}
 </style>

@@ -10,7 +10,7 @@
                 <ul class="dropdown-menu">
                     <li v-for="cuisine in inputCuisine" :key="cuisine" class="dropdown-item" @click="handleCuisineOption(cuisine)">{{ cuisine }}</li>
                 </ul>
-                <input type="text" class="form-control " aria-label="Text input for users to add in their ingredients" v-model="searchInput" @keydown.enter="handleEnter">
+                <input type="text" class="form-control " placeholder="Enter an ingredient and press Enter! " v-model="searchInput" @keydown.enter="handleEnter">
                 <button class="btn btn-outline-secondary submit-button" type="submit" aria-expanded="false" @click="parseDataToRecipePage()">                   
                         <span class="submit-button-content">
                         <svg width="32" height="32" viewBox="0 0 24 24" class="arrow"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2 .01 7z"/></svg>                        
@@ -127,6 +127,7 @@ export default {
         list-style: none;
         background-color: #194252;        
         color: var(--light);     
+        box-shadow: 0 4px 2px -2px var(--text-light-secondary);
     }
 
     .material-icons-outlined {
@@ -160,6 +161,10 @@ export default {
     .form-control {
         background-color: transparent;
         border: 1px solid #6c757d;
-        border-right: none;
+        border-right: none;        
     }    
+    .search-bar {
+        border-radius: 50px;
+        box-shadow: 0 4px 2px -2px var(--text-light-secondary);
+    }
 </style>
