@@ -17,8 +17,8 @@
                     <li><a class="dropdown-item" href="#">French</a></li>
                     <li><a class="dropdown-item" href="#">Asian</a></li>
                 </ul>
-                <input type="text" class="form-control" aria-label="Text input for users to add in their ingredients" v-model="searchInput" @keydown.enter="handleEnter">
-                <button class="btn btn-outline-secondary" type="submit" aria-expanded="false">
+                <input type="text" class="form-control " aria-label="Text input for users to add in their ingredients" v-model="searchInput" @keydown.enter="handleEnter">
+                <button class="btn btn-outline-secondary submit-button" type="submit" aria-expanded="false">
                     <span class="submit-button-content">
                         <svg width="32" height="32" viewBox="0 0 24 24" class="arrow">
                         <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2 .01 7z"/>
@@ -101,6 +101,22 @@ export default {
     }
 
     .list-wrapper {
+        /* This prevents search bar from being pushed upwards when boxes are being populated  */
         height: 4rem;
     }
+
+    .dropdown-toggle {
+        border-radius: 50px;
+    }
+
+    .submit-button {
+        border-radius: 50px;
+        border-left: none;
+    }
+
+    .form-control {
+        background-color: transparent;
+        border: 1px solid #6c757d;
+        border-right: none;
+    }    
 </style>
