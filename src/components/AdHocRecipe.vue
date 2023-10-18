@@ -18,9 +18,7 @@
             <ul class="recipe-guide">
                 <li v-for="step in placeholder.testRecipe.steps" :key="step.step" class="step">
                     <h4>Step: {{ step.step }}</h4>
-                    <p>
-                        {{ step.instruction }}
-                    </p>
+                    <p>{{ step.instruction }}</p>                   
                 </li>
             </ul>
         </div>
