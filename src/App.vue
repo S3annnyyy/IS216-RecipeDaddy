@@ -62,15 +62,15 @@
   } */
 
   /* custom scroll-bar */
-  body::-webkit-scrollbar {
+  ::-webkit-scrollbar {
     width: 12px;
   }
 
-  body::-webkit-scrollbar-track {
+  ::-webkit-scrollbar-track {
     background: var(--light);
   }
 
-  body::-webkit-scrollbar-thumb {
+  ::-webkit-scrollbar-thumb {
     background: var(--grey);
     border-radius: 1.625rem;
     border: 4px solid rgba(0, 0, 0, 0);
