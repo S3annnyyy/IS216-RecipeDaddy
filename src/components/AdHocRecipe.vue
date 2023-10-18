@@ -2,19 +2,30 @@
     <main class="row justify-content-center">
         <div class="col-lg-4 col-md-10 col-sm-10 col-xs-10 image-menu-schedule">
             <div class="row">
-                <h3 class="result-title">Result:</h3>
+                <h3 class="recipe-title">{{ placeholder.testRecipe.guide }}</h3>
             </div>
             <div class="row">
                 <img src="../assets/test_image.jpg" class="recipe-look">
             </div>
-            <div class="row meal-schedule">
-                MealRecipe schedule#TODO
+            <div class="row meal-schedule justify-content-center">                               
+                <div class="input-group date" id="datepicker">
+                    <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">TimeOfDay</button>
+                    <ul class="dropdown-menu">                             
+                        <li class="dropdown-item">Breakfast</li>
+                        <li class="dropdown-item">Lunch</li>
+                        <li class="dropdown-item">Dinner</li>
+                    </ul>   
+                    <input type="date" class="form-control" id="date"/>                
+                </div>
+                <button type="submit" class="addSchedule">Add to schedule</button>
             </div>
             
         </div>
-        <div class="col-lg-6 col-md-10 col-sm-10 col-xs-10 recipe-steps">
-            <div class="recipe-desc"></div>
-            <h3 class="recipe-title">{{ placeholder.testRecipe.guide }}</h3>
+        <div class="col-lg-6 col-md-10 col-sm-10 col-xs-10 recipe-steps">        
+           
+            <div class="recipe-desc">
+                1<span class="material-icons">restaurant</span>{{ stepCount }} steps                
+            </div>
             <ul class="recipe-guide">
                 <li v-for="step in placeholder.testRecipe.steps" :key="step.step" class="step">
                     <h4>Step: {{ step.step }}</h4>
@@ -34,6 +45,7 @@ export default {
         return {
             userId: '',
             data: JSON.parse(this.$route.query.data),
+            stepCount: 0,
             placeholder: {
                 phImage: "../assets/test_image.jpg",
                 testRecipe: {
@@ -85,11 +97,14 @@ export default {
         }
     },
     methods: {
-
+       
     },
     mounted() {
         // get userId
         this.userId = this.$route.params.id
+
+        // get recipe step count
+        this.stepCount = this.placeholder.testRecipe.steps.length       
         
         // make API calls here
         // axios.get("https://api.kanye.rest/")
@@ -108,23 +123,55 @@ export default {
     /* background-color: var(--border-grey); */
     max-height: 92vh;
     margin-right: 1rem;    
-    .result-title {
-        margin-bottom: 1rem ;
+    .recipe-title {
+        /* margin-bottom: 1rem ; */
+        margin: 1rem 0;
     }
     .recipe-look {
         border-radius: 30px;
         padding-left: 0;
         padding-right: 0;
         padding: 5px;
+        margin-bottom: 2rem;
         border: 3px solid #194252;      
         box-shadow: 0 8px 2px -2px var(--text-light-secondary); 
-    }       
+    }
+    .input-group {
+        padding-left: 0;
+        padding-right: 0;
+        border: none;
+        border-radius: 10px;
+        border: 1px solid #6c757d;
+        box-shadow: 0 4px 2px -2px var(--text-light-secondary);
+        .form-control {
+            border-radius: 10px;
+        }
+    }
+    .addSchedule {
+        width: 10rem;
+        background-color: #194252;
+        color: var(--light);
+        border-radius: 50px;
+        margin-top: 1rem;
+        padding: 0.5rem;
+    }
+
 }
 .recipe-steps {
     /* background-color: var(--border-grey); */
     .recipe-guide {
         list-style: none;
         margin-left: -2rem;
+    }
+    .recipe-desc {
+        display: flex;
+        align-items: center;
+        font-size: 1.5rem;
+        margin: 1rem 0 1rem 0.5rem;
+        color: var(--text-light-secondary);
+        .material-icons {
+            margin-right: 3rem;            
+        }
     }
     .step {
         font-size: 1.5rem;
@@ -134,10 +181,7 @@ export default {
         border-radius: 10px;
         margin-bottom: 2rem;
         box-shadow: 0 8px 2px -2px var(--text-light-secondary);
-    }
-    .recipe-title {
-        margin-bottom: 1rem;
-    }
+    }    
 }
 
 @media (max-width: 576px) {
