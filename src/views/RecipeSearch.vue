@@ -2,7 +2,7 @@
     <main class="row justify-content-center align-items-center " style="height: 80vh;">
         <div class="col-8">
             <div class="input-group input-group-lg search-bar">
-                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="min-width: 6vw;">{{ selectedInputType }}</button>
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="min-width: 8vw;">{{ selectedInputType }}</button>
                 <ul class="dropdown-menu">                             
                     <li v-for="item in inputFormat" :key="item" class="dropdown-item" @click="handleInputType(item)">{{ item }}</li>
                 </ul>               
@@ -11,12 +11,10 @@
                     <li v-for="cuisine in inputCuisine" :key="cuisine" class="dropdown-item" @click="handleCuisineOption(cuisine)">{{ cuisine }}</li>
                 </ul>
                 <input type="text" class="form-control " aria-label="Text input for users to add in their ingredients" v-model="searchInput" @keydown.enter="handleEnter">
-                <button class="btn btn-outline-secondary submit-button" type="submit" aria-expanded="false">
-                    <span class="submit-button-content">
-                        <svg width="32" height="32" viewBox="0 0 24 24" class="arrow">
-                        <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2 .01 7z"/>
-                        </svg>
-                    </span>
+                <button class="btn btn-outline-secondary submit-button" type="submit" aria-expanded="false" @click="parseDataToRecipePage()">                   
+                        <span class="submit-button-content">
+                        <svg width="32" height="32" viewBox="0 0 24 24" class="arrow"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2 .01 7z"/></svg>                        
+                        </span>                    
                 </button>
             </div>
             <div class="list-wrapper">
@@ -39,7 +37,8 @@ export default {
             selectedInputType: 'Input Type',
             selectedCuisine: 'Cuisine Type',
             inputFormat: ["Text", "OCR"],
-            inputCuisine: ["Chinese", "Japanese", "Indian", "Peranakan", "Western"] 
+            inputCuisine: ["Chinese", "Japanese", "Indian", "Peranakan", "Western"],
+            uuid: crypto.randomUUID() 
         };
     },
     methods: {
@@ -67,6 +66,44 @@ export default {
         },
         handleCuisineOption(selectedOption) {
             this.selectedCuisine = selectedOption
+        },
+        populatePrompt(item_list, cuisineType) {
+            let ingredients = item_list.join(", ")
+            let result = `Create me a ${cuisineType} cuisine recipe using just the following ingredients: ${ingredients}. DO NOT use any additional ingredients`
+            return result
+        },
+        validateInput() {
+            let errors = [ ]
+            if (this.ingredientList.length === 0) {errors.push("You can't create a recipe with 0 ingredients you dumb fuck")}
+            if (this.selectedInputType === "Input Type") {errors.push("Please select one method of input")}
+            if (this.selectedCuisine === "Cuisine Type") {errors.push("Please select one cuisine type")}
+            if (errors.length === 0) {
+                return ["", true]
+            } else {
+                return [errors, false]
+            }
+            
+        },
+        parseDataToRecipePage() {
+            // validate inputs
+            if (this.validateInput()[1]) {
+                let LLM_PROMPT = this.populatePrompt(this.ingredientList, this.selectedCuisine);
+                let recipeObject = {
+                    unique_id: this.uuid, 
+                    cuisine: this.selectedCuisine, 
+                    format: this.selectedInputType, 
+                    prompt: LLM_PROMPT
+                }
+                
+                this.$router.push({
+                    path: `recipesearch/${this.uuid}`,
+                    query: {data: JSON.stringify(recipeObject)}
+                })
+            } else {
+                let errors = this.validateInput()[0].join(",\n")
+                alert(errors)
+            }
+            
         }
     } 
 };
@@ -103,6 +140,7 @@ export default {
 
     .dropdown-toggle {
         border-radius: 50px;
+        border-right: none;
     }
 
     .submit-button {
