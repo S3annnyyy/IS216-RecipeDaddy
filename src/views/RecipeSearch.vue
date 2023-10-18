@@ -2,20 +2,13 @@
     <main class="row justify-content-center align-items-center " style="height: 80vh;">
         <div class="col-8">
             <div class="input-group input-group-lg search-bar">
-
-                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Input type</button>
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="min-width: 6vw;">{{ selectedInputType }}</button>
+                <ul class="dropdown-menu">                             
+                    <li v-for="item in inputFormat" :key="item" class="dropdown-item" @click="handleInputType(item)">{{ item }}</li>
+                </ul>               
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="min-width: 10vw;">{{ selectedCuisine }}</button>
                 <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">Text</a></li>
-                    <li><a class="dropdown-item" href="#">OCR</a></li>               
-                </ul>
-
-                
-                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Cuisine type</button>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">Western</a></li>
-                    <li><a class="dropdown-item" href="#">Mediterranean</a></li>
-                    <li><a class="dropdown-item" href="#">French</a></li>
-                    <li><a class="dropdown-item" href="#">Asian</a></li>
+                    <li v-for="cuisine in inputCuisine" :key="cuisine" class="dropdown-item" @click="handleCuisineOption(cuisine)">{{ cuisine }}</li>
                 </ul>
                 <input type="text" class="form-control " aria-label="Text input for users to add in their ingredients" v-model="searchInput" @keydown.enter="handleEnter">
                 <button class="btn btn-outline-secondary submit-button" type="submit" aria-expanded="false">
@@ -43,6 +36,10 @@ export default {
         return {
             searchInput: '',
             ingredientList: [],
+            selectedInputType: 'Input Type',
+            selectedCuisine: 'Cuisine Type',
+            inputFormat: ["Text", "OCR"],
+            inputCuisine: ["Chinese", "Japanese", "Indian", "Peranakan", "Western"] 
         };
     },
     methods: {
@@ -54,23 +51,22 @@ export default {
             this.searchInput = '';
 
             console.log('Search History:', this.ingredientList);
+            console.log(`Filled with ${this.ingredientList.length} item(s)`)
             // populate input as boxes
-            this.populateInput()
-        },
-        populateInput() {
-            // check if ingredientList is empty first, if it is do nothing else populate items as text boxes
-            if (this.ingredientList.length !== 0) {
-                console.log(`Filled with ${this.ingredientList.length} item(s)`)
-            } else {
-                console.log("empty")
-            }
-        },
+            // this.populateInput()
+        },        
         removeItem(item) {
             console.log(`rm btn clicked for ${item} list item`)     
             
             // remove item for ingredientList
             let item_index = this.ingredientList.indexOf(item)
             this.ingredientList.splice(item_index, 1)
+        },
+        handleInputType(selectedOption) {
+            this.selectedInputType = selectedOption
+        },
+        handleCuisineOption(selectedOption) {
+            this.selectedCuisine = selectedOption
         }
     } 
 };
@@ -111,8 +107,17 @@ export default {
 
     .submit-button {
         border-radius: 50px;
-        border-left: none;
+        border-left: none;     
+        transition: background-color 0.3s;   
     }
+
+    .submit-button:hover {
+        /* remove bootstrap default settings */
+       background-color: var(--light);
+       .submit-button-content {
+        filter: invert(84%) sepia(9%) saturate(7000%) hue-rotate(166deg) brightness(108%) contrast(96%);;
+       }
+    }  
 
     .form-control {
         background-color: transparent;
