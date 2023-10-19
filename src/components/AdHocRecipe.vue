@@ -10,15 +10,15 @@
                 </div>
                 <div class="row meal-schedule justify-content-center">                               
                     <div class="input-group datepicker">
-                        <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">TimeOfDay</button>
+                        <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">{{ timeOfDay }}</button>
                         <ul class="dropdown-menu">                             
-                            <li class="dropdown-item">Breakfast</li>
-                            <li class="dropdown-item">Lunch</li>
-                            <li class="dropdown-item">Dinner</li>
+                            <li class="dropdown-item" @click="handleInput('Breakfast')">Breakfast</li>
+                            <li class="dropdown-item" @click="handleInput('Lunch')">Lunch</li>
+                            <li class="dropdown-item" @click="handleInput('Dinner')">Dinner</li>
                         </ul>   
-                        <input type="date" class="form-control" id="date"/>                
+                        <input type="date" class="form-control" v-model="inputDate"/>                
                     </div>
-                    <button type="submit" class="addSchedule">Add to schedule</button>
+                    <button type="submit" class="addSchedule" @click="addToSchedule()">Add to schedule</button>
                 </div> 
             </div>           
         </div>
@@ -43,7 +43,9 @@ import axios from 'axios'
 export default {
     data() {
         return {
-            userId: '',
+            timeOfDay: "TimeOfDay",
+            inputDate: "",
+            promptuuid: '',
             data: JSON.parse(this.$route.query.data),
             stepCount: 0,
             placeholder: {
@@ -97,14 +99,29 @@ export default {
         }
     },
     methods: {
-       
+       handleInput(elem) {
+            console.log(`Selected TimeOfDay: ${elem}`)
+            this.timeOfDay = elem
+       },
+       addToSchedule() {
+            console.log(`Submitted! Selected date is ${this.inputDate}`)
+            alert()
+            // reset variables to default again
+            this.timeOfDay = "TimeOfDay"
+            this.inputDate = ""
+            // send to mealSchedule & backend once mealSchedule is set up
+            // TODO
+       }
     },
     mounted() {
-        // get userId
-        this.userId = this.$route.params.id
+        // get promptuuid
+        this.promptuuid = this.$route.params.id
 
         // get recipe step count
-        this.stepCount = this.placeholder.testRecipe.steps.length       
+        this.stepCount = this.placeholder.testRecipe.steps.length     
+        
+        // get user inputs
+        console.log(this.data)
         
         // make API calls here
         // axios.get("https://api.kanye.rest/")

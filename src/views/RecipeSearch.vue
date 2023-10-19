@@ -110,7 +110,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped>   
     .submit-button2 {
         display: none;
     }
@@ -163,6 +163,9 @@ export default {
         box-shadow: 0 4px 2px -2px var(--text-light-secondary);
         border: 1px solid #6c757d;
     }
+    .dropdown-item {
+        cursor: pointer;
+    }
     
     /* mobile responsive for seach bar  */
     @media (max-width: 700px) {
@@ -185,8 +188,7 @@ export default {
             .dropdown-menu {
                 width: 100%;
                 background-color: #194252;                
-                text-align: center;
-                /* border-radius: none; */
+                text-align: center;                
                 .dropdown-item {
                     color: var(--light);
                 }
@@ -200,6 +202,9 @@ export default {
                 display: block;             
                 background-color: #194252;     
                 color: var(--light);
+                border-top-left-radius: 0 !important;
+                border-bottom-left-radius: 10px !important;
+                border-top-right-radius: 0 !important;
                 
             }
         }
