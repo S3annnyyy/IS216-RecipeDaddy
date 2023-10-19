@@ -1,21 +1,22 @@
 <template>
-    <main class="row justify-content-center align-items-center " style="height: 80vh;">
-        <div class="col-8">
+    <main class="row justify-content-center align-items-center " style="height: 92vh;">
+        <div class="col-xl-8 col-lg-8 col-md-8 col-sm-10">
             <div class="input-group input-group-lg search-bar">
-                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="min-width: 8vw;">{{ selectedInputType }}</button>
+                <button class="btn dropdown-toggle input" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="min-width: 8vw;">{{ selectedInputType }}</button>
                 <ul class="dropdown-menu">                             
                     <li v-for="item in inputFormat" :key="item" class="dropdown-item" @click="handleInputType(item)">{{ item }}</li>
                 </ul>               
-                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="min-width: 10vw;">{{ selectedCuisine }}</button>
+                <button class="btn dropdown-toggle cuisine" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="min-width: 10vw;">{{ selectedCuisine }}</button>
                 <ul class="dropdown-menu">
                     <li v-for="cuisine in inputCuisine" :key="cuisine" class="dropdown-item" @click="handleCuisineOption(cuisine)">{{ cuisine }}</li>
                 </ul>
                 <input type="text" class="form-control " placeholder="Enter an ingredient and press Enter! " v-model="searchInput" @keydown.enter="handleEnter">
-                <button class="btn btn-outline-secondary submit-button" type="submit" aria-expanded="false" @click="parseDataToRecipePage()">                   
+                <button class="btn submit-button" type="submit" aria-expanded="false" @click="parseDataToRecipePage()">                   
                         <span class="submit-button-content">
                         <svg width="32" height="32" viewBox="0 0 24 24" class="arrow"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2 .01 7z"/></svg>                        
                         </span>                    
                 </button>
+                <button type="button" class="btn submit-button2"  @click="parseDataToRecipePage()">Create Recipe</button>
             </div>
             <div class="list-wrapper">
                 <ul class="list-container">
@@ -109,7 +110,10 @@ export default {
 };
 </script>
 
-<style scoped>  
+<style scoped>
+    .submit-button2 {
+        display: none;
+    }
     .list-container {
         display: flex;
         flex-direction: row;       
@@ -137,34 +141,67 @@ export default {
     .list-wrapper {
         /* This prevents search bar from being pushed upwards when boxes are being populated  */
         height: 4rem;
-    }
-
-    .dropdown-toggle {
-        border-radius: 50px;
-        border-right: none;
-    }
-
+    }   
     .submit-button {
-        border-radius: 50px;
-        border-left: none;     
+        border-radius: 50px;        
+        border-left: none;            
         transition: background-color 0.3s;   
     }
 
-    .submit-button:hover {
-        /* remove bootstrap default settings */
-       background-color: var(--light);
+    .submit-button:hover {      
        .submit-button-content {
-        filter: invert(84%) sepia(9%) saturate(7000%) hue-rotate(166deg) brightness(108%) contrast(96%);;
+        filter: invert(84%) sepia(9%) saturate(7000%) hue-rotate(166deg) brightness(108%) contrast(96%);
        }
     }  
 
     .form-control {
-        background-color: transparent;
-        border: 1px solid #6c757d;
-        border-right: none;        
+        background-color: transparent;        
+        border-radius: 50px;
     }    
     .search-bar {
         border-radius: 50px;
         box-shadow: 0 4px 2px -2px var(--text-light-secondary);
+        border: 1px solid #6c757d;
+    }
+    
+    /* mobile responsive for seach bar  */
+    @media (max-width: 700px) {
+        .search-bar {
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+
+            .form-control {
+                width: 100%;
+                border: 0;
+            }
+            .form-control::placeholder {
+                font-size: 16px;
+                text-align: center;
+            }
+            .dropdown-toggle {
+                border-radius: 10px;
+            }
+            .dropdown-menu {
+                width: 100%;
+                background-color: #194252;                
+                text-align: center;
+                /* border-radius: none; */
+                .dropdown-item {
+                    color: var(--light);
+                }
+            }
+
+            .submit-button {
+                display: none;
+            }
+
+            .submit-button2 {
+                display: block;             
+                background-color: #194252;     
+                color: var(--light);
+                
+            }
+        }
     }
 </style>
