@@ -8,21 +8,21 @@
 
 .member {
     background-color: #f2fff2;
-    height: 200px;
+    height: 150px;
     border-radius: 20px;
     margin-right: 35px;
 }
 
 .meals {
     background-color: #e9edff;
-    height: 200px;
+    height: 150px;
     border-radius: 20px;
     margin-right: 35px;
 }
 
 .countdown {
     background-color: #fefbf2;
-    height: 200px;
+    height: 150px;
     border-radius: 20px;
 }
 
@@ -41,25 +41,104 @@ th, td {
     text-align: center;
 }
 
+.time {
+    font-size: 50px;
+    font-weight: bold;
+    display: inline;
+    justify-content: center;
+}
 
+.word {
+    font-size: 25px;
+    font-weight: bold;
+    padding-left: 20px;
+    padding-top: 30px;
+}
+
+.small {
+    font-size: 10px;
+    display: inline;
+    color: #545454;
+    text-align: center;
+}
 </style>
 
 <template>
     <div class="body">
         <h3>Leaderboard</h3>
         <main class="row mt-3">
-            <div class="col-3 member">
+            <div class="col-2 member">
                 <img src="">
                 <p style="color: #545454">Joined Members</p>
                 <p style="font-weight: bold; font-size: 25px;">325+</p>
             </div>
 
-            <div class="col-3 meals">
+            <div class="col-2 meals">
                 
             </div>
 
             <div class="col countdown">
-                <p id="demo"></p>
+
+                
+
+                <div class="row">
+
+                    <div class="col word">
+                        Remaining time to completion 🔥
+                    </div>
+
+                    <div class="col pt-3">
+                        
+
+                        
+                        <div class="row">
+                            <div class="col time">
+                                <span id="day"></span>
+                            </div>
+
+                            <div class="col">
+                                <h1 class="pt-2">:</h1>
+                            </div>
+
+                            <div class="col time">
+                                <span id="hour"></span>
+                            </div>
+
+                            <div class="col">
+                                <h1 class="pt-2">:</h1>
+                            </div>
+
+                            <div class="col time">
+                                <span id="min"></span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col small">DAYS</div>
+                            <div class="col"></div>
+                            <div class="col small">HOURS</div>
+                            <div class="col"></div>
+                            <div class="col small">MINUTE</div>
+                        </div>
+                    </div>
+
+                    <div class="col-2">
+                        trophy
+                    </div>
+                    
+                </div>
+
+                <div class="row small" style="padding-left: 20px;">
+                    Rewards are only awarded to the top 3 winners each week
+                </div>
+
+                
+
+                
+
+
+                
+                
             </div>
         </main>
 
@@ -127,6 +206,7 @@ th, td {
 </template>
 
 <script>
+    // Create a string that sets countdown date to every sunday of the week
     var d = new Date();
     var date = d.getDate();
     var month = d.getMonth();
@@ -137,8 +217,7 @@ th, td {
 
     var x = date + (7 - day);
 
-    var input = months[month-1] + " " + x + ", " + year + " 23:59:59";
-    console.log(input);
+    var input = months[month] + " " + x + ", " + year + " 23:59:59";
     
    // Set the date we're counting down to
     var countDownDate = new Date(input).getTime();
@@ -159,8 +238,9 @@ th, td {
         var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
         // Display the result in the element with id="demo"
-        document.getElementById("demo").innerHTML = days + "d " + hours + "h "
-        + minutes + "m " + seconds + "s ";
+        document.getElementById("day").innerHTML = days;
+        document.getElementById("hour").innerHTML = hours;
+        document.getElementById("min").innerHTML = minutes;
 
         // If the count down is finished, write some text
         if (distance < 0) {
