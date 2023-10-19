@@ -30,6 +30,11 @@ const router = createRouter({
       meta: {hideNavbar:true},
       component: () => import('../views/SignUp.vue')
     },
+    {
+      path: '/leaderboard',
+      name: 'leaderboard',
+      component: () => import('../views/Leaderboard.vue')
+    },
     // error 404
     {
       path:'/:catchAll(.*)',
