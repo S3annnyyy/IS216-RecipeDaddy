@@ -105,12 +105,13 @@ export default {
        },
        addToSchedule() {
             console.log(`Submitted! Selected date is ${this.inputDate}`)
-            alert()
+           
             // reset variables to default again
             this.timeOfDay = "TimeOfDay"
             this.inputDate = ""
             // send to mealSchedule & backend once mealSchedule is set up
             // TODO
+            // Add in logic to check backend whether there is any conflict with user's existing schedule?   
        }
     },
     mounted() {
