@@ -1,30 +1,31 @@
 <template>
     <main class="row justify-content-center">
-        <div class="col-lg-4 col-md-10 col-sm-10 col-xs-10 image-menu-schedule">
-            <div class="row">
-                <h3 class="recipe-title">{{ placeholder.testRecipe.guide }}</h3>
-            </div>
-            <div class="row">
-                <img src="../assets/test_image.jpg" class="recipe-look">
-            </div>
-            <div class="row meal-schedule justify-content-center">                               
-                <div class="input-group date" id="datepicker">
-                    <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">TimeOfDay</button>
-                    <ul class="dropdown-menu">                             
-                        <li class="dropdown-item">Breakfast</li>
-                        <li class="dropdown-item">Lunch</li>
-                        <li class="dropdown-item">Dinner</li>
-                    </ul>   
-                    <input type="date" class="form-control" id="date"/>                
+        <div class="col-lg-4 col-md-10 col-sm-10 image-menu-schedule-LHS">
+            <div class="container-fluid">
+                <div class="row">
+                    <h3 class="recipe-title">{{ placeholder.testRecipe.guide }}</h3>
                 </div>
-                <button type="submit" class="addSchedule">Add to schedule</button>
-            </div>
-            
+                <div class="row justify-content-center text-center">
+                    <img src="../assets/test_image.jpg" class="recipe-image-cover">
+                </div>
+                <div class="row meal-schedule justify-content-center">                               
+                    <div class="input-group datepicker">
+                        <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">TimeOfDay</button>
+                        <ul class="dropdown-menu">                             
+                            <li class="dropdown-item">Breakfast</li>
+                            <li class="dropdown-item">Lunch</li>
+                            <li class="dropdown-item">Dinner</li>
+                        </ul>   
+                        <input type="date" class="form-control" id="date"/>                
+                    </div>
+                    <button type="submit" class="addSchedule">Add to schedule</button>
+                </div> 
+            </div>           
         </div>
-        <div class="col-lg-6 col-md-10 col-sm-10 col-xs-10 recipe-steps">        
-           
+
+        <div class="col-lg-6 col-md-10 col-sm-10 recipe-steps">       
             <div class="recipe-desc">
-                1<span class="material-icons">restaurant</span>{{ stepCount }} steps                
+                1&nbsp;<span class="material-icons">restaurant</span>{{ stepCount }} steps                
             </div>
             <ul class="recipe-guide">
                 <li v-for="step in placeholder.testRecipe.steps" :key="step.step" class="step">
@@ -32,8 +33,7 @@
                     <p>{{ step.instruction }}</p>                   
                 </li>
             </ul>
-        </div>
-        
+        </div>        
     </main>
 </template>
 
@@ -119,15 +119,13 @@ export default {
 </script>
 
 <style scoped>
-.image-menu-schedule {
-    /* background-color: var(--border-grey); */
-    max-height: 92vh;
-    margin-right: 1rem;    
-    .recipe-title {
-        /* margin-bottom: 1rem ; */
+.image-menu-schedule-LHS {    
+    max-height: 92vh;    
+    
+    .recipe-title {        
         margin: 1rem 0;
     }
-    .recipe-look {
+    .recipe-image-cover {
         border-radius: 30px;
         padding-left: 0;
         padding-right: 0;
@@ -136,7 +134,7 @@ export default {
         border: 3px solid #194252;      
         box-shadow: 0 8px 2px -2px var(--text-light-secondary); 
     }
-    .input-group {
+    .datepicker {
         padding-left: 0;
         padding-right: 0;
         border: none;
@@ -155,10 +153,9 @@ export default {
         margin-top: 1rem;
         padding: 0.5rem;
     }
-
 }
-.recipe-steps {
-    /* background-color: var(--border-grey); */
+
+.recipe-steps {    
     .recipe-guide {
         list-style: none;
         margin-left: -2rem;
@@ -182,13 +179,5 @@ export default {
         margin-bottom: 2rem;
         box-shadow: 0 8px 2px -2px var(--text-light-secondary);
     }    
-}
-
-@media (max-width: 576px) {
-    .image-menu-schedule {
-        .recipe-look {
-            margin-left: 0.5rem;
-        }
-    }
 }
 </style>
