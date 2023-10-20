@@ -28,7 +28,7 @@
 }
 
 
-.lead {
+.leader-box {
     border: 0.5px solid #545454;
     border-radius: 20px;
     height: 200px;
@@ -43,7 +43,7 @@ th, td {
 }
 
 .time {
-    font-size: 50px;
+    font-size: 45px;
     font-weight: bold;
     text-align: center;
     justify-content: center;
@@ -63,15 +63,31 @@ th, td {
     text-align: center;
 }
 
-.leader-content {
+.leader-content-box {
     border-top: 0.5px solid #545454;
     text-align: center;
+}
+
+.leaderbox-heading {
+    font-size: 15px;
+    color: rgb(108, 119, 134);
+}
+
+@media only screen and (max-width: 700px) {
+    .time {
+        font-size: 35px;
+    }
+
+    .word {
+        font-size: 20px;
+    }
 }
 </style>
 
 <template>
     <div class="body">
         <h3>Leaderboard</h3>
+
         <main class="row mt-3">
             <div class="col-2 member">
                 <img src="">
@@ -139,12 +155,13 @@ th, td {
             </div>
         </main>
 
+
         <h4 class="mt-5 mb-3">Current Leaders</h4>
         <main class="row mb-5">
-            <div class="col lead" style="margin-right: 30px;">
-                <div class="row">
-                    <div class="col">
-                        profile picture
+            <div class="col leader-box" style="margin-right: 30px;">
+                <div class="row mt-4 mb-4">
+                    <div class="col-3">
+                        <img src="../assets/dp.png" height="75px" width="75px"> <!-- if i can make this round-->
                     </div>
 
                     <div class="col">
@@ -152,25 +169,26 @@ th, td {
                         <p>Total Score: 2482</p>
                     </div>
 
-                    <div class="col">
+                    <div class="col-3">
                         Number 1
                     </div>
+                    
                 </div>
 
-                <div class="row">
-                    <div class="col" style="border-right: 0.5px solid #545454;">WINS</div>
-                    <div class="col">Today's Metrics</div>
+                <div class="row leader-content-box">
+                    <div class="col leaderbox-heading" style="border-right: 0.5px solid #545454;">WINS</div>
+                    <div class="col leaderbox-heading">Today's Metrics</div>
                 </div>
                 
 
                 
             </div>
 
-            <div class="col lead" style="margin-right: 30px;">
+            <div class="col leader-box" style="margin-right: 30px;">
 
             </div>
 
-            <div class="col lead">
+            <div class="col leader-box">
 
             </div>
         </main>
@@ -259,6 +277,5 @@ th, td {
         }
     }, 1000);
 
-
-
+   
 </script>
