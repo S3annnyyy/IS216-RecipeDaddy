@@ -25,6 +25,11 @@ const router = createRouter({
       component: () => import('../views/RecipeSearch.vue')
     },
     {
+      path: '/recipesearch/:id',
+      name: 'recipesearchgenerated',
+      component: () => import('../components/AdHocRecipe.vue')
+    },
+    {
       path: '/preferences',
       name: 'preferences',
       component: () => import('../views/Preferences.vue')
