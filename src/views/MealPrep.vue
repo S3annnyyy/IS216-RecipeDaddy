@@ -35,7 +35,7 @@
         <!-- have first bar always there, other bars repeat -->
         <div class="col-lg-2 col-md-3 col-sm-6 col-xs-6 d-flex justify-content-center">
             <div style="background-color: white; border: 1px solid lightgrey; padding:20px; border-radius: 20px;">
-                <input v-model="startDate" type="date" class="sameSize spacing"><br>
+                <input v-model="enteredStartDate" @change="checkDate" type="date" class="sameSize spacing"><br>
 
                 <input type="checkbox" class="btn-check" id="breakfastD1" autocomplete="off">
                 <label class="btn btn-outline-primary spacing sameSize" for="breakfastD1">Breakfast</label><br>
@@ -79,7 +79,7 @@ export default {
             planning: false,
             people: 0,
             days:0,
-            startDate:'',
+            enteredStartDate:'',
             dateArr: [],
         }
     },
@@ -104,6 +104,11 @@ export default {
             }
             console.log(this.dateArr);
         },
+        checkDate() {
+            // console.log(this.enteredStartDate)
+            var startDate = new Date(this.enteredStartDate);
+            console.log(startDate)
+        }
 
 
      },
