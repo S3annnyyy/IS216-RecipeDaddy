@@ -35,7 +35,7 @@
         <!-- have first bar always there, other bars repeat -->
         <div class="col-lg-2 col-md-3 col-sm-6 col-xs-6 d-flex justify-content-center">
             <div style="background-color: white; border: 1px solid lightgrey; padding:20px; border-radius: 20px;">
-                <input v-model="enteredStartDate" @change="checkDate" type="date" class="sameSize spacing"><br>
+                <input v-model="enteredStartDate" @change="setDate" type="date" class="sameSize spacing"><br>
 
                 <input type="checkbox" class="btn-check" id="breakfastD1" autocomplete="off">
                 <label class="btn btn-outline-primary spacing sameSize" for="breakfastD1">Breakfast</label><br>
@@ -48,7 +48,7 @@
             </div>
         </div>
         <!-- repeat based on number of days -->
-        <div v-for="day in dateArr" class="col-lg-2 col-md-3 col-sm-6 col-xs-6 d-flex justify-content-center">
+        <div v-for="day in dayArr" class="col-lg-2 col-md-3 col-sm-6 col-xs-6 d-flex justify-content-center">
             <div style="background-color: white; border: 1px solid lightgrey; padding:20px; border-radius: 20px;">
                 <input type="text" class="spacing sameSize sameHeight" disabled value="18/10/2023"> <br>
 
@@ -80,7 +80,60 @@ export default {
             people: 0,
             days:0,
             enteredStartDate:'',
-            dateArr: [],
+            dayArr: [],
+        }
+    },
+    computed: {
+        setDate() {
+            // create empty dateArr 
+            var dateArr = [];
+            // get number of days from this.days 
+            var days = this.days;
+            var startDate = new Date(this.enteredStartDate);
+            var currentDay = startDate.getDate();
+            var currentMonth = startDate.getMonth() + 1;
+            var currentYear = startDate.getFullYear();
+            var lastDayOfMonth = new Date(startDate.getFullYear(), currentMonth, 0).getDate();
+
+            console.log(`day: ${currentDay}, month: ${currentMonth}, days in month: ${lastDayOfMonth}`)
+
+            // append dates into dateArr based on days and starting Date 
+            for (var i = 0; i < days; i++) {
+                
+                // check if date is the last day of the month
+                // if it is, store date inside dateArr, increment month, set date to 1 
+                // it no, store date inside dateArr, increment date 
+
+                if(currentDay === lastDayOfMonth) {
+                    // format to dd/mm/yyyy
+                    if(currentDay < 10) {
+                        currentDay = '0' + currentDay;
+                    }
+                    if(currentMonth < 10) {
+                        currentMonth = '0' + currentMonth;
+                    }
+                    var formattedDate = `${currentDay}/${currentMonth}/${currentYear}`;
+                    dateArr.push(formattedDate)
+
+                    currentMonth = parseInt(currentMonth) + 1;
+                    currentDay = 1;
+                }
+                else {
+                    //format to dd/mm/yyyy
+                    if(currentDay < 10) {
+                        currentDay = '0' + currentDay;
+                    }
+                    if(currentMonth < 10) {
+                        currentMonth = '0' + currentMonth;
+                    }
+                    var formattedDate = `${currentDay}/${currentMonth}/${currentYear}`;
+                    dateArr.push(formattedDate)
+                    currentDay = parseInt(currentDay) + 1;
+                }            
+            }
+
+            console.log(dateArr)
+
         }
     },
     methods: {
@@ -98,19 +151,12 @@ export default {
             this.planning = true;
         },
         addDay() {
-            this.dateArr = [];
+            this.dayArr = [];
             for(var i = 2; i <= this.days; i++) {
-                this.dateArr.push(i);
+                this.dayArr.push(i);
             }
-            console.log(this.dateArr);
-        },
-        checkDate() {
-            // console.log(this.enteredStartDate)
-            var startDate = new Date(this.enteredStartDate);
-            console.log(startDate)
+            console.log(this.dayArr);
         }
-
-
      },
     created() {
             this.checkPreferences(); // call check preferences when MealPrep is called 
