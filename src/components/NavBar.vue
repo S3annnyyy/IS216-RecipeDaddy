@@ -61,7 +61,8 @@
     { textName: 'Recipe Search', icon: 'visibility', link: '/recipesearch' },
     { textName: 'Meal Prep', icon: 'group', link: '/mealprep' },
     { textName: 'Meal Schedule', icon: 'group', link: '/mealschedule' },
-    { textName: 'Contact Us', icon: 'email', link: '/contact' }
+    { textName: 'Contact Us', icon: 'email', link: '/contact' },
+    
     ]; // routing contents + icons for navigation bar
     const isMenuOpen = ref(localStorage.getItem("isMenuOpen") === true); // Initialization for Mobile Navigation bar
     const route = useRoute(); // Initialization to access route for navbar video scroll navigation transition
@@ -180,10 +181,10 @@
         width: 80%;
         min-height: 100vh;
         padding: 3rem 1rem 0 1rem;
-        /* &.open {
+        &.open {
             display: flex;
             right: 0;
-        } */
+        }
     }
 
     .close-btn {
@@ -192,9 +193,9 @@
         top: 0;
         padding: 1rem 2.6rem 1rem 1rem;
 
-        /* .material-icons {
+        .material-icons {
         font-size: 2rem;
-        } */
+        }
     }
 
     .mobile-button {
@@ -230,11 +231,10 @@
         .section {
             display: none; /* Hide the desktop menu items on smaller screens */
         }
-        /* .router-link-exact-active {
+        .router-link-exact-active {
             .text {
                 color: var(--primary);
             }
         }
-         */
     }
 </style> 
