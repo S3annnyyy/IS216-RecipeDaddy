@@ -60,6 +60,7 @@
     { textName: 'Home', icon: 'home', link: '/' },
     { textName: 'Recipe Search', icon: 'visibility', link: '/recipesearch' },
     { textName: 'Meal Prep', icon: 'group', link: '/mealprep' },
+    { textName: 'Meal Schedule', icon: 'group', link: '/mealschedule' },
     { textName: 'Contact Us', icon: 'email', link: '/contact' },
     
     ]; // routing contents + icons for navigation bar
