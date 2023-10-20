@@ -93,47 +93,43 @@ export default {
             var currentDay = startDate.getDate();
             var currentMonth = startDate.getMonth() + 1;
             var currentYear = startDate.getFullYear();
-            var lastDayOfMonth = new Date(startDate.getFullYear(), currentMonth, 0).getDate();
+            var lastDayOfMonth = new Date(currentYear, currentMonth, 0).getDate();
 
             console.log(`day: ${currentDay}, month: ${currentMonth}, days in month: ${lastDayOfMonth}`)
 
             // append dates into dateArr based on days and starting Date 
-            for (var i = 0; i < days; i++) {
-                
+
+            // Format and push the initial date
+            var formattedDay = currentDay < 10 ? '0' + currentDay : currentDay;
+            var formattedMonth = currentMonth < 10 ? '0' + currentMonth : currentMonth;
+            var formattedDate = `${formattedDay}/${formattedMonth}/${currentYear}`;
+            dateArr.push(formattedDate);
+
+            for (var i = 0; i < days - 1; i++) {
                 // check if date is the last day of the month
-                // if it is, store date inside dateArr, increment month, set date to 1 
-                // it no, store date inside dateArr, increment date 
-
+                // if it is, increment month, set date to 1 
+                // if it's also the last day of the year, increment year
+                // if no, increment date 
                 if(currentDay === lastDayOfMonth) {
-                    // format to dd/mm/yyyy
-                    if(currentDay < 10) {
-                        currentDay = '0' + currentDay;
-                    }
-                    if(currentMonth < 10) {
-                        currentMonth = '0' + currentMonth;
-                    }
-                    var formattedDate = `${currentDay}/${currentMonth}/${currentYear}`;
-                    dateArr.push(formattedDate)
-
-                    currentMonth = parseInt(currentMonth) + 1;
+                    // increment month and reset day to 1
+                    currentMonth++;
                     currentDay = 1;
+                    // check if it's the last day of the year
+                    if (currentMonth === 13) {
+                        currentYear++;
+                        currentMonth = 1;
+                    }
                 }
                 else {
-                    //format to dd/mm/yyyy
-                    if(currentDay < 10) {
-                        currentDay = '0' + currentDay;
-                    }
-                    if(currentMonth < 10) {
-                        currentMonth = '0' + currentMonth;
-                    }
-                    var formattedDate = `${currentDay}/${currentMonth}/${currentYear}`;
-                    dateArr.push(formattedDate)
-                    currentDay = parseInt(currentDay) + 1;
-                }            
+                    currentDay++;
+                }
+                //format to dd/mm/yyyy
+                formattedDay = currentDay < 10 ? '0' + currentDay : currentDay;
+                formattedMonth = currentMonth < 10 ? '0' + currentMonth : currentMonth;
+                formattedDate = `${formattedDay}/${formattedMonth}/${currentYear}`;
+                dateArr.push(formattedDate);
             }
-
             console.log(dateArr)
-
         }
     },
     methods: {
