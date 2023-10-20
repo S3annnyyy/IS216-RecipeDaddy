@@ -52,8 +52,8 @@
             <div style="background-color: white; border: 1px solid lightgrey; padding:20px; border-radius: 20px;">
                 <input type="text" class="spacing sameSize sameHeight" disabled :value="mealDates[ind + 1]" > <br>
 
-                <input type="checkbox" @change="assignBreakfastId" class="btn-check" :id="'breakfastD'+ day" autocomplete="off">
-                <label class="btn btn-outline-primary spacing sameSize"  :for="'breakfastD'+ day">Breakfast</label><br>
+                <input type="checkbox" @change="addMeal" class="btn-check" :id="'breakfastD'+ day" autocomplete="off">
+                <label class="btn btn-outline-primary spacing sameSize" :for="'breakfastD'+ day">Breakfast</label><br>
 
                 <input type="checkbox" class="btn-check" :id="'lunchD'+ day" autocomplete="off">
                 <label class="btn btn-outline-primary spacing sameSize" :for="'lunchD' + day">Lunch</label><br>
@@ -157,6 +157,9 @@ export default {
                 this.dayArr.push(i);
             }
             console.log(this.dayArr);
+        }, 
+        addMeal(event){
+            console.log(event);
         }
      },
     created() {
