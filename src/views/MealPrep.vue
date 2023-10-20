@@ -48,9 +48,9 @@
             </div>
         </div>
         <!-- repeat based on number of days -->
-        <div v-for="day in dayArr" class="col-lg-2 col-md-3 col-sm-6 col-xs-6 d-flex justify-content-center">
+        <div v-for="(day, ind) in dayArr" class="col-lg-2 col-md-3 col-sm-6 col-xs-6 d-flex justify-content-center">
             <div style="background-color: white; border: 1px solid lightgrey; padding:20px; border-radius: 20px;">
-                <input type="text" class="spacing sameSize sameHeight" disabled value="18/10/2023"> <br>
+                <input type="text" class="spacing sameSize sameHeight" disabled :value="mealDates[ind + 1]" > <br>
 
                 <input type="checkbox" @change="assignBreakfastId" class="btn-check" :id="'breakfastD'+ day" autocomplete="off">
                 <label class="btn btn-outline-primary spacing sameSize"  :for="'breakfastD'+ day">Breakfast</label><br>
@@ -81,6 +81,7 @@ export default {
             days:0,
             enteredStartDate:'',
             dayArr: [],
+            mealDates: []
         }
     },
     computed: {
@@ -95,15 +96,17 @@ export default {
             var currentYear = startDate.getFullYear();
             var lastDayOfMonth = new Date(currentYear, currentMonth, 0).getDate();
 
-            console.log(`day: ${currentDay}, month: ${currentMonth}, days in month: ${lastDayOfMonth}`)
+            // format startDate
+            var parts = this.enteredStartDate.split('-');
+            var formattedStartDate = parts[2] + '/' + parts[1] + '/' + parts[0];
+
+            dateArr.push(formattedStartDate);
 
             // append dates into dateArr based on days and starting Date 
-
             // Format and push the initial date
             var formattedDay = currentDay < 10 ? '0' + currentDay : currentDay;
             var formattedMonth = currentMonth < 10 ? '0' + currentMonth : currentMonth;
             var formattedDate = `${formattedDay}/${formattedMonth}/${currentYear}`;
-            dateArr.push(formattedDate);
 
             for (var i = 0; i < days - 1; i++) {
                 // check if date is the last day of the month
@@ -129,7 +132,9 @@ export default {
                 formattedDate = `${formattedDay}/${formattedMonth}/${currentYear}`;
                 dateArr.push(formattedDate);
             }
-            console.log(dateArr)
+            console.log(dateArr);
+            this.mealDates = dateArr;
+            // console.log(this.mealDates)
         }
     },
     methods: {
