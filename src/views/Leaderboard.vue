@@ -18,6 +18,7 @@
     height: 150px;
     border-radius: 20px;
     margin-right: 35px;
+    text-align: center;
 }
 
 .countdown {
@@ -44,7 +45,7 @@ th, td {
 .time {
     font-size: 50px;
     font-weight: bold;
-    display: inline;
+    text-align: center;
     justify-content: center;
 }
 
@@ -61,6 +62,11 @@ th, td {
     color: #545454;
     text-align: center;
 }
+
+.leader-content {
+    border-top: 0.5px solid #545454;
+    text-align: center;
+}
 </style>
 
 <template>
@@ -74,13 +80,14 @@ th, td {
             </div>
 
             <div class="col-2 meals">
-                
+                <div class="m-auto">
+                    <p style="color: #545454;">You have saved</p>
+                    <p style="font-weight: bold; font-size: 25px;">520g</p>
+                    <p style="color: #545454;">of food!</p>
+                </div>
             </div>
 
             <div class="col countdown">
-
-                
-
                 <div class="row">
 
                     <div class="col word">
@@ -88,9 +95,6 @@ th, td {
                     </div>
 
                     <div class="col pt-3">
-                        
-
-                        
                         <div class="row">
                             <div class="col time">
                                 <span id="day"></span>
@@ -130,14 +134,7 @@ th, td {
 
                 <div class="row small" style="padding-left: 20px;">
                     Rewards are only awarded to the top 3 winners each week
-                </div>
-
-                
-
-                
-
-
-                
+                </div> 
                 
             </div>
         </main>
@@ -146,11 +143,23 @@ th, td {
         <main class="row mb-5">
             <div class="col lead" style="margin-right: 30px;">
                 <div class="row">
-
                     <div class="col">
-
+                        profile picture
                     </div>
 
+                    <div class="col">
+                        Username
+                        <p>Total Score: 2482</p>
+                    </div>
+
+                    <div class="col">
+                        Number 1
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col" style="border-right: 0.5px solid #545454;">WINS</div>
+                    <div class="col">Today's Metrics</div>
                 </div>
                 
 
@@ -206,6 +215,7 @@ th, td {
 </template>
 
 <script>
+// Countdown timer
     // Create a string that sets countdown date to every sunday of the week
     var d = new Date();
     var date = d.getDate();
@@ -248,4 +258,7 @@ th, td {
             document.getElementById("demo").innerHTML = "EXPIRED";
         }
     }, 1000);
+
+
+
 </script>
