@@ -89,13 +89,13 @@ th, td {
         <h3>Leaderboard</h3>
 
         <main class="row mt-3">
-            <div class="col-2 member">
+            <div class="col-lg-2 col-md-4 col-sm-12 member">
                 <img src="">
                 <p style="color: #545454">Joined Members</p>
                 <p style="font-weight: bold; font-size: 25px;">325+</p>
             </div>
 
-            <div class="col-2 meals">
+            <div class="col-lg-2 col-md-4 col-sm-12 meals">
                 <div class="m-auto">
                     <p style="color: #545454;">You have saved</p>
                     <p style="font-weight: bold; font-size: 25px;">520g</p>
@@ -103,7 +103,7 @@ th, td {
                 </div>
             </div>
 
-            <div class="col countdown">
+            <div class="col-lg-7 col-md-12 col-sm-12 countdown">
                 <div class="row">
 
                     <div class="col word">
