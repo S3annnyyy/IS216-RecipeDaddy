@@ -2,7 +2,32 @@
 import { defineProps } from 'vue'; // Import defineProps
 import WasteSVG from '../assets/waste.svg';
 import unsdgSVG from '../assets/unsdg.svg';
-import { onMounted } from 'vue';
+import { useMotion } from '@vueuse/motion'
+import { ref, computed, onMounted } from 'vue'
+
+const template = {
+  initial: {
+    opacity: 0,
+    y: 100
+  },
+  visibleOnce: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      delay: 800,
+
+    }
+  }
+}
+const targetEl = ref()
+const targetEl2 = ref()
+const targetEl3 = ref()
+const targetEl4 = ref()
+
+useMotion(targetEl, template)
+useMotion(targetEl2, template)
+useMotion(targetEl3, template)
+useMotion(targetEl4, template)
 
 // Smooth scrolling function
 function scrollToSection(sectionId) {
@@ -28,13 +53,12 @@ onMounted(() => {
 });
 
 const props = defineProps(); // Define props
-
 </script>
 <template>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <main class="about-page">
     <!-- THE PROBLEM section -->
-    <section class="section" id="the-problem">
+
+    <section class="section" id="the-problem" :class="target" ref="targetEl">
       <div class="container mx-0 p-0">
         <div class="row">
           <div class="col-md-8 p-0">
@@ -77,7 +101,7 @@ const props = defineProps(); // Define props
     </section>
 
     <!-- OUR MISSION section -->
-    <section class="section" id="our-mission">
+    <section class="section" id="our-mission" :class="target" ref="targetEl2">
       <div class="container mt-5 p-3">
         <div class="row" style="flex-wrap: nowrap;">
           <div class="col-md-6 mx-3">
@@ -86,7 +110,7 @@ const props = defineProps(); // Define props
               that the ingredients are put to good use before they spoil. By doing so, we contribute to the reduction of
               overall food wastage in Singapore, aligning with the United Nations Sustainable Development Goal 12.</p>
           </div>
-          <div class="col-md-6 order-md-12 mt-5" style="margin-left: 20%;">
+          <div class="col-md-6 order-md-12 mt-5" style="margin-left: 50px">
             <img :src="unsdgSVG" style="width:fit-content;" alt="UNSDG logo" id="unsdg">
           
           </div>
@@ -96,7 +120,7 @@ const props = defineProps(); // Define props
 
 
     <!-- ABOUT US section -->
-    <section class="section" id="about-us">
+    <section class="section" id="about-us" :class="target" ref="targetEl3">
       <div class="container">
         <div class="row">
           <div class="col-md-12">
@@ -109,9 +133,9 @@ const props = defineProps(); // Define props
     </section>
 
     <!-- MEET THE TEAM section -->
-    <section class="section" id="meet-the-team">
-      <div class="container">
-        <div class="row">
+    <section class="section pb-5" id="meet-the-team" :class="target" ref="targetEl4">
+      <div class="container pb-5">
+        <div class="row pb-5">
           <div class="col-md-12">
             <h1 class="text-center p-5" style="font-size: 75px;">MEET THE TEAM</h1>
 
@@ -165,7 +189,7 @@ const props = defineProps(); // Define props
               <!-- BS card: Start -->
               <div class="col-md-4">
                 <div class="card" style="width: 18rem;">
-                  <img src="../assets/syahmim.jpg" class="card-img-top" alt="syahmim">
+                  <img src="..." class="card-img-top" alt="syahmim">
                   <div class="card-body">
                     <h5 class="card-title">Syahmim</h5>
                     <p class="card-text">Cool cool cool cool.</p>

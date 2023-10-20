@@ -5,22 +5,14 @@
     </div>
 
     <div class="content-container">
-      <div>
+      <div class="target" ref="targetEl">
         <AboutView/>
 
       </div>
-
-      <div class="target" ref="targetEl">
-
+      <div class="target2" ref="targetEl2">
+        <Footer/>
       </div>
 
-      <div class="target" ref="targetEl2">
-
-      </div>
-
-      <div class="target" ref="targetEl2">
-
-      </div>
     </div>
   </main>
 </template>
@@ -29,6 +21,7 @@
 import { useMotion } from '@vueuse/motion'
 import { ref, computed, onMounted } from 'vue'
 import AboutView from './AboutView.vue'
+import Footer from '../components/Footer.vue';
 
 const template = {
   initial: {
