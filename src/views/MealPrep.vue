@@ -30,7 +30,7 @@
                 <div class="row d-flex justify-content-center">
                     <div v-if="days > 0" class="col-lg-2 col-md-4 col-sm-12 d-flex mt-3 justify-content-center">
                         <div style="background-color: white; border: 1px solid lightgrey;padding:20px; border-radius: 20px;">
-                            <input v-model="enteredStartDate" @change="setDate" type="date" class="sameSize spacing form-control" style="height:30px"><br>
+                            <input v-model="enteredStartDate" @change="setDate" type="date" class="sameSize spacing form-control" style="height:30px" ><br>
 
                             <input type="checkbox" class="btn-check" id="breakfastD1" autocomplete="off">
                             <label @click="addMeal" class="btn btn-outline-primary spacing sameSize" for="breakfastD1">Breakfast</label><br>
@@ -90,7 +90,8 @@ export default {
             enteredStartDate:'',
             dayArr: [],
             mealDates: [],
-            outputObject: {}
+            outputObject: {},
+            mealCount: 0
         }
     },
     computed: {
@@ -174,6 +175,10 @@ export default {
             console.log(this.dayArr);
         }, 
         addMeal(event){
+            
+            // get day
+            this.mealCount += 1 
+            console.log(this.mealCount)
             console.log(event.target.getAttribute('for'));
         }
      },
