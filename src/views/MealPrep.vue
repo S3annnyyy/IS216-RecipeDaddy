@@ -108,7 +108,7 @@ export default {
             var formattedMonth = currentMonth < 10 ? '0' + currentMonth : currentMonth;
             var formattedDate = `${formattedDay}/${formattedMonth}/${currentYear}`;
 
-            for (var i = 0; i < days - 1; i++) {
+            for (var i = 0; i < 5; i++) {
                 // check if date is the last day of the month
                 // if it is, increment month, set date to 1 
                 // if it's also the last day of the year, increment year
