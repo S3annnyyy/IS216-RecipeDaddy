@@ -35,7 +35,7 @@
         <!-- have first bar always there, other bars repeat -->
         <div class="col-lg-2 col-md-3 col-sm-6 col-xs-6 d-flex justify-content-center">
             <div style="background-color: white; border: 1px solid lightgrey; padding:20px; border-radius: 20px;">
-                <input v-model="startDate" type="date" class="sameSize spacing"><br>
+                <input v-model="enteredStartDate" @change="setDate" type="date" class="sameSize spacing"><br>
 
                 <input type="checkbox" class="btn-check" id="breakfastD1" autocomplete="off">
                 <label class="btn btn-outline-primary spacing sameSize" for="breakfastD1">Breakfast</label><br>
@@ -48,12 +48,12 @@
             </div>
         </div>
         <!-- repeat based on number of days -->
-        <div v-for="day in dateArr" class="col-lg-2 col-md-3 col-sm-6 col-xs-6 d-flex justify-content-center">
+        <div v-for="(day, ind) in dayArr" class="col-lg-2 col-md-3 col-sm-6 col-xs-6 d-flex justify-content-center">
             <div style="background-color: white; border: 1px solid lightgrey; padding:20px; border-radius: 20px;">
-                <input type="text" class="spacing sameSize sameHeight" disabled value="18/10/2023"> <br>
+                <input type="text" class="spacing sameSize sameHeight" disabled :value="mealDates[ind + 1]" > <br>
 
-                <input type="checkbox" @change="assignBreakfastId" class="btn-check" :id="'breakfastD'+ day" autocomplete="off">
-                <label class="btn btn-outline-primary spacing sameSize"  :for="'breakfastD'+ day">Breakfast</label><br>
+                <input type="checkbox" @change="addMeal" class="btn-check" :id="'breakfastD'+ day" autocomplete="off">
+                <label class="btn btn-outline-primary spacing sameSize" :for="'breakfastD'+ day">Breakfast</label><br>
 
                 <input type="checkbox" class="btn-check" :id="'lunchD'+ day" autocomplete="off">
                 <label class="btn btn-outline-primary spacing sameSize" :for="'lunchD' + day">Lunch</label><br>
@@ -79,8 +79,62 @@ export default {
             planning: false,
             people: 0,
             days:0,
-            startDate:'',
-            dateArr: [],
+            enteredStartDate:'',
+            dayArr: [],
+            mealDates: []
+        }
+    },
+    computed: {
+        setDate() {
+            // create empty dateArr 
+            var dateArr = [];
+            // get number of days from this.days 
+            var days = this.days;
+            var startDate = new Date(this.enteredStartDate);
+            var currentDay = startDate.getDate();
+            var currentMonth = startDate.getMonth() + 1;
+            var currentYear = startDate.getFullYear();
+            var lastDayOfMonth = new Date(currentYear, currentMonth, 0).getDate();
+
+            // format startDate
+            var parts = this.enteredStartDate.split('-');
+            var formattedStartDate = parts[2] + '/' + parts[1] + '/' + parts[0];
+
+            dateArr.push(formattedStartDate);
+
+            // append dates into dateArr based on days and starting Date 
+            // Format and push the initial date
+            var formattedDay = currentDay < 10 ? '0' + currentDay : currentDay;
+            var formattedMonth = currentMonth < 10 ? '0' + currentMonth : currentMonth;
+            var formattedDate = `${formattedDay}/${formattedMonth}/${currentYear}`;
+
+            for (var i = 0; i < days - 1; i++) {
+                // check if date is the last day of the month
+                // if it is, increment month, set date to 1 
+                // if it's also the last day of the year, increment year
+                // if no, increment date 
+                if(currentDay === lastDayOfMonth) {
+                    // increment month and reset day to 1
+                    currentMonth++;
+                    currentDay = 1;
+                    // check if it's the last day of the year
+                    if (currentMonth === 13) {
+                        currentYear++;
+                        currentMonth = 1;
+                    }
+                }
+                else {
+                    currentDay++;
+                }
+                //format to dd/mm/yyyy
+                formattedDay = currentDay < 10 ? '0' + currentDay : currentDay;
+                formattedMonth = currentMonth < 10 ? '0' + currentMonth : currentMonth;
+                formattedDate = `${formattedDay}/${formattedMonth}/${currentYear}`;
+                dateArr.push(formattedDate);
+            }
+            console.log(dateArr);
+            this.mealDates = dateArr;
+            // console.log(this.mealDates)
         }
     },
     methods: {
@@ -98,14 +152,15 @@ export default {
             this.planning = true;
         },
         addDay() {
-            this.dateArr = [];
+            this.dayArr = [];
             for(var i = 2; i <= this.days; i++) {
-                this.dateArr.push(i);
+                this.dayArr.push(i);
             }
-            console.log(this.dateArr);
-        },
-
-
+            console.log(this.dayArr);
+        }, 
+        addMeal(event){
+            console.log(event);
+        }
      },
     created() {
             this.checkPreferences(); // call check preferences when MealPrep is called 
