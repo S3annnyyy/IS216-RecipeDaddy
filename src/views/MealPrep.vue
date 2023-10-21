@@ -106,7 +106,7 @@
                 </div>
 
                 <!-- submit button -->
-                <div v-if="mealCount > 0" class="d-grid col-2 mx-auto mt-3">
+                <div v-if="mealValidation" class="d-grid col-2 mx-auto mt-3">
                     <button class="btn btn-primary" type="button">Continue!</button>
                 </div>
                 
@@ -137,7 +137,9 @@ export default {
             dayArr: [],
             mealDates: [],
             outputObject: {},
-            mealCount: 0
+            mealCount: 0,
+            mealCountArr: [],
+            mealValidation: false
         }
     },
     computed: {
@@ -232,29 +234,51 @@ export default {
             // select mealdate in outputObject, and append mealnum into outputObject[mealDate] 
             // else, get rid of mealnum from specified key in outputObject[mealDate] 
 
-            console.log(this.outputObject)
-            console.log('mealDate: ' + mealDate, 'mealNum: ' + mealNum, 'mealStatus: ' + mealStatus);
-
             if(mealStatus) {
                 this.outputObject[mealDate].push(mealNum);
-                console.log(this.outputObject[mealDate])
             }
             else {
                 // get index of element to remove 
                 var index = this.outputObject[mealDate].indexOf(mealNum);
                 this.outputObject[mealDate].splice(index, 1);
-
-                console.log(this.outputObject[mealDate]);
             }
 
+            // console.log(this.outputObject)
+            // console.log('mealDate: ' + mealDate, 'mealNum: ' + mealNum, 'mealStatus: ' + mealStatus);
 
-            
-            if (mealStatus) {
-                this.mealCount += 1 ;
+            // change the way submit button appears 
+            // each date must have at lease one selected meal for submit button to appear 
+
+   
+            this.mealCountArr = [];
+            for (let date in this.outputObject){
+                // console.log(date);
+                // console.log(this.outputObject[date]);
+
+                var mealCount = this.outputObject[date].length;
+                // console.log(date + " mealCount: " + mealCount);
+                // store all meal counts in 1 array. 
+                // if the array has elemnt 0, button will not appear
+                // if elment does not have 0, button will appear 
+                this.mealCountArr.push(mealCount);
             }
-            else{
-                this.mealCount -= 1;
+
+            console.log(this.mealCountArr)
+
+            for (var i = 0; i < this.mealCountArr.length; i++) {
+                // if (this.mealCountArr[i])'
+                this.mealValidation = true;
+                if (this.mealCountArr[i] == 0){
+                    this.mealValidation = false;
+                }
             }
+
+            // if (mealStatus) {
+            //     this.mealCount += 1 ;
+            // }
+            // else{
+            //     this.mealCount -= 1;
+            // }
 
         }
      },
