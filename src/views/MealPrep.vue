@@ -30,7 +30,9 @@
                 <div class="row d-flex justify-content-center">
                     <div v-if="days > 0" class="col-lg-2 col-md-4 col-sm-12 d-flex mt-3 justify-content-center">
                         <div style="background-color: white; border: 1px solid lightgrey;padding:20px; border-radius: 20px;">
-                            <input v-model="enteredStartDate" @change="setDate" type="date" class="sameSize spacing form-control" style="height:30px" required ><br>
+                            <input v-model="enteredStartDate" @change="setDate" type="date" class="sameSize spacing form-control" style="height:30px" required >
+                            <div class="invalid-feedback">Please enter date</div><br>
+                            
 
                             <!-- breakfast -->
                             <div v-if="enteredStartDate == ''">
@@ -184,15 +186,14 @@ export default {
                 formattedDate = `${formattedDay}/${formattedMonth}/${currentYear}`;
                 dateArr.push(formattedDate);
             }
-            // console.log(dateArr);
+
             this.mealDates = dateArr;
-            // console.log(this.mealDates)
             // add cooking dates into outputObject
             this.outputObject = {};
             for(i = 0; i < this.days; i++) {
-                this.outputObject[dateArr[i]] = [1,2,3];
+                var dateStr = dateArr[i].toString();
+                this.outputObject[dateStr] = [];
             }
-            // console.log(this.outputObject);
 
         }
     },
@@ -215,12 +216,15 @@ export default {
             for(var i = 2; i <= this.days; i++) {
                 this.dayArr.push(i);
             }
-            
-            // console.log(this.dayArr);
+
+            this.enteredStartDate = '';
+            this.mealDates = [];
         }, 
         addMeal(event){
             // get day
             // checkbox status 
+            // get rid of this 
+            // store each 
             var checkBoxStaus = event.target.checked;
             if (checkBoxStaus) {
                 this.mealCount += 1 ;
@@ -229,10 +233,10 @@ export default {
                 this.mealCount -= 1;
             }
 
-            console.log(this.enteredStartDate);
 
-            // console.log(this.mealCount)
-            // console.log(event.target.getAttribute('id'));
+            console.log(this.outputObject)
+            console.log(event.target.getAttribute('id'), checkBoxStaus);
+            // if checkboxStatus == true, add corresponding mealTime to date in outputObject
         }
      },
     created() {
