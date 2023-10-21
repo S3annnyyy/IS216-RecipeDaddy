@@ -30,16 +30,37 @@
                 <div class="row d-flex justify-content-center">
                     <div v-if="days > 0" class="col-lg-2 col-md-4 col-sm-12 d-flex mt-3 justify-content-center">
                         <div style="background-color: white; border: 1px solid lightgrey;padding:20px; border-radius: 20px;">
-                            <input v-model="enteredStartDate" @change="setDate" type="date" class="sameSize spacing form-control" style="height:30px" ><br>
+                            <input v-model="enteredStartDate" @change="setDate" type="date" class="sameSize spacing form-control" style="height:30px" required ><br>
 
-                            <input type="checkbox" class="btn-check" id="breakfastD1" autocomplete="off">
-                            <label @click="addMeal" class="btn btn-outline-primary spacing sameSize" for="breakfastD1">Breakfast</label><br>
+                            <!-- breakfast -->
+                            <div v-if="enteredStartDate == ''">
+                                <input @click="addMeal" type="checkbox" class="btn-check" id="breakfastD1" autocomplete="off" disabled>
+                                <label class="btn btn-outline-primary spacing sameSize" for="breakfastD1">Breakfast</label><br>
+                            </div>
+                            <div v-else>
+                                <input @click="addMeal" type="checkbox" class="btn-check" id="breakfastD1" autocomplete="off">
+                                <label class="btn btn-outline-primary spacing sameSize" for="breakfastD1">Breakfast</label><br>
+                            </div>
 
-                            <input type="checkbox" class="btn-check" id="lunchD1" autocomplete="off">
-                            <label @click="addMeal" class="btn btn-outline-primary spacing sameSize" for="lunchD1">Lunch</label><br>
+                            <!-- lunch -->
+                            <div v-if="enteredStartDate == ''">
+                                <input @click="addMeal" type="checkbox" class="btn-check" id="lunchD1" autocomplete="off" disabled>
+                                <label class="btn btn-outline-primary spacing sameSize" for="lunchD1">Lunch</label><br>
+                            </div>
+                            <div v-else>
+                                <input @click="addMeal" type="checkbox" class="btn-check" id="lunchD1" autocomplete="off">
+                                <label class="btn btn-outline-primary spacing sameSize" for="lunchD1">Lunch</label><br>
+                            </div>
+                            <!-- dinner -->
+                            <div v-if="enteredStartDate == ''">
+                                <input @click="addMeal" type="checkbox" class="btn-check" id="dinnerD1" autocomplete="off" disabled>
+                                <label class="btn btn-outline-primary spacing sameSize" for="dinnerD1">Dinner</label><br>
+                            </div>
+                            <div v-else>
+                                <input @click="addMeal" type="checkbox" class="btn-check" id="dinnerD1" autocomplete="off">
+                                <label class="btn btn-outline-primary spacing sameSize" for="dinnerD1">Dinner</label><br>
+                            </div>
 
-                            <input type="checkbox" class="btn-check" id="dinnerD1" autocomplete="off">
-                            <label @click="addMeal" class="btn btn-outline-primary sameSize" for="dinnerD1">Dinner</label>
                         </div>
                     </div>
                     <!-- repeat based on number of days -->
@@ -47,20 +68,42 @@
                         <div style="background-color: white; border: 1px solid lightgrey; padding:20px; border-radius: 20px;">
                             <input type="text" class="spacing sameSize sameHeight form-control" disabled :value="mealDates[ind + 1]" > <br>
 
-                            <input type="checkbox" class="btn-check" :id="'breakfastD'+ day" autocomplete="off">
-                            <label @click="addMeal" class="btn btn-outline-primary spacing sameSize" :for="'breakfastD'+ day">Breakfast</label><br>
+                            <!-- breakfast -->
+                            <div v-if="enteredStartDate == ''">
+                                <input @click="addMeal" type="checkbox" class="btn-check" :id="'breakfastD'+ day" autocomplete="off" disabled>
+                                <label class="btn btn-outline-primary spacing sameSize" :for="'breakfastD'+ day">Breakfast</label><br>
+                            </div>
+                            <div v-else>
+                                <input @click="addMeal" type="checkbox" class="btn-check" :id="'breakfastD'+ day" autocomplete="off">
+                                <label class="btn btn-outline-primary spacing sameSize" :for="'breakfastD'+ day">Breakfast</label><br>
+                            </div>
 
-                            <input type="checkbox"  class="btn-check" :id="'lunchD'+ day" autocomplete="off">
-                            <label @click="addMeal" class="btn btn-outline-primary spacing sameSize" :for="'lunchD' + day">Lunch</label><br>
+                            <!-- lunch -->
+                            <div v-if="enteredStartDate == ''">
+                                <input @click="addMeal" type="checkbox" class="btn-check" :id="'lunchD'+ day" autocomplete="off" disabled>
+                                <label class="btn btn-outline-primary spacing sameSize" :for="'lunchD'+ day">Lunch</label><br>
+                            </div>
+                            <div v-else>
+                                <input @click="addMeal" type="checkbox" class="btn-check" :id="'lunchD'+ day" autocomplete="off">
+                                <label class="btn btn-outline-primary spacing sameSize" :for="'lunchD'+ day">Lunch</label><br>
+                            </div>
 
-                            <input type="checkbox" class="btn-check" :id="'dinnerD' + day" autocomplete="off">
-                            <label  @click="addMeal" class="btn btn-outline-primary sameSize" :for="'dinnerD' + day">Dinner</label>
+                            <!-- dinner -->
+                            <div v-if="enteredStartDate == ''">
+                                <input @click="addMeal" type="checkbox" class="btn-check" :id="'dinnerD'+ day" autocomplete="off" disabled>
+                                <label class="btn btn-outline-primary spacing sameSize" :for="'dinnerD'+ day">Breakfast</label><br>
+                            </div>
+                            <div v-else>
+                                <input @click="addMeal" type="checkbox" class="btn-check" :id="'dinnerD'+ day" autocomplete="off">
+                                <label class="btn btn-outline-primary spacing sameSize" :for="'dinnerD'+ day">Breakfast</label><br>
+                            </div>
+
                         </div>
                     </div>
                 </div>
 
                 <!-- submit button -->
-                <div class="d-grid col-2 mx-auto mt-3">
+                <div v-if="mealCount > 0" class="d-grid col-2 mx-auto mt-3">
                     <button class="btn btn-primary" type="button">Continue!</button>
                 </div>
                 
@@ -141,7 +184,7 @@ export default {
                 formattedDate = `${formattedDay}/${formattedMonth}/${currentYear}`;
                 dateArr.push(formattedDate);
             }
-            console.log(dateArr);
+            // console.log(dateArr);
             this.mealDates = dateArr;
             // console.log(this.mealDates)
             // add cooking dates into outputObject
@@ -149,7 +192,7 @@ export default {
             for(i = 0; i < this.days; i++) {
                 this.outputObject[dateArr[i]] = [1,2,3];
             }
-            console.log(this.outputObject);
+            // console.log(this.outputObject);
 
         }
     },
@@ -172,14 +215,24 @@ export default {
             for(var i = 2; i <= this.days; i++) {
                 this.dayArr.push(i);
             }
-            console.log(this.dayArr);
+            
+            // console.log(this.dayArr);
         }, 
         addMeal(event){
-            
             // get day
-            this.mealCount += 1 
-            console.log(this.mealCount)
-            console.log(event.target.getAttribute('for'));
+            // checkbox status 
+            var checkBoxStaus = event.target.checked;
+            if (checkBoxStaus) {
+                this.mealCount += 1 ;
+            }
+            else{
+                this.mealCount -= 1;
+            }
+
+            console.log(this.enteredStartDate);
+
+            // console.log(this.mealCount)
+            // console.log(event.target.getAttribute('id'));
         }
      },
     created() {
