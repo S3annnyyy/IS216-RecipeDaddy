@@ -36,31 +36,31 @@
 
                             <!-- breakfast -->
                             <div v-if="enteredStartDate == ''">
-                                <input @click="addMeal" type="checkbox" class="btn-check" id="breakfastD1" autocomplete="off" disabled>
-                                <label class="btn btn-outline-primary spacing sameSize" for="breakfastD1">Breakfast</label><br>
+                                <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[0] + ' 1'" autocomplete="off" disabled>
+                                <label class="btn btn-outline-primary spacing sameSize" :for="mealDates[0] + ' 1'">Breakfast</label><br>
                             </div>
                             <div v-else>
-                                <input @click="addMeal" type="checkbox" class="btn-check" id="breakfastD1" autocomplete="off">
-                                <label class="btn btn-outline-primary spacing sameSize" for="breakfastD1">Breakfast</label><br>
+                                <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[0] + ' 1'" autocomplete="off">
+                                <label class="btn btn-outline-primary spacing sameSize" :for="mealDates[0] + ' 1'">Breakfast</label><br>
                             </div>
 
                             <!-- lunch -->
                             <div v-if="enteredStartDate == ''">
-                                <input @click="addMeal" type="checkbox" class="btn-check" id="lunchD1" autocomplete="off" disabled>
-                                <label class="btn btn-outline-primary spacing sameSize" for="lunchD1">Lunch</label><br>
+                                <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[0] + ' 2'" autocomplete="off" disabled>
+                                <label class="btn btn-outline-primary spacing sameSize" :for="mealDates[0] + ' 2'">Lunch</label><br>
                             </div>
                             <div v-else>
-                                <input @click="addMeal" type="checkbox" class="btn-check" id="lunchD1" autocomplete="off">
-                                <label class="btn btn-outline-primary spacing sameSize" for="lunchD1">Lunch</label><br>
+                                <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[0] + ' 2'" autocomplete="off">
+                                <label class="btn btn-outline-primary spacing sameSize" :for="mealDates[0] + ' 2'">Lunch</label><br>
                             </div>
                             <!-- dinner -->
                             <div v-if="enteredStartDate == ''">
-                                <input @click="addMeal" type="checkbox" class="btn-check" id="dinnerD1" autocomplete="off" disabled>
-                                <label class="btn btn-outline-primary spacing sameSize" for="dinnerD1">Dinner</label><br>
+                                <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[0] + ' 3'" autocomplete="off" disabled>
+                                <label class="btn btn-outline-primary spacing sameSize" :for="mealDates[0] + ' 3'">Dinner</label><br>
                             </div>
                             <div v-else>
-                                <input @click="addMeal" type="checkbox" class="btn-check" id="dinnerD1" autocomplete="off">
-                                <label class="btn btn-outline-primary spacing sameSize" for="dinnerD1">Dinner</label><br>
+                                <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[0] + ' 3'" autocomplete="off">
+                                <label class="btn btn-outline-primary spacing sameSize" :for="mealDates[0] + ' 3'">Dinner</label><br>
                             </div>
 
                         </div>
@@ -72,32 +72,33 @@
 
                             <!-- breakfast -->
                             <div v-if="enteredStartDate == ''">
-                                <input @click="addMeal" type="checkbox" class="btn-check" :id="'breakfastD'+ day" autocomplete="off" disabled>
-                                <label class="btn btn-outline-primary spacing sameSize" :for="'breakfastD'+ day">Breakfast</label><br>
+                                <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[ind + 1] + ' 1'" autocomplete="off" disabled>
+                                <label class="btn btn-outline-primary spacing sameSize" :for="mealDates[ind + 1] + ' 1'">Breakfast</label><br>
                             </div>
                             <div v-else>
-                                <input @click="addMeal" type="checkbox" class="btn-check" :id="'breakfastD'+ day" autocomplete="off">
-                                <label class="btn btn-outline-primary spacing sameSize" :for="'breakfastD'+ day">Breakfast</label><br>
+                                <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[ind + 1] + ' 1'" autocomplete="off">
+                                <label class="btn btn-outline-primary spacing sameSize" :for="mealDates[ind + 1] + ' 1'">Breakfast</label><br>
                             </div>
 
                             <!-- lunch -->
                             <div v-if="enteredStartDate == ''">
-                                <input @click="addMeal" type="checkbox" class="btn-check" :id="'lunchD'+ day" autocomplete="off" disabled>
-                                <label class="btn btn-outline-primary spacing sameSize" :for="'lunchD'+ day">Lunch</label><br>
+                                <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[ind + 1] + ' 2'" autocomplete="off" disabled>
+                                <label class="btn btn-outline-primary spacing sameSize" :for="mealDates[ind + 1] + ' 2'">Lunch</label><br>
                             </div>
                             <div v-else>
-                                <input @click="addMeal" type="checkbox" class="btn-check" :id="'lunchD'+ day" autocomplete="off">
-                                <label class="btn btn-outline-primary spacing sameSize" :for="'lunchD'+ day">Lunch</label><br>
+                                <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[ind + 1] + ' 2'" autocomplete="off">
+                                <label class="btn btn-outline-primary spacing sameSize" :for="mealDates[ind + 1] + ' 2'">Lunch</label><br>
                             </div>
 
                             <!-- dinner -->
                             <div v-if="enteredStartDate == ''">
-                                <input @click="addMeal" type="checkbox" class="btn-check" :id="'dinnerD'+ day" autocomplete="off" disabled>
-                                <label class="btn btn-outline-primary spacing sameSize" :for="'dinnerD'+ day">Breakfast</label><br>
+                                <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[ind + 1] + ' 3'" autocomplete="off" disabled>
+                                <label class="btn btn-outline-primary spacing sameSize" :for="mealDates[ind + 1] + ' 3'">Breakfast</label><br>
+
                             </div>
                             <div v-else>
-                                <input @click="addMeal" type="checkbox" class="btn-check" :id="'dinnerD'+ day" autocomplete="off">
-                                <label class="btn btn-outline-primary spacing sameSize" :for="'dinnerD'+ day">Breakfast</label><br>
+                                <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[ind + 1] + ' 3'" autocomplete="off">
+                                <label class="btn btn-outline-primary spacing sameSize" :for="mealDates[ind + 1] + ' 3'">Breakfast</label><br>
                             </div>
 
                         </div>
