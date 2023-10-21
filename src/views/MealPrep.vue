@@ -222,22 +222,40 @@ export default {
             this.mealDates = [];
         }, 
         addMeal(event){
-            // get day
-            // checkbox status 
-            // get rid of this 
-            // store each 
-            var checkBoxStaus = event.target.checked;
-            if (checkBoxStaus) {
+            // get meal info, mealdate, mealnumber, mealstatus 
+            var mealInfo = event.target.getAttribute('id').split(' ');
+            var mealDate = mealInfo[0];
+            var mealNum = mealInfo[1];
+            var mealStatus = event.target.checked;
+
+            // if mealstatus = true, 
+            // select mealdate in outputObject, and append mealnum into outputObject[mealDate] 
+            // else, get rid of mealnum from specified key in outputObject[mealDate] 
+
+            console.log(this.outputObject)
+            console.log('mealDate: ' + mealDate, 'mealNum: ' + mealNum, 'mealStatus: ' + mealStatus);
+
+            if(mealStatus) {
+                this.outputObject[mealDate].push(mealNum);
+                console.log(this.outputObject[mealDate])
+            }
+            else {
+                // get index of element to remove 
+                var index = this.outputObject[mealDate].indexOf(mealNum);
+                this.outputObject[mealDate].splice(index, 1);
+
+                console.log(this.outputObject[mealDate]);
+            }
+
+
+            
+            if (mealStatus) {
                 this.mealCount += 1 ;
             }
             else{
                 this.mealCount -= 1;
             }
 
-
-            console.log(this.outputObject)
-            console.log(event.target.getAttribute('id'), checkBoxStaus);
-            // if checkboxStatus == true, add corresponding mealTime to date in outputObject
         }
      },
     created() {
