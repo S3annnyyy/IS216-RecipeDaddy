@@ -1,4 +1,3 @@
-
 <style scoped>
 .box {
     background-color: #D9D9D9;
@@ -251,7 +250,6 @@
     }
 } */
 import { formatDate } from "@vueuse/core";
-import pancakes from "../assets/pancakes.jpg";
 
 Date.prototype.GetFirstDayOfWeek = function () {
     const firstDayOfWeek = new Date(this);
@@ -282,7 +280,7 @@ export default {
     },
     computed: {
         weekDates() {
-
+            this.dates = [];
             const currentWeekStart = this.currentDate.GetFirstDayOfWeek();
             for (let i = 0; i < 7; i++) {
                 const date = new Date(currentWeekStart);
