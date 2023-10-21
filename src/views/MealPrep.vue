@@ -27,40 +27,40 @@
                 </div>  
                 
                 <!-- schedule table -->
-                <div class="row d-flex justify-content-center mt-5">
-                    <div v-if="days > 0" class="col-lg-2 col-md-3 col-sm-6 col-xs-6 d-flex justify-content-center">
-                        <div style="background-color: white; border: 1px solid lightgrey; padding:20px; border-radius: 20px;">
-                            <input v-model="enteredStartDate" @change="setDate" type="date" class="sameSize spacing"><br>
+                <div class="row d-flex justify-content-center">
+                    <div v-if="days > 0" class="col-lg-2 col-md-4 col-sm-12 d-flex mt-3 justify-content-center">
+                        <div style="background-color: white; border: 1px solid lightgrey;padding:20px; border-radius: 20px;">
+                            <input v-model="enteredStartDate" @change="setDate" type="date" class="sameSize spacing form-control" style="height:30px"><br>
 
                             <input type="checkbox" class="btn-check" id="breakfastD1" autocomplete="off">
-                            <label class="btn btn-outline-primary spacing sameSize" for="breakfastD1">Breakfast</label><br>
+                            <label @click="addMeal" class="btn btn-outline-primary spacing sameSize" for="breakfastD1">Breakfast</label><br>
 
                             <input type="checkbox" class="btn-check" id="lunchD1" autocomplete="off">
-                            <label class="btn btn-outline-primary spacing sameSize" for="lunchD1">Lunch</label><br>
+                            <label @click="addMeal" class="btn btn-outline-primary spacing sameSize" for="lunchD1">Lunch</label><br>
 
                             <input type="checkbox" class="btn-check" id="dinnerD1" autocomplete="off">
-                            <label class="btn btn-outline-primary sameSize" for="dinnerD1">Dinner</label>
+                            <label @click="addMeal" class="btn btn-outline-primary sameSize" for="dinnerD1">Dinner</label>
                         </div>
                     </div>
                     <!-- repeat based on number of days -->
-                    <div v-for="(day, ind) in dayArr" class="col-lg-2 col-md-3 col-sm-6 col-xs-6 d-flex justify-content-center">
+                    <div v-for="(day, ind) in dayArr" class="col-lg-2 col-md-4 col-sm-12 d-flex mt-3 justify-content-center">
                         <div style="background-color: white; border: 1px solid lightgrey; padding:20px; border-radius: 20px;">
-                            <input type="text" class="spacing sameSize sameHeight" disabled :value="mealDates[ind + 1]" > <br>
+                            <input type="text" class="spacing sameSize sameHeight form-control" disabled :value="mealDates[ind + 1]" > <br>
 
-                            <input type="checkbox" @change="addMeal" class="btn-check" :id="'breakfastD'+ day" autocomplete="off">
-                            <label class="btn btn-outline-primary spacing sameSize" :for="'breakfastD'+ day">Breakfast</label><br>
+                            <input type="checkbox" class="btn-check" :id="'breakfastD'+ day" autocomplete="off">
+                            <label @click="addMeal" class="btn btn-outline-primary spacing sameSize" :for="'breakfastD'+ day">Breakfast</label><br>
 
-                            <input type="checkbox" class="btn-check" :id="'lunchD'+ day" autocomplete="off">
-                            <label class="btn btn-outline-primary spacing sameSize" :for="'lunchD' + day">Lunch</label><br>
+                            <input type="checkbox"  class="btn-check" :id="'lunchD'+ day" autocomplete="off">
+                            <label @click="addMeal" class="btn btn-outline-primary spacing sameSize" :for="'lunchD' + day">Lunch</label><br>
 
                             <input type="checkbox" class="btn-check" :id="'dinnerD' + day" autocomplete="off">
-                            <label class="btn btn-outline-primary sameSize" :for="'dinnerD' + day">Dinner</label>
+                            <label  @click="addMeal" class="btn btn-outline-primary sameSize" :for="'dinnerD' + day">Dinner</label>
                         </div>
                     </div>
                 </div>
 
                 <!-- submit button -->
-                <div class="d-grid col-2 mx-auto mt-5">
+                <div class="d-grid col-2 mx-auto mt-3">
                     <button class="btn btn-primary" type="button">Continue!</button>
                 </div>
                 
@@ -89,7 +89,8 @@ export default {
             days:0,
             enteredStartDate:'',
             dayArr: [],
-            mealDates: []
+            mealDates: [],
+            outputObject: {}
         }
     },
     computed: {
@@ -115,7 +116,7 @@ export default {
             var formattedMonth = currentMonth < 10 ? '0' + currentMonth : currentMonth;
             var formattedDate = `${formattedDay}/${formattedMonth}/${currentYear}`;
 
-            for (var i = 0; i < 5; i++) {
+            for (var i = 0; i < 4; i++) {
                 // check if date is the last day of the month
                 // if it is, increment month, set date to 1 
                 // if it's also the last day of the year, increment year
@@ -142,6 +143,13 @@ export default {
             console.log(dateArr);
             this.mealDates = dateArr;
             // console.log(this.mealDates)
+            // add cooking dates into outputObject
+            this.outputObject = {};
+            for(i = 0; i < this.days; i++) {
+                this.outputObject[dateArr[i]] = [1,2,3];
+            }
+            console.log(this.outputObject);
+
         }
     },
     methods: {
@@ -166,7 +174,7 @@ export default {
             console.log(this.dayArr);
         }, 
         addMeal(event){
-            console.log(event);
+            console.log(event.target.getAttribute('for'));
         }
      },
     created() {
@@ -180,16 +188,16 @@ export default {
 </script>
 
 <style scoped>  
-.spacing {
-    margin-bottom:10px;
-}
-li{
-    list-style-type: none;
-}
-.sameSize {
-    width:120px;
-}
-.sameHeight{
-    height:28px;
-}
+    .spacing {
+        margin-bottom:10px;
+    }
+    li{
+        list-style-type: none;
+    }
+    .sameSize {
+        width:160px;
+    }
+    .sameHeight{
+        height:28px;
+    }
 </style>
