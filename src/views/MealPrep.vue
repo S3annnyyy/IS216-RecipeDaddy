@@ -1,7 +1,5 @@
 <template>
-    <div v-if="validationOngoing">
-
-    
+    <div v-if="pageOneValidation">
         <!-- Original page  -->
         <div v-if="planning === false" class="row d-flex justify-content-center align-items-center" style="height: 80vh;">
             <div class="col-4 text-center">
@@ -119,7 +117,12 @@
         </div>
     </div>
 
-    <div v-if="!validationOngoing">
+    <!-- <div v-if="!pageOneValidation">
+
+    </div> -->
+
+
+    <div v-if="!pageOneValidation">
         <main class="row justify-content-center align-items-center" style="height: 92vh;">        
         <div class="col-xl-6 col-l-6 col-md-6 col-sm-12 ingredient-list-LHS">
             <div class="container-fluid ingredient-list-box position-relative">
@@ -131,7 +134,7 @@
                 <div class="row ingredients-list-wrapper">
                     <div class="col-10">
                         <ol class="list-container">
-                            <li v-for="(item, index) in ingredientList" :key="index" class="ingredients ">
+                            <li v-for="(item, index) in mealPrepIngredientList" :key="index" class="ingredients ">
                                 <div class="item-content">
                                     <span>{{ item }}</span>
                                     <span class="material-icons-outlined" @click="removeItem(index)">close</span>
@@ -150,13 +153,13 @@
                 <div class="row justify-content-center">
                     <div class="col-xxl-10 col-xl-10 col-l-12 col-md-12 col-sm-12 text-center">
                         <div class="input-group input-group-md search-bar-content">
-                            <input type="text" class="form-control ingredient" placeholder="Enter ingredient, unit & amount and press enter!" v-model="searchInput">
+                            <input type="text" class="form-control ingredient" placeholder="Enter ingredient, unit & amount and press enter!" v-model="mealPrepSearchInput">
                             
-                            <input type="number" class="form-control amount" placeholder="Amount" v-model="selectedAmount" v-on:change="handleAmount">
+                            <input type="number" class="form-control amount" placeholder="Amount" v-model="mealPrepSelectedAmount" v-on:change="handleAmount">
 
-                            <button class="btn dropdown-toggle unit" type="button" data-bs-toggle="dropdown" aria-expanded="false">{{ selectedUnit }}</button>   
+                            <button class="btn dropdown-toggle unit" type="button" data-bs-toggle="dropdown" aria-expanded="false">{{ mealPrepSelectedUnit }}</button>   
                             <ol class="dropdown-menu">
-                                <li v-for="unit in inputUnits" :key="unit" class="dropdown-item" @click="handleUnit(unit)">{{ unit }}</li>
+                                <li v-for="unit in mealPrepInputUnits" :key="unit" class="dropdown-item" @click="handleUnit(unit)">{{ unit }}</li>
                             </ol>      
 
                             <button class="btn submit-button" type="submit" aria-expanded="false" @click="handleSubmit">                   
@@ -170,7 +173,7 @@
                 </div>
             </div>           
         </div>
-    </main>
+        </main>
     </div>
 
 
@@ -198,15 +201,20 @@ export default {
             mealCount: 0,
             mealCountArr: [],
             mealValidation: false,
-            validationOngoing: true,
+            pageOneValidation: true,
+            pageTwoValidation: false,
+
+            // ingredientsToAvoid searchbar (same as recipeSearch bar)
+            
+
 
             // mealPrepSearch data
-            searchInput: '',
-            selectedUnit: 'Unit',
-            selectedAmount: 0, 
-            ingredientList: [],          
-            inputUnits: ["ml", "litre", "g", "kg", "item-quantity"],
-            uuid: crypto.randomUUID() 
+            mealPrepSearchInput: '',
+            mealPrepSelectedUnit: 'Unit',
+            mealPrepSelectedAmount: 0, 
+            mealPrepIngredientList: [],          
+            mealPrepInputUnits: ["ml", "litre", "g", "kg", "item-quantity"],
+            uuidMealPrep: crypto.randomUUID() 
             
         }
     },
@@ -265,7 +273,6 @@ export default {
                 var dateStr = dateArr[i].toString();
                 this.outputObject[dateStr] = [];
             }
-
         }
     },
     methods: {
@@ -345,10 +352,13 @@ export default {
                     this.mealValidation = false;
                 }
             }
+
+
+            console.log(this.outputObject);
         },
         submitClick() {
-            this.validationOngoing = false;
-            console.log(this.validationOngoing);
+            this.pageOneValidation = false;
+            console.log(this.pageOneValidation);
         },
 
         // mealPrepSearch methods 
@@ -356,10 +366,10 @@ export default {
             // validate input for amount and units
             if (this.validateInput()[1]) {
                 // push to ingredient list as a string                
-                this.ingredientList.push(`${this.selectedAmount} ${this.selectedUnit} of ${this.searchInput}`)
-                console.log(`Added ${this.searchInput} into ingredient list`, this.ingredientList)
+                this.mealPrepIngredientList.push(`${this.mealPrepSelectedAmount} ${this.mealPrepSelectedUnit} of ${this.mealPrepSearchInput}`)
+                console.log(`Added ${this.mealPrepSearchInput} into ingredient list`, this.mealPrepIngredientList)
                 // reset input
-                this.searchInput =''
+                this.mealPrepSearchInput =''
             } else {
                 // populate errors on alert
                 let errors = this.validateInput()[0]
@@ -369,9 +379,9 @@ export default {
         },
         validateInput() {
             let errors = []
-            if (this.selectedAmount === 0) {errors.push("Please input an appropriate amount\n")}
-            if (this.selectedUnit === "Unit") {errors.push("Please add in an appropriate unit\n")}
-            if (this.searchInput === "") {errors.push("Input cannot be empty\n")}
+            if (this.mealPrepSelectedAmount === 0) {errors.push("Please input an appropriate amount\n")}
+            if (this.mealPrepSelectedUnit === "Unit") {errors.push("Please add in an appropriate unit\n")}
+            if (this.mealPrepSearchInput === "") {errors.push("Input cannot be empty\n")}
 
             if (errors.length > 0) {
                 return [errors, false]
@@ -380,19 +390,19 @@ export default {
             }
         },
         handleAmount() {
-            console.log(`${this.selectedAmount} chosen`)            
+            console.log(`${this.mealPrepSelectedAmount} chosen`)            
         },
         handleUnit(unit) {
             console.log(`${unit} chosen`)
-            this.selectedUnit = unit
+            this.mealPrepSelectedUnit = unit
         },  
         removeItem(item_index) {
             // params is item_index, rm from list
-            this.ingredientList.splice(item_index, 1)
+            this.mealPrepIngredientList.splice(item_index, 1)
         },
         generateMealPlan()  {
             // validate Input if empty
-            if (this.ingredientList.length === 0) {
+            if (this.mealPrepIngredientList.length === 0) {
                 alert("List cannot be empty")
             } else {
                 //TODO BY GABRIEL
@@ -402,7 +412,7 @@ export default {
         // end of mealPrepSearch methods 
      },
     created() {
-            this.checkPreferences(); // call check preferences when MealPrep is called 
+            this.checkPreferences(); // call check preferences when MealPrep is called --> may not need this at all as preferences is inputted in page 2 
     }
 }
 
