@@ -290,6 +290,11 @@ export default {
 
             this.enteredStartDate = '';
             this.mealDates = [];
+
+            // set mealCountArr to empty when changing days 
+            this.mealCountArr = [];
+
+            console.log(this.mealCountArr)
         }, 
         addMeal(event){
             // get meal info, mealdate, mealnumber, mealstatus 
