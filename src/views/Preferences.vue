@@ -2,7 +2,8 @@
     <main class="row d-flex justify-content-center">
         <div class="col-4">
             <div className="d-flex align-items-center justify-content-center" style="height:100vh">
-                HELLO 
+                <searchBar/>
+                <searchBar/>  
             </div>
         </div>
     </main>

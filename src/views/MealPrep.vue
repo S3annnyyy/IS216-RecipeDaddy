@@ -1,4 +1,5 @@
 <template>
+    <!-- Page One -->
     <div v-if="pageOneValidation">
         <!-- Original page  -->
         <div v-if="planning === false" class="row d-flex justify-content-center align-items-center" style="height: 80vh;">
@@ -117,29 +118,29 @@
         </div>
     </div>
 
-    <div v-if="!pageOneValidation">
+    <!-- Page two: Ingredients To Avoid -->
+
+    <div v-if="pageTwoValidation">
         <main class="row justify-content-center align-items-center " style="height: 92vh;">
+            
             <div class="col-xl-8 col-lg-8 col-md-8 col-sm-10">
+                <h1 class="text-center">Please Enter Ingredients to avoid!</h1>
                 <div class="input-group input-group-lg search-bar">
                     <button class="btn dropdown-toggle input" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="min-width: 8vw;">{{ selectedInputType }}</button>
                     <ul class="dropdown-menu">                             
                         <li v-for="item in inputFormat" :key="item" class="dropdown-item" @click="handleInputType(item)">{{ item }}</li>
                     </ul>               
-                    <button class="btn dropdown-toggle cuisine" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="min-width: 10vw;">{{ selectedCuisine }}</button>
-                    <ul class="dropdown-menu">
-                        <li v-for="cuisine in inputCuisine" :key="cuisine" class="dropdown-item" @click="handleCuisineOption(cuisine)">{{ cuisine }}</li>
-                    </ul>
+
                     <input type="text" class="form-control " placeholder="Enter an ingredient and press Enter! " v-model="searchInput" @keydown.enter="handleEnter">
-                    <button class="btn submit-button" type="submit" aria-expanded="false" @click="parseDataToRecipePage()">                   
-                            <span class="submit-button-content">
-                            <svg width="32" height="32" viewBox="0 0 24 24" class="arrow"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2 .01 7z"/></svg>                        
-                            </span>                    
+                    <button class="btn submit-button" type="submit" @click="submitClick2" aria-expanded="false">                   
+                        <span class="submit-button-content">
+                        <svg width="32" height="32" viewBox="0 0 24 24" class="arrow"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2 .01 7z"/></svg>                        
+                        </span>                    
                     </button>
-                    <button type="button" class="btn submit-button2"  @click="parseDataToRecipePage()">Create Recipe</button>
                 </div>
                 <div class="list-wrapper">
-                    <ul class="list-container">
-                    <li v-for="(item, index) in ingredientList" :key="index" class="ingredients ">
+                    <ul class="list-container-toAvoid">
+                    <li v-for="(item, index) in ingredientList" :key="index" class="ingredients-toAvoid">
                         {{ item }}<span class="material-icons-outlined" @click="removeItemAvoid(item)">close</span>                    
                     </li>
                 </ul>
@@ -148,8 +149,9 @@
         </main>
     </div>
 
+    <!-- Page Three: Ingredients to cook with -->
 
-    <div v-if="pageTwoValidation">
+    <div v-if="pageThreeValidation">
         <main class="row justify-content-center align-items-center" style="height: 92vh;">        
         <div class="col-xl-6 col-l-6 col-md-6 col-sm-12 ingredient-list-LHS">
             <div class="container-fluid ingredient-list-box position-relative">
@@ -161,7 +163,7 @@
                 <div class="row ingredients-list-wrapper">
                     <div class="col-10">
                         <ol class="list-container">
-                            <li v-for="(item, index) in mealPrepIngredientList" :key="index" class="ingredients ">
+                            <li v-for="(item, index) in mealPrepIngredientList" :key="index" class="ingredients">
                                 <div class="item-content">
                                     <span>{{ item }}</span>
                                     <span class="material-icons-outlined" @click="removeItem(index)">close</span>
@@ -174,6 +176,7 @@
             </div>
         </div>
         
+               
                
         <div class="col-xl-6 col-l-6 col-md-6 col-sm-12 search-bar-RHS">
             <div class="container-fluid">
@@ -189,12 +192,12 @@
                                 <li v-for="unit in mealPrepInputUnits" :key="unit" class="dropdown-item" @click="handleUnit(unit)">{{ unit }}</li>
                             </ol>      
 
-                            <button class="btn submit-button" type="submit" aria-expanded="false" @click="handleSubmit">                   
+                            <button class="btn submit-button-CookWith" type="submit" aria-expanded="false" @click="handleSubmit">                   
                                 <span class="submit-button-content">
                                 <svg width="32" height="32" viewBox="0 0 24 24" class="arrow"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2 .01 7z"/></svg>                        
                                 </span>                    
                             </button>   
-                            <button type="button" class="btn submit-button2"  @click="handleSubmit">Add Recipe</button>                         
+                            <button type="button" class="btn submit-button2-toAvoid"  @click="handleSubmit">Add Recipe</button>                         
                         </div>                       
                     </div>
                 </div>
@@ -226,6 +229,7 @@ export default {
             mealValidation: false,
             pageOneValidation: true,
             pageTwoValidation: false,
+            pageThreeValidation: false,
 
             // ingredientsToAvoid searchbar (same as recipeSearch)
             searchInput: '',
@@ -373,12 +377,11 @@ export default {
                 }
             }
 
-            console.log(this.mealValidation)
             console.log(this.outputObject);
         },
         submitClick() {
             this.pageOneValidation = false;
-            console.log(this.pageOneValidation);
+            this.pageTwoValidation = true;
         },
 
         // ingredientsToAvoid methods 
@@ -424,26 +427,10 @@ export default {
             }
             
         },
-        parseDataToRecipePage() {
-            // validate inputs
-            if (this.validateInputAvoid()[1]) {
-                let LLM_PROMPT = this.populatePrompt(this.ingredientList, this.selectedCuisine);
-                let recipeObject = {
-                    unique_id: this.uuid, 
-                    cuisine: this.selectedCuisine, 
-                    format: this.selectedInputType, 
-                    prompt: LLM_PROMPT
-                }
-                
-                this.$router.push({
-                    path: `recipesearch/${this.uuid}`,
-                    query: {data: JSON.stringify(recipeObject)}
-                })
-            } else {
-                let errors = this.validateInputAvoid()[0].join(",\n")
-                alert(errors)
-            }
-            
+
+        submitClick2() {
+            this.pageTwoValidation = false;
+            this.pageThreeValidation = true;
         },
 
         // end of IngredientsToAvoid methods 
@@ -523,13 +510,13 @@ export default {
     .submit-button2 {
         display: none;
     }
-    .list-container {
+    .list-container-toAvoid {
         display: flex;
         flex-direction: row;       
         overflow-x: auto;  
     }
 
-    .ingredients {
+    .ingredients-toAvoid {
         display: flex;
         align-items: center;
         flex-direction: row;
@@ -618,7 +605,7 @@ export default {
             }
         }
     }
-    /* END OF INGREDIENTS TO SEARCH STLES */
+    /* END OF INGREDIENTS TO AOVID STLES */
 
 
 
@@ -668,11 +655,12 @@ export default {
         border-radius: 50px;
         box-shadow: 0 4px 2px -2px var(--text-light-secondary);
         border: 1px solid #6c757d;
-        .submit-button2 {
+        .submit-button2-CookWith {
             display: none;
         }
         .ingredient {
             border-radius: 50px;
+            
         }
         .amount {
             max-width: 6vw;
@@ -707,7 +695,7 @@ export default {
             .dropdown-menu {
                 width: 100%;
             }
-            .submit-button2 {
+            .submit-button2-CookWith {
                 display: block;
                 width: 100%;
                 background-color: #194252;
@@ -716,7 +704,7 @@ export default {
                 border-bottom-right-radius: 10px !important;
                 border-bottom-left-radius: 10px !important;
             }
-            .submit-button {
+            .submit-button-CookWith {
                 display: none;
             }
             
