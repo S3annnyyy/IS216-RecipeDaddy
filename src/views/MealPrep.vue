@@ -117,12 +117,39 @@
         </div>
     </div>
 
-    <!-- <div v-if="!pageOneValidation">
-
-    </div> -->
-
-
     <div v-if="!pageOneValidation">
+        <main class="row justify-content-center align-items-center " style="height: 92vh;">
+            <div class="col-xl-8 col-lg-8 col-md-8 col-sm-10">
+                <div class="input-group input-group-lg search-bar">
+                    <button class="btn dropdown-toggle input" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="min-width: 8vw;">{{ selectedInputType }}</button>
+                    <ul class="dropdown-menu">                             
+                        <li v-for="item in inputFormat" :key="item" class="dropdown-item" @click="handleInputType(item)">{{ item }}</li>
+                    </ul>               
+                    <button class="btn dropdown-toggle cuisine" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="min-width: 10vw;">{{ selectedCuisine }}</button>
+                    <ul class="dropdown-menu">
+                        <li v-for="cuisine in inputCuisine" :key="cuisine" class="dropdown-item" @click="handleCuisineOption(cuisine)">{{ cuisine }}</li>
+                    </ul>
+                    <input type="text" class="form-control " placeholder="Enter an ingredient and press Enter! " v-model="searchInput" @keydown.enter="handleEnter">
+                    <button class="btn submit-button" type="submit" aria-expanded="false" @click="parseDataToRecipePage()">                   
+                            <span class="submit-button-content">
+                            <svg width="32" height="32" viewBox="0 0 24 24" class="arrow"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2 .01 7z"/></svg>                        
+                            </span>                    
+                    </button>
+                    <button type="button" class="btn submit-button2"  @click="parseDataToRecipePage()">Create Recipe</button>
+                </div>
+                <div class="list-wrapper">
+                    <ul class="list-container">
+                    <li v-for="(item, index) in ingredientList" :key="index" class="ingredients ">
+                        {{ item }}<span class="material-icons-outlined" @click="removeItemAvoid(item)">close</span>                    
+                    </li>
+                </ul>
+                </div>
+            </div>        
+        </main>
+    </div>
+
+
+    <div v-if="pageTwoValidation">
         <main class="row justify-content-center align-items-center" style="height: 92vh;">        
         <div class="col-xl-6 col-l-6 col-md-6 col-sm-12 ingredient-list-LHS">
             <div class="container-fluid ingredient-list-box position-relative">
@@ -182,10 +209,6 @@
 </template>
 
 <script>
-// when user clicks on mealPrep page 
-// 1. check if preferences are set (check data base for that, current default is true)
-// 2. if false, redirect to preferences page 
-// 3. if true, remain on mealPrep page
 export default {
     data() {
         return {
@@ -204,8 +227,14 @@ export default {
             pageOneValidation: true,
             pageTwoValidation: false,
 
-            // ingredientsToAvoid searchbar (same as recipeSearch bar)
-            
+            // ingredientsToAvoid searchbar (same as recipeSearch)
+            searchInput: '',
+            ingredientList: [],
+            selectedInputType: 'Input Type',
+            selectedCuisine: 'Cuisine Type',
+            inputFormat: ["Text", "OCR"],
+            inputCuisine: ["Chinese", "Japanese", "Indian", "Peranakan", "Western"],
+            uuid: crypto.randomUUID(), 
 
 
             // mealPrepSearch data
@@ -276,15 +305,6 @@ export default {
         }
     },
     methods: {
-        checkPreferences() {
-            // extract preferences from database, if preferences set --> preferences == true 
-            // for now just set preferences as no database 
-            if(this.preferences == false) {
-                // redirect tp Preferences.vue
-                this.$router.push('/preferences');
-            }
-        // remain on current page 
-        },
         planMeal() {
             // clear contents in #content
             this.planning = true;
@@ -345,15 +365,15 @@ export default {
 
             console.log(this.mealCountArr)
 
+            this.mealValidation = true;
             for (var i = 0; i < this.mealCountArr.length; i++) {
                 // if (this.mealCountArr[i])'
-                this.mealValidation = true;
                 if (this.mealCountArr[i] == 0){
                     this.mealValidation = false;
                 }
             }
 
-
+            console.log(this.mealValidation)
             console.log(this.outputObject);
         },
         submitClick() {
@@ -361,7 +381,77 @@ export default {
             console.log(this.pageOneValidation);
         },
 
+        // ingredientsToAvoid methods 
+        handleEnter() {
+            // Add the input value to the search history array
+            this.ingredientList.push(this.searchInput);
+
+            // Clear the input box
+            this.searchInput = '';
+
+            console.log('Search History:', this.ingredientList);
+            console.log(`Filled with ${this.ingredientList.length} item(s)`)
+            // populate input as boxes
+            // this.populateInput()
+        },        
+        removeItemAvoid(item) {
+            console.log(`rm btn clicked for ${item} list item`)     
+            
+            // remove item for ingredientList
+            let item_index = this.ingredientList.indexOf(item)
+            this.ingredientList.splice(item_index, 1)
+        },
+        handleInputType(selectedOption) {
+            this.selectedInputType = selectedOption
+        },
+        handleCuisineOption(selectedOption) {
+            this.selectedCuisine = selectedOption
+        },
+        populatePrompt(item_list, cuisineType) {
+            let ingredients = item_list.join(", ")
+            let result = `Create me a ${cuisineType} cuisine recipe using just the following ingredients: ${ingredients}. DO NOT use any additional ingredients`
+            return result
+        },
+        validateInputAvoid() {
+            let errors = [ ]
+            if (this.ingredientList.length === 0) {errors.push("You can't create a recipe with 0 ingredients you dumb fuck")}
+            if (this.selectedInputType === "Input Type") {errors.push("Please select one method of input")}
+            if (this.selectedCuisine === "Cuisine Type") {errors.push("Please select one cuisine type")}
+            if (errors.length === 0) {
+                return ["", true]
+            } else {
+                return [errors, false]
+            }
+            
+        },
+        parseDataToRecipePage() {
+            // validate inputs
+            if (this.validateInputAvoid()[1]) {
+                let LLM_PROMPT = this.populatePrompt(this.ingredientList, this.selectedCuisine);
+                let recipeObject = {
+                    unique_id: this.uuid, 
+                    cuisine: this.selectedCuisine, 
+                    format: this.selectedInputType, 
+                    prompt: LLM_PROMPT
+                }
+                
+                this.$router.push({
+                    path: `recipesearch/${this.uuid}`,
+                    query: {data: JSON.stringify(recipeObject)}
+                })
+            } else {
+                let errors = this.validateInputAvoid()[0].join(",\n")
+                alert(errors)
+            }
+            
+        },
+
+        // end of IngredientsToAvoid methods 
+
+
         // mealPrepSearch methods 
+
+
         handleSubmit() {
             // validate input for amount and units
             if (this.validateInput()[1]) {
@@ -410,14 +500,8 @@ export default {
         }    
         
         // end of mealPrepSearch methods 
-     },
-    created() {
-            this.checkPreferences(); // call check preferences when MealPrep is called --> may not need this at all as preferences is inputted in page 2 
-    }
+     }
 }
-
-// make date for each generated div dynamic 
-// record all info 
 
 </script>
 
@@ -434,6 +518,109 @@ export default {
     .sameHeight{
         height:28px;
     }
+
+    /* ingredientsToAvoid styles */
+    .submit-button2 {
+        display: none;
+    }
+    .list-container {
+        display: flex;
+        flex-direction: row;       
+        overflow-x: auto;  
+    }
+
+    .ingredients {
+        display: flex;
+        align-items: center;
+        flex-direction: row;
+
+        margin: 1rem;
+        padding: 0.7rem;
+        border-radius: 5px;
+        list-style: none;
+        background-color: #194252;        
+        color: var(--light);     
+        box-shadow: 0 4px 2px -2px var(--text-light-secondary);
+    }
+
+    .material-icons-outlined {
+        cursor: pointer;
+    }
+
+    .list-wrapper {
+        /* This prevents search bar from being pushed upwards when boxes are being populated  */
+        height: 4rem;
+    }   
+    .submit-button {
+        border-radius: 50px;        
+        border-left: none;            
+        transition: background-color 0.3s;   
+    }
+
+    .submit-button:hover {      
+       .submit-button-content {
+        filter: invert(84%) sepia(9%) saturate(7000%) hue-rotate(166deg) brightness(108%) contrast(96%);
+       }
+    }  
+
+    .form-control {
+        background-color: transparent;        
+        border-radius: 50px;
+    }    
+    .search-bar {
+        border-radius: 50px;
+        box-shadow: 0 4px 2px -2px var(--text-light-secondary);
+        border: 1px solid #6c757d;
+    }
+    .dropdown-item {
+        cursor: pointer;
+    }
+    
+    /* mobile responsive for seach bar  */
+    @media (max-width: 700px) {
+        .search-bar {
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+
+            .form-control {
+                width: 100%;
+                border: 0;
+            }
+            .form-control::placeholder {
+                font-size: 16px;
+                text-align: center;
+            }
+            .dropdown-toggle {
+                border-radius: 10px;
+            }
+            .dropdown-menu {
+                width: 100%;
+                background-color: #194252;                
+                text-align: center;                
+                .dropdown-item {
+                    color: var(--light);
+                }
+            }
+
+            .submit-button {
+                display: none;
+            }
+
+            .submit-button2 {
+                display: block;             
+                background-color: #194252;     
+                color: var(--light);
+                border-top-left-radius: 0 !important;
+                border-bottom-left-radius: 10px !important;
+                border-top-right-radius: 0 !important;
+                
+            }
+        }
+    }
+    /* END OF INGREDIENTS TO SEARCH STLES */
+
+
 
     /* mealPrepSearch styles */
     input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button {  
@@ -536,4 +723,6 @@ export default {
         }
         
     }
+    /* END OF MEALPREPSEARCH STYLES */
+
 </style>

@@ -130,7 +130,7 @@ export default {
         border-radius: 5px;
         list-style: none;
         background-color: #194252;        
-        color: var(--light);     
+        color: var(--light);     ƒ
         box-shadow: 0 4px 2px -2px var(--text-light-secondary);
     }
 
