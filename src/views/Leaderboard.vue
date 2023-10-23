@@ -23,6 +23,30 @@
         margin-left: 25px;
         margin-right: 25px;
     }
+
+    .award {
+        width: 60px;
+        height: auto;
+        position: absolute;
+        right: 15px;
+        top: 10px;
+    }
+
+    table {
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 10px;
+    }
+
+    th {
+        background-color: rgb(249, 249, 249);
+    }
+
+    td {
+        background-color: white;
+    }
 </style>
 
 <template>
@@ -34,7 +58,7 @@
 
         <!-- Start: Joined members card --> 
         <div class="col-lg-3 col-md-6 col-sm-12 card-group">
-            <div class="card"> 
+            <div class="card" style="background-color: #f6e6f0;"> 
                 <div class="card-body"> 
                     <img src="../assets/members.png" width="50px" height="auto">
                     <p class="card-text mt-3 mb-1" style="color: #545454;">Joined members</p>
@@ -47,10 +71,10 @@
         
         <!-- Start: Personal metrics --> 
         <div class="col-lg-3 col-md-6 col-sm-12 card-group">
-            <div class="col card">
+            <div class="card" style="background-color: #ddecf8;">
                 <div class="card-body"> 
-                    <img src="../assets/members.png" width="50px" height="auto">
-                    <p class="card-text mt-3">
+                    <img src="../assets/food.png" width="54px" height="auto">
+                    <p class="card-text mt-4">
                         You saved
                         <span style="font-size: 20px; font-weight: bold;">57g</span>
                         of food today!
@@ -63,7 +87,7 @@
 
         <!-- Start: Countdown timer --> 
         <div class="col-lg-6 col-md-12 col-sm-12 card-group">
-            <div class="col card"> 
+            <div class="card" style="background-color: #ffffe4;"> 
                 <div class="card-body"> 
                     
                     <div class="row">
@@ -99,7 +123,7 @@
                         </div>
 
                         <div class="col-lg-2 col-md-2 col-sm-2">
-                            <img src="../assets/members.png" width="50px" height="auto">
+                            <img src="../assets/winner.png" width="60px" height="auto">
                         </div>
                     </div>
                     
@@ -119,39 +143,42 @@
 
     <h4>Current leaders</h4>
 
-    <div class="row mb-4 card-group d-flex justify-content-center">
+    <div class="row mb-4 d-flex justify-content-center">
 
         <!-- Start: First place --> 
-        <div class="col-lg-4 col-md-12 col-sm-12">
-             <div class="card"> 
+        <div class="col-lg-4 col-md-12 col-sm-12 card-group">
+             <div class="card position-relative"> 
                  <div class="card-body"> 
                     <img src="../assets/profile.png" width="100px" height="auto">
                     <h5 class="card-title d-inline">Ilovecooking124</h5>
-                    <p class="card-text">Total score: 2149</p>  
+                    <p class="card-text">Total score: 2149</p>
+                    <img src="../assets/first.png" class="award">  
                  </div> 
              </div> 
         </div>
         <!-- End: First place -->
 
         <!-- Start: Second place --> 
-        <div class="col-lg-4 col-md-6 col-sm-12">
-             <div class="card"> 
+        <div class="col-lg-4 col-md-6 col-sm-12 card-group">
+             <div class="card position-relative"> 
                  <div class="card-body"> 
                     <img src="../assets/profile.png" width="100px" height="auto">
                     <h5 class="card-title d-inline">ChefAlberto</h5>
                     <p class="card-text">Total score: 2203</p> 
+                    <img src="../assets/second.png" class="award">  
                  </div> 
              </div> 
         </div>
         <!-- End: Second place -->
 
         <!-- Start: Third place --> 
-        <div class="col-lg-4 col-md-6 col-sm-12">
-             <div class="card"> 
+        <div class="col-lg-4 col-md-6 col-sm-12 card-group">
+             <div class="card position-relative"> 
                  <div class="card-body"> 
                     <img src="../assets/profile.png" width="100px" height="auto">
                     <h5 class="card-title d-inline">KingBob</h5>
                     <p class="card-text">Total score: 2003</p>  
+                    <img src="../assets/third.png" class="award">  
                  </div> 
              </div> 
         </div>
