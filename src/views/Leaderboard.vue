@@ -1,235 +1,223 @@
 <style scoped>
-.body {
-    margin-left: 100px;
-    margin-right: 100px;
-    margin-top: 20px;
-    margin-bottom: 20px;
-}
-
-.member {
-    background-color: #f2fff2;
-    height: 150px;
-    border-radius: 20px;
-    margin-right: 35px;
-}
-
-.meals {
-    background-color: #e9edff;
-    height: 150px;
-    border-radius: 20px;
-    margin-right: 35px;
-    text-align: center;
-}
-
-.countdown {
-    background-color: #fefbf2;
-    height: 150px;
-    border-radius: 20px;
-}
-
-
-.leader-box {
-    border: 0.5px solid #545454;
-    border-radius: 20px;
-    height: 200px;
-}
-
-table, tr {
-    width: 100%;
-}
-
-th, td {
-    text-align: center;
-}
-
-.time {
-    font-size: 45px;
-    font-weight: bold;
-    text-align: center;
-    justify-content: center;
-}
-
-.word {
-    font-size: 25px;
-    font-weight: bold;
-    padding-left: 20px;
-    padding-top: 30px;
-}
-
-.small {
-    font-size: 10px;
-    display: inline;
-    color: #545454;
-    text-align: center;
-}
-
-.leader-content-box {
-    border-top: 0.5px solid #545454;
-    text-align: center;
-}
-
-.leaderbox-heading {
-    font-size: 15px;
-    color: rgb(108, 119, 134);
-}
-
-@media only screen and (max-width: 700px) {
-    .time {
-        font-size: 35px;
+    .card {
+        border-radius: 15px;
     }
 
-    .word {
-        font-size: 20px;
+    .countdown-label {
+        font-size: 12px;
+        color: #545454;
     }
-}
+
+    .countdown-numbers {
+        font-size: 30px;
+        font-weight: bold;
+    }
+
+    .countdown-header {
+        font-size: 18px;
+        font-weight: bold;
+        word-wrap: normal;
+    }
+
+    main {
+        margin-left: 25px;
+        margin-right: 25px;
+    }
 </style>
 
 <template>
-    <div class="body">
-        <h3>Leaderboard</h3>
+<main>
 
-        <main class="row mt-3">
-            <div class="col-lg-2 col-md-4 col-sm-12 member">
-                <img src="">
-                <p style="color: #545454">Joined Members</p>
-                <p style="font-weight: bold; font-size: 25px;">325+</p>
-            </div>
+    <h3 class="pt-3">Leaderboard</h3>
 
-            <div class="col-lg-2 col-md-4 col-sm-12 meals">
-                <div class="m-auto">
-                    <p style="color: #545454;">You have saved</p>
-                    <p style="font-weight: bold; font-size: 25px;">520g</p>
-                    <p style="color: #545454;">of food!</p>
-                </div>
-            </div>
+    <div class="row mb-4 d-flex justify-content-center">
 
-            <div class="col-lg-7 col-md-12 col-sm-12 countdown">
-                <div class="row">
-
-                    <div class="col word">
-                        Remaining time to completion 🔥
-                    </div>
-
-                    <div class="col pt-3">
-                        <div class="row">
-                            <div class="col time">
-                                <span id="day"></span>
-                            </div>
-
-                            <div class="col">
-                                <h1 class="pt-2">:</h1>
-                            </div>
-
-                            <div class="col time">
-                                <span id="hour"></span>
-                            </div>
-
-                            <div class="col">
-                                <h1 class="pt-2">:</h1>
-                            </div>
-
-                            <div class="col time">
-                                <span id="min"></span>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col small">DAYS</div>
-                            <div class="col"></div>
-                            <div class="col small">HOURS</div>
-                            <div class="col"></div>
-                            <div class="col small">MINUTE</div>
-                        </div>
-                    </div>
-
-                    <div class="col-2">
-                        trophy
-                    </div>
-                    
-                </div>
-
-                <div class="row small" style="padding-left: 20px;">
-                    Rewards are only awarded to the top 3 winners each week
+        <!-- Start: Joined members card --> 
+        <div class="col-lg-3 col-md-6 col-sm-12 card-group">
+            <div class="card"> 
+                <div class="card-body"> 
+                    <img src="../assets/members.png" width="50px" height="auto">
+                    <p class="card-text mt-3 mb-1" style="color: #545454;">Joined members</p>
+                    <span style="font-size: 20px; font-weight: bold;">325+</span>
                 </div> 
-                
-            </div>
-        </main>
+            </div> 
+        </div>
+        <!-- End: Joined members card -->
 
+        
+        <!-- Start: Personal metrics --> 
+        <div class="col-lg-3 col-md-6 col-sm-12 card-group">
+            <div class="col card">
+                <div class="card-body"> 
+                    <img src="../assets/members.png" width="50px" height="auto">
+                    <p class="card-text mt-3">
+                        You saved
+                        <span style="font-size: 20px; font-weight: bold;">57g</span>
+                        of food today!
+                    </p>
+                </div> 
+            </div> 
+        </div>
+        <!-- End: Personal metrics -->
+        
 
-        <h4 class="mt-5 mb-3">Current Leaders</h4>
-        <main class="row mb-5">
-            <div class="col leader-box" style="margin-right: 30px;">
-                <div class="row mt-4 mb-4">
-                    <div class="col-3">
-                        <img src="../assets/dp.png" height="75px" width="75px"> <!-- if i can make this round-->
-                    </div>
+        <!-- Start: Countdown timer --> 
+        <div class="col-lg-6 col-md-12 col-sm-12 card-group">
+            <div class="col card"> 
+                <div class="card-body"> 
+                    
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4 col-sm-4 countdown-header">
+                            Remaining time to completion 🔥
+                        </div>
 
-                    <div class="col">
-                        Username
-                        <p>Total Score: 2482</p>
-                    </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="row text-center gx-0 pb-4">
+                                <div class="col-3">
+                                    <span id="day" class="countdown-numbers"></span>
+                                    <div class="countdown-label">DAYS</div>
+                                </div>
 
-                    <div class="col-3">
-                        Number 1
+                                <div class="col-1">
+                                    <span style="font-size: 35px; font-weight: bold;">:</span>
+                                </div>
+
+                                <div class="col-3">
+                                    <span id="hour" class="countdown-numbers"></span>
+                                    <div class="countdown-label">HOURS</div>
+                                </div>
+
+                                <div class="col-1">
+                                    <span style="font-size: 35px; font-weight: bold;">:</span>
+                                </div>
+
+                                <div class="col-3">
+                                    <span id="min" class="countdown-numbers"></span>
+                                    <div class="countdown-label">MINUTES</div>
+                                </div>
+                            </div>  
+                        </div>
+
+                        <div class="col-lg-2 col-md-2 col-sm-2">
+                            <img src="../assets/members.png" width="50px" height="auto">
+                        </div>
                     </div>
                     
-                </div>
 
-                <div class="row leader-content-box">
-                    <div class="col leaderbox-heading" style="border-right: 0.5px solid #545454;">WINS</div>
-                    <div class="col leaderbox-heading">Today's Metrics</div>
-                </div>
-                
+                    <div class="row" style="border-top: 0.5px solid #545454;">
+                        <span class="px-2 pt-1" style="font-size: 15px; color: #545454;">
+                            Rewards are given to only the top 3 users each week.
+                        </span>
+                    </div>
+                </div> 
+            </div> 
+        </div>
+        <!-- End: Countdown timer -->
 
-                
-            </div>
-
-            <div class="col leader-box" style="margin-right: 30px;">
-
-            </div>
-
-            <div class="col leader-box">
-
-            </div>
-        </main>
-
-        <h4>National Ranking</h4>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Rank</th>
-                    <th>Username</th>
-                    <th>Today's Metrics</th>
-                    <th>Total Score</th>
-                </tr>
-            </thead>
-
-            <tbody class="table-light">
-                <tr>
-                    <td>1</td>
-                    <td>Why the fuck won't this centralise</td>
-                    <td>Some chart hopefully</td>
-                    <td>2342</td>
-                </tr>
-
-                <tr>
-                    <td>2</td>
-                    <td>Going insane</td>
-                    <td>Some chart hopefully</td>
-                    <td>2043</td>
-                </tr>
-
-                <tr>
-                    <td>3</td>
-                    <td>Why won't the image become round asdjhgfd</td>
-                    <td>Some chart hopefully</td>
-                    <td>1489</td>
-                </tr>
-            </tbody>
-        </table>
     </div>
 
+
+    <h4>Current leaders</h4>
+
+    <div class="row mb-4 card-group d-flex justify-content-center">
+
+        <!-- Start: First place --> 
+        <div class="col-lg-4 col-md-12 col-sm-12">
+             <div class="card"> 
+                 <div class="card-body"> 
+                    <img src="../assets/profile.png" width="100px" height="auto">
+                    <h5 class="card-title d-inline">Ilovecooking124</h5>
+                    <p class="card-text">Total score: 2149</p>  
+                 </div> 
+             </div> 
+        </div>
+        <!-- End: First place -->
+
+        <!-- Start: Second place --> 
+        <div class="col-lg-4 col-md-6 col-sm-12">
+             <div class="card"> 
+                 <div class="card-body"> 
+                    <img src="../assets/profile.png" width="100px" height="auto">
+                    <h5 class="card-title d-inline">ChefAlberto</h5>
+                    <p class="card-text">Total score: 2203</p> 
+                 </div> 
+             </div> 
+        </div>
+        <!-- End: Second place -->
+
+        <!-- Start: Third place --> 
+        <div class="col-lg-4 col-md-6 col-sm-12">
+             <div class="card"> 
+                 <div class="card-body"> 
+                    <img src="../assets/profile.png" width="100px" height="auto">
+                    <h5 class="card-title d-inline">KingBob</h5>
+                    <p class="card-text">Total score: 2003</p>  
+                 </div> 
+             </div> 
+        </div>
+        <!-- End: Third place -->
+
+    </div>
+
+
+    <h4>National Ranking</h4>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Rank</th>
+                <th>Username</th>
+                <th>Today's Metrics</th>
+                <th>Total Score</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>I💗cooking124</td>
+                <td>Some chart hopefully</td>
+                <td>2149</td>
+            </tr>
+
+            <tr>
+                <td>2</td>
+                <td>ChefAlberto</td>
+                <td>Some chart hopefully</td>
+                <td>2203</td>
+            </tr>
+
+            <tr>
+                <td>3</td>
+                <td>KingBob</td>
+                <td>Some chart hopefully</td>
+                <td>2003</td>
+            </tr>
+
+            <tr>
+                <td>4</td>
+                <td>KingBob</td>
+                <td>Some chart hopefully</td>
+                <td>2003</td>
+            </tr>
+
+            <tr>
+                <td>5</td>
+                <td>KingBob</td>
+                <td>Some chart hopefully</td>
+                <td>2003</td>
+            </tr>
+
+            <tr>
+                <td>6</td>
+                <td>KingBob</td>
+                <td>Some chart hopefully</td>
+                <td>2003</td>
+            </tr>
+        </tbody>
+    </table>
     
+</main>
 </template>
 
 <script>
@@ -243,7 +231,12 @@ th, td {
 
     var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
-    var x = date + (7 - day);
+    if (day != 0) {
+        var x = date + (7 - day);
+    } else {
+        var x = date;
+    }
+    
 
     var input = months[month] + " " + x + ", " + year + " 23:59:59";
     
@@ -263,9 +256,9 @@ th, td {
         var days = Math.floor(distance / (1000 * 60 * 60 * 24));
         var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        // var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-        // Display the result in the element with id="demo"
+        // Display the result
         document.getElementById("day").innerHTML = days;
         document.getElementById("hour").innerHTML = hours;
         document.getElementById("min").innerHTML = minutes;
