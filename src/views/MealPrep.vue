@@ -197,9 +197,16 @@
                                 <svg width="32" height="32" viewBox="0 0 24 24" class="arrow"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2 .01 7z"/></svg>                        
                                 </span>                    
                             </button>   
-                            <button type="button" class="btn submit-button2-toAvoid"  @click="handleSubmit">Add Recipe</button>                         
-                        </div>                       
+                            <!-- <button type="button" class="btn submit-button2-toAvoid"  @click="handleSubmit">Submit</button>     -->
+                            <!-- do we need this? user already using generate meal plan instead  -->
+                        </div>    
                     </div>
+                    <div class="form-check col-xxl-10 col-xl-10 col-l-12 col-md-12 col-sm-12" style="padding-left: 3rem; padding-top: 1rem;">
+                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                        <label class="form-check-label" for="flexCheckDefault" style="font-size: small;">
+                            Only specified ingredients
+                        </label>
+                    </div>  
                 </div>
             </div>           
         </div>
