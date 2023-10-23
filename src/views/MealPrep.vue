@@ -192,12 +192,15 @@
                                 <li v-for="unit in mealPrepInputUnits" :key="unit" class="dropdown-item" @click="handleUnit(unit)">{{ unit }}</li>
                             </ol>      
 
-                            <button class="btn submit-button-CookWith" type="submit" aria-expanded="false" @click="handleSubmit">                   
+                            <!-- <button class="btn submit-button-CookWith" type="submit" aria-expanded="false" @click="handleSubmit">                   
                                 <span class="submit-button-content">
                                 <svg width="32" height="32" viewBox="0 0 24 24" class="arrow"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2 .01 7z"/></svg>                        
                                 </span>                    
-                            </button>   
-                            <!-- <button type="button" class="btn submit-button2-toAvoid"  @click="handleSubmit">Submit</button>     -->
+                            </button>    -->
+                            <!-- is this submit button the same as the one below? just that the one above uses an image instead? -->
+
+                            
+                            <button type="button" class="btn submit-button2-toAvoid"  @click="handleSubmit">Submit</button>    
                             <!-- do we need this? user already using generate meal plan instead  -->
                         </div>     
                     </div>
@@ -232,7 +235,6 @@ export default {
             dayArr: [],
             mealDates: [],
             outputObject: {}, // EXTRACT DATE AND MEALS FOR SEAN
-            mealCount: 0,
             mealCountArr: [],
             mealValidation: false,
             pageOneValidation: true,
@@ -256,7 +258,14 @@ export default {
             mealPrepIngredientList: [],          
             mealPrepInputUnits: ["ml", "litre", "g", "kg", "item-quantity"],
             mealPrepLimitIngedient: false,
-            uuidMealPrep: crypto.randomUUID() 
+            uuidMealPrep: crypto.randomUUID(),
+
+            // FINAL OUTPUT OBJECT (JUN KAI)
+            // res --> FINAL OUTPUT OBJECT (SEAN)
+            // number of res output depends on number of mealCount
+            resJunKai: {},
+            resSean: {}
+
             
         }
     },
@@ -381,11 +390,6 @@ export default {
                     this.mealValidation = false;
                 }
             }
-
-            // return dates & specific meals
-            console.log(this.outputObject);
-            // return num of people eating 
-            console.log(this.people);
         },
         submitClick() {
             this.pageOneValidation = false;
@@ -500,6 +504,25 @@ export default {
                 console.log(this.mealPrepIngredientList);
                 // return only use entered ingredients?
                 console.log("Cook with specified ingredients only?: " + this.mealPrepLimitIngedient);
+
+                // num of meals (num of objects in final output obj)
+                var mealCount = 0;
+                for(var i = 0; i < this.mealCountArr.length; i++) {
+                    mealCount += this.mealCountArr[i];
+                }
+                console.log(mealCount);
+
+
+                // generate output for sean 
+                // this.resSean will change everytime user presses generate recipe, you will have to do data manipulation here 
+                this.resSean["people"] = this.people;
+                this.resSean["dates and meals"] = this.outputObject;
+                this.resSean["avoidList"] = this.avoidList;
+                this.resSean["ingreients"] = this.mealPrepIngredientList;
+                this.resSean["cook_with_specified"] = this.mealPrepLimitIngedient;
+            
+
+                console.log(this.resSean);
             }           
         },
         
