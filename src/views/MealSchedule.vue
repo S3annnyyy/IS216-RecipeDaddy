@@ -54,6 +54,14 @@
     margin-right: 5px;
 }
 
+.view-recipe-button {
+    background-color: #E6E3E3;
+    border-radius: 20%;
+    border: none;
+    padding: 5px 10px;
+    margin-right: 5px;
+}
+
 .delete-button {
     background-color: #E6E3E3;
     border-radius: 20%;
@@ -141,7 +149,7 @@
                                             <div class="card" v-for="(date, index) in dates" :key="index">
                                                 <div :id="`heading${index}`" class="card-header">
                                                     <h2 class="mb-0 text-center">
-                                                        <button class="btn btn-link" type="button" data-bs-toggle="collapse"
+                                                        <button class="btn btn-link text-decoration-none" type="button" data-bs-toggle="collapse"
                                                             :data-bs-target="`#collapse${index}`" aria-expanded="true"
                                                             :aria-controls="`collapse${index}`">
                                                             <span v-html="formatCordionDate(date)"></span>
@@ -175,7 +183,12 @@
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary"
                                             data-bs-dismiss="modal">Close</button>
-                                        <button type="button" class="btn btn-primary">Go to payment</button>
+                                        <!-- ... -->
+                                        <button type="button" class="btn btn-primary">
+                                            <router-link class="text-white text-decoration-none" to="/payment">Go to payment</router-link>
+                                        </button>
+                                        <!-- ... -->
+
                                     </div>
                                 </div>
                             </div>
@@ -197,34 +210,44 @@
     </div>
 
     <main class="row w-85 py-5 mb-5" id="food-section">
-        <div class="col card breakfast">
+        <div class="col card breakfast" v-if="mealSchedule.breakfast">
             <h3 class="card-title text-left">Breakfast</h3>
             <img src="../assets/pancakes.jpg" alt="Breakfast" class="card-img-top img-fluid">
             <div class="card-body">
                 <div class="card-text breakfast-recipe">Berries Pancake</div>
                 <div class="buttons">
+                    <button class="view-recipe-button">View Recipe</button>
+                    <!-- TO DO: add logic to redirect to recipe -->
+                    <!-- <router-link
+            :to="{ name: 'recipeSearch', params: { mealType: 'dinner' } }"
+            class="view-recipe-button"
+          >
+            View Recipe
+          </router-link> -->
                     <button class="replace-button">Replace</button>
                     <button class="delete-button">Delete</button>
                 </div>
             </div>
         </div>
-        <div class="col card lunch">
+        <div class="col card lunch" v-if="mealSchedule.lunch">
             <h3 class="card-title text-left">Lunch</h3>
             <img src="../assets/burrito.jpg" alt="Lunch" class="card-img-top img-fluid">
             <div class="card-body">
                 <div class="card-text lunch-recipe">Grilled Chicken Burrito</div>
                 <div class="buttons">
+                    <button class="view-recipe-button">View Recipe</button>
                     <button class="replace-button">Replace</button>
                     <button class="delete-button">Delete</button>
                 </div>
             </div>
         </div>
-        <div class="col card dinner">
+        <div class="col card dinner" v-if="mealSchedule.dinner">
             <h3 class="card-title text-left">Dinner</h3>
             <img src="../assets/teriyaki.jpeg" alt="Dinner" class="card-img-top img-fluid">
             <div class="card-body">
                 <div class="card-text dinner-recipe">Teriyaki Chicken Bowl</div>
                 <div class="buttons">
+                    <button class="view-recipe-button">View Recipe</button>
                     <button class="replace-button">Replace</button>
                     <button class="delete-button">Delete</button>
                 </div>
@@ -276,6 +299,13 @@ export default {
         return {
             currentDate: new Date(),
             dates: [],
+            mealSchedule: {
+                breakfast: true,
+                lunch: false,
+                dinner: true,
+                receivedData: null,
+
+            }
         };
     },
     computed: {
@@ -287,7 +317,7 @@ export default {
                 date.setDate(currentWeekStart.getDate() + i);
                 this.dates.push(date);
             }
-            console.log(this.dates);
+            // console.log(this.dates);
             return this.dates;
         },
         currentWeekEnd() {
@@ -346,5 +376,10 @@ export default {
             this.currentDate = date;
         },
     },
+    // mounted() {
+    //     this.receivedData = JSON.parse(this.$route.query.data);
+    //     console.log(this.receivedData);
+
+    // },
 };
 </script>

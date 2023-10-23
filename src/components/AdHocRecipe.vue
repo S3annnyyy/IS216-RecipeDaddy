@@ -110,8 +110,13 @@ export default {
             this.timeOfDay = "TimeOfDay"
             this.inputDate = ""
             // send to mealSchedule & backend once mealSchedule is set up
+                
+            this.$router.push({ name: 'mealschedule', query: { data: JSON.stringify(this.data) } });
+
+
             // TODO
-            // Add in logic to check backend whether there is any conflict with user's existing schedule?   
+            // Add in logic to check backend whether there is any conflict with user's existing schedule?  
+
        }
     },
     mounted() {

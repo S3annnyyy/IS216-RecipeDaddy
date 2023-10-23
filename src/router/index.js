@@ -42,7 +42,7 @@ const router = createRouter({
     {
       path: '/signup',
       name: 'signup',
-      meta: {hideNavbar:true},
+      meta: { hideNavbar: true },
       component: () => import('../views/SignUp.vue')
     },
     {
@@ -50,11 +50,16 @@ const router = createRouter({
       name: 'mealschedule',
       component: () => import('../views/MealSchedule.vue')
     },
+    {
+      path: '/payment',
+      name: 'payment',
+      component: () => import('../views/Payment.vue'),
+    },
     // error 404
     {
-      path:'/:catchAll(.*)',
+      path: '/:catchAll(.*)',
       name: 'error404',
-      meta: {hideNavbar:true},
+      meta: { hideNavbar: true },
       component: () => import('../views/error404.vue')
     }
   ]
