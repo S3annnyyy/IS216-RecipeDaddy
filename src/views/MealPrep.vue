@@ -172,17 +172,7 @@
                         </ol>  
                     </div>                  
                 </div>
-                <div class="position-absolute bottom-0 end-0 m-4 ">
-                    <button class="submit-meal-plan-btn" @click="generateMealPlan">Generate meal plan</button>
-                    <div class="form-check pt-3 pe-5">
-                        <input @change="limitIngredient" class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                        <label class="form-check-label" for="flexCheckDefault" style="font-size: x-small;">
-                            Only specified ingredients
-                        </label>
-                    </div>        
-                </div>                
-                
-          
+                <button class="position-absolute bottom-0 end-0 m-4 submit-meal-plan-btn" @click="generateMealPlan">Generate meal plan</button>          
             </div>
         </div>
         
@@ -209,9 +199,16 @@
                             </button>   
                             <!-- <button type="button" class="btn submit-button2-toAvoid"  @click="handleSubmit">Submit</button>     -->
                             <!-- do we need this? user already using generate meal plan instead  -->
-                        </div>    
+                        </div>     
                     </div>
+                    <div class="form-check col-xxl-10 col-xl-10 col-l-12 col-md-12 col-sm-12" style="padding-left: 2.7rem; padding-top: 0.5rem;">
+                        <input @change="limitIngredient" class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                        <label class="form-check-label" for="flexCheckDefault" style="font-size: small;">
+                            Only specified ingredients
+                        </label>
+                    </div>   
                 </div>
+
             </div>           
         </div>
         </main>
