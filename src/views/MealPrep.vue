@@ -127,11 +127,11 @@
                 <h1 class="text-center">Please Enter Ingredients to avoid!</h1>
                 <div class="input-group input-group-lg search-bar">
                     <button class="btn dropdown-toggle input" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="min-width: 8vw;">{{ selectedInputType }}</button>
-                    <ul class="dropdown-menu">                             
+                    <ul class="dropdown-menu">
                         <li v-for="item in inputFormat" :key="item" class="dropdown-item" @click="handleInputType(item)">{{ item }}</li>
                     </ul>               
 
-                    <input type="text" class="form-control " placeholder="Enter an ingredient and press Enter! " v-model="searchInput" @keydown.enter="handleEnter">
+                    <input type="text" class="form-control " placeholder="Enter an ingredient and press Enter! " v-model="avoidInput" @keydown.enter="handleEnter">
                     <button class="btn submit-button" type="submit" @click="submitClick2" aria-expanded="false">                   
                         <span class="submit-button-content">
                         <svg width="32" height="32" viewBox="0 0 24 24" class="arrow"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2 .01 7z"/></svg>                        
@@ -140,7 +140,7 @@
                 </div>
                 <div class="list-wrapper">
                     <ul class="list-container-toAvoid">
-                    <li v-for="(item, index) in ingredientList" :key="index" class="ingredients-toAvoid">
+                    <li v-for="(item, index) in avoidList" :key="index" class="ingredients-toAvoid">
                         {{ item }}<span class="material-icons-outlined" @click="removeItemAvoid(item)">close</span>                    
                     </li>
                 </ul>
@@ -171,8 +171,18 @@
                             </li>
                         </ol>  
                     </div>                  
+                </div>
+                <div class="position-absolute bottom-0 end-0 m-4 ">
+                    <button class="submit-meal-plan-btn" @click="generateMealPlan">Generate meal plan</button>
+                    <div class="form-check pt-3 pe-5">
+                        <input @change="limitIngredient" class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                        <label class="form-check-label" for="flexCheckDefault" style="font-size: x-small;">
+                            Only specified ingredients
+                        </label>
+                    </div>        
                 </div>                
-                <button class=" position-absolute bottom-0 end-0 m-4 submit-meal-plan-btn" @click="generateMealPlan">Generate meal plan</button>                
+                
+          
             </div>
         </div>
         
@@ -183,7 +193,7 @@
                 <div class="row justify-content-center">
                     <div class="col-xxl-10 col-xl-10 col-l-12 col-md-12 col-sm-12 text-center">
                         <div class="input-group input-group-md search-bar-content">
-                            <input type="text" class="form-control ingredient" placeholder="Enter ingredient, unit & amount and press enter!" v-model="mealPrepSearchInput">
+                            <input type="text" class="form-control ingredient" placeholder="Enter Ingredient, Unit & Amount!" v-model="mealPrepSearchInput">
                             
                             <input type="number" class="form-control amount" placeholder="Amount" v-model="mealPrepSelectedAmount" v-on:change="handleAmount">
 
@@ -201,12 +211,6 @@
                             <!-- do we need this? user already using generate meal plan instead  -->
                         </div>    
                     </div>
-                    <div class="form-check col-xxl-10 col-xl-10 col-l-12 col-md-12 col-sm-12" style="padding-left: 3rem; padding-top: 1rem;">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                        <label class="form-check-label" for="flexCheckDefault" style="font-size: small;">
-                            Only specified ingredients
-                        </label>
-                    </div>  
                 </div>
             </div>           
         </div>
@@ -225,22 +229,22 @@ export default {
             // change to true to redirect to MealPrep page 
             preferences: true,
             planning: false,
-            people: 0,
+            people: 0,  // EXTRACT PEOPLE COUNT FOR SEAN 
             days:0,
             enteredStartDate:'',
             dayArr: [],
             mealDates: [],
-            outputObject: {},
+            outputObject: {}, // EXTRACT DATE AND MEALS FOR SEAN
             mealCount: 0,
             mealCountArr: [],
             mealValidation: false,
             pageOneValidation: true,
             pageTwoValidation: false,
-            pageThreeValidation: false,
+            pageThreeValidation: false, 
 
             // ingredientsToAvoid searchbar (same as recipeSearch)
-            searchInput: '',
-            ingredientList: [],
+            avoidInput: '',
+            avoidList: [], // EXTRACT INGREDIENTS TO AVOID FOR SEAN
             selectedInputType: 'Input Type',
             selectedCuisine: 'Cuisine Type',
             inputFormat: ["Text", "OCR"],
@@ -254,6 +258,7 @@ export default {
             mealPrepSelectedAmount: 0, 
             mealPrepIngredientList: [],          
             mealPrepInputUnits: ["ml", "litre", "g", "kg", "item-quantity"],
+            mealPrepLimitIngedient: false,
             uuidMealPrep: crypto.randomUUID() 
             
         }
@@ -331,8 +336,6 @@ export default {
 
             // set mealCountArr to empty when changing days 
             this.mealCountArr = [];
-
-            console.log(this.mealCountArr)
         }, 
         addMeal(event){
             // get meal info, mealdate, mealnumber, mealstatus 
@@ -374,8 +377,6 @@ export default {
                 this.mealCountArr.push(mealCount);
             }
 
-            console.log(this.mealCountArr)
-
             this.mealValidation = true;
             for (var i = 0; i < this.mealCountArr.length; i++) {
                 // if (this.mealCountArr[i])'
@@ -384,7 +385,10 @@ export default {
                 }
             }
 
+            // return dates & specific meals
             console.log(this.outputObject);
+            // return num of people eating 
+            console.log(this.people);
         },
         submitClick() {
             this.pageOneValidation = false;
@@ -394,22 +398,22 @@ export default {
         // ingredientsToAvoid methods 
         handleEnter() {
             // Add the input value to the search history array
-            this.ingredientList.push(this.searchInput);
+            this.avoidList.push(this.avoidInput);
 
             // Clear the input box
-            this.searchInput = '';
+            this.avoidInput = '';
 
-            console.log('Search History:', this.ingredientList);
-            console.log(`Filled with ${this.ingredientList.length} item(s)`)
+            console.log('Food to avoid:', this.avoidList);
+            console.log(`Filled with ${this.avoidList.length} item(s)`)
             // populate input as boxes
             // this.populateInput()
         },        
         removeItemAvoid(item) {
             console.log(`rm btn clicked for ${item} list item`)     
             
-            // remove item for ingredientList
-            let item_index = this.ingredientList.indexOf(item)
-            this.ingredientList.splice(item_index, 1)
+            // remove item for avoidList
+            let item_index = this.avoidList.indexOf(item)
+            this.avoidList.splice(item_index, 1)
         },
         handleInputType(selectedOption) {
             this.selectedInputType = selectedOption
@@ -424,7 +428,7 @@ export default {
         },
         validateInputAvoid() {
             let errors = [ ]
-            if (this.ingredientList.length === 0) {errors.push("You can't create a recipe with 0 ingredients you dumb fuck")}
+            if (this.avoidList.length === 0) {errors.push("You can't create a recipe with 0 ingredients you dumb fuck")}
             if (this.selectedInputType === "Input Type") {errors.push("Please select one method of input")}
             if (this.selectedCuisine === "Cuisine Type") {errors.push("Please select one cuisine type")}
             if (errors.length === 0) {
@@ -489,9 +493,22 @@ export default {
             if (this.mealPrepIngredientList.length === 0) {
                 alert("List cannot be empty")
             } else {
-                //TODO BY GABRIEL
-            }            
-        }    
+                // return number of people 
+                console.log("Number of people: " + this.people);
+                // return dates and meals 
+                console.log(this.outputObject);
+                // return ingredients to avoid 
+                console.log(this.avoidList);
+                // return ingrients to cook with 
+                console.log(this.mealPrepIngredientList);
+                // return only use entered ingredients?
+                console.log("Cook with specified ingredients only?: " + this.mealPrepLimitIngedient);
+            }           
+        },
+        
+        limitIngredient(event) {
+            this.mealPrepLimitIngedient = event.target.checked;
+        }
         
         // end of mealPrepSearch methods 
      }
