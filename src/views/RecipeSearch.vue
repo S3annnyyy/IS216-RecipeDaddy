@@ -134,10 +134,6 @@ export default {
         box-shadow: 0 4px 2px -2px var(--text-light-secondary);
     }
 
-    .material-icons-outlined {
-        cursor: pointer;
-    }
-
     .list-wrapper {
         /* This prevents search bar from being pushed upwards when boxes are being populated  */
         height: 4rem;
