@@ -95,12 +95,12 @@
                                 <!-- dinner -->
                                 <div v-if="enteredStartDate == ''">
                                     <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[ind + 1] + ' 3'" autocomplete="off" disabled>
-                                    <label class="btn btn-outline-primary spacing sameSize" :for="mealDates[ind + 1] + ' 3'">Breakfast</label><br>
+                                    <label class="btn btn-outline-primary spacing sameSize" :for="mealDates[ind + 1] + ' 3'">Dinner</label><br>
 
                                 </div>
                                 <div v-else>
                                     <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[ind + 1] + ' 3'" autocomplete="off">
-                                    <label class="btn btn-outline-primary spacing sameSize" :for="mealDates[ind + 1] + ' 3'">Breakfast</label><br>
+                                    <label class="btn btn-outline-primary spacing sameSize" :for="mealDates[ind + 1] + ' 3'">Dinner</label><br>
                                 </div>
 
                             </div>
