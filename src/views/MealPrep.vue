@@ -10,12 +10,12 @@
             </div>
         </div>
         
-        <div v-else class="row" style="height: 80vh;">
+        <div v-else class="row">
             
-            <h1 class="text-center" style="margin-top: 5%;">Questionnaire</h1>
+            <h1 class="text-center" style="margin-top: 3%;">Questionnaire</h1>
             <form action="#" class="was-validated col-12">
                 <!-- enter meal parameters -->
-                <div class="row d-flex justify-content-center" style="margin-top: 0;">
+                <div class="row d-flex justify-content-center" style="margin-top: 2%;">
                     <div class="col-lg-3 col-md-4 col-sm-7">
                         <label>How many people?</label>
                         <input v-model="people" class="form-control input-lg" type="number" min="1" id="people" placeholder="Number of people" required>
