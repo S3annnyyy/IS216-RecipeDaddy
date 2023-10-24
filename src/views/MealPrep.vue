@@ -121,17 +121,13 @@
 
                                 <!-- dinner -->
                                 <div v-if="enteredStartDate == ''">
-                                    <input @click="addMeal" type="checkbox" class="btn-check"
-                                        :id="mealDates[ind + 1] + ' 3'" autocomplete="off" disabled>
-                                    <label class="btn btn-outline-primary spacing sameSize"
-                                        :for="mealDates[ind + 1] + ' 3'">Breakfast</label><br>
+                                    <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[ind + 1] + ' 3'" autocomplete="off" disabled>
+                                    <label class="btn btn-outline-primary spacing sameSize" :for="mealDates[ind + 1] + ' 3'">Dinner</label><br>
 
                                 </div>
                                 <div v-else>
-                                    <input @click="addMeal" type="checkbox" class="btn-check"
-                                        :id="mealDates[ind + 1] + ' 3'" autocomplete="off">
-                                    <label class="btn btn-outline-primary spacing sameSize"
-                                        :for="mealDates[ind + 1] + ' 3'">Breakfast</label><br>
+                                    <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[ind + 1] + ' 3'" autocomplete="off">
+                                    <label class="btn btn-outline-primary spacing sameSize" :for="mealDates[ind + 1] + ' 3'">Dinner</label><br>
                                 </div>
 
                             </div>
@@ -188,53 +184,40 @@
     <!-- Page Three: Ingredients to cook with -->
 
     <div v-if="pageThreeValidation">
-        <main class="row justify-content-center align-items-center" style="height: 92vh;">
-            <div class="col-xl-6 col-l-6 col-md-6 col-sm-12 ingredient-list-LHS">
-                <div class="container-fluid ingredient-list-box position-relative">
-                    <div class="row title">
-                        <div class="col-12">
-                            <h3>Ingredient List:</h3>
-                        </div>
+        <main class="row justify-content-center align-items-center" style="height: 92vh;">        
+        <div class="col-xl-6 col-l-6 col-md-6 col-sm-12 ingredient-list-LHS">
+            <div class="container-fluid ingredient-list-box position-relative">
+                <div class="row title">
+                    <div class="col-12">
+                        <h3>Ingredient List:</h3>
                     </div>
-                    <div class="row ingredients-list-wrapper">
-                        <div class="col-10">
-                            <ol class="list-container">
-                                <li v-for="(item, index) in mealPrepIngredientList" :key="index" class="ingredients">
-                                    <div class="item-content">
-                                        <span>{{ item }}</span>
-                                        <span class="material-icons-outlined" @click="removeItem(index)">close</span>
-                                    </div>
-                                </li>
-                            </ol>
-                        </div>
-                    </div>
-                    <div class="position-absolute bottom-0 end-0 m-4 ">
-                        <button class="submit-meal-plan-btn" @click="generateMealPlan">Generate meal plan</button>
-                        <div class="form-check pt-3 pe-5">
-                            <input @change="limitIngredient" class="form-check-input" type="checkbox" value=""
-                                id="flexCheckDefault">
-                            <label class="form-check-label" for="flexCheckDefault" style="font-size: x-small;">
-                                Only specified ingredients
-                            </label>
-                        </div>
-                    </div>
-
-
                 </div>
+                <div class="row ingredients-list-wrapper">
+                    <div class="col-10">
+                        <ol class="list-container">
+                            <li v-for="(item, index) in mealPrepIngredientList" :key="index" class="ingredients">
+                                <div class="item-content">
+                                    <span>{{ item }}</span>
+                                    <span class="material-icons-outlined" @click="removeItem(index)">close</span>
+                                </div>                  
+                            </li>
+                        </ol>  
+                    </div>                  
+                </div>
+                <button class="position-absolute bottom-0 end-0 m-4 submit-meal-plan-btn" @click="generateMealPlan">Generate meal plan</button>          
             </div>
-
-
-
-            <div class="col-xl-6 col-l-6 col-md-6 col-sm-12 search-bar-RHS">
-                <div class="container-fluid">
-                    <div class="row justify-content-center">
-                        <div class="col-xxl-10 col-xl-10 col-l-12 col-md-12 col-sm-12 text-center">
-                            <div class="input-group input-group-md search-bar-content">
-                                <input type="text" class="form-control ingredient"
-                                    placeholder="Enter Ingredient, Unit & Amount!" v-model="mealPrepSearchInput">
-
-                                <input type="number" class="form-control amount" placeholder="Amount"
-                                    v-model="mealPrepSelectedAmount" v-on:change="handleAmount">
+        </div>
+        
+               
+               
+        <div class="col-xl-6 col-l-6 col-md-6 col-sm-12 search-bar-RHS">
+            <div class="container-fluid">
+                <div class="row justify-content-center">
+                    <div class="col-xxl-10 col-xl-10 col-l-12 col-md-12 col-sm-12 text-center">
+                        <div class="input-group input-group-md search-bar-content">
+                            <input type="text" class="form-control ingredient" placeholder="Enter Ingredient, Unit & Amount!" v-model="mealPrepSearchInput">
+                            
+                            <input type="number" class="form-control amount" placeholder="Amount" v-model="mealPrepSelectedAmount" v-on:change="handleAmount">
 
                                 <button class="btn dropdown-toggle unit" type="button" data-bs-toggle="dropdown"
                                     aria-expanded="false">{{ mealPrepSelectedUnit }}</button>
@@ -243,21 +226,28 @@
                                         @click="handleUnit(unit)">{{ unit }}</li>
                                 </ol>
 
-                                <button class="btn submit-button-CookWith" type="submit" aria-expanded="false"
-                                    @click="handleSubmit">
-                                    <span class="submit-button-content">
-                                        <svg width="32" height="32" viewBox="0 0 24 24" class="arrow">
-                                            <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2 .01 7z" />
-                                        </svg>
-                                    </span>
-                                </button>
-                                <!-- <button type="button" class="btn submit-button2-toAvoid"  @click="handleSubmit">Submit</button>     -->
-                                <!-- do we need this? user already using generate meal plan instead  -->
-                            </div>
-                        </div>
+                            <!-- <button class="btn submit-button-CookWith" type="submit" aria-expanded="false" @click="handleSubmit">                   
+                                <span class="submit-button-content">
+                                <svg width="32" height="32" viewBox="0 0 24 24" class="arrow"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2 .01 7z"/></svg>                        
+                                </span>                    
+                            </button>    -->
+                            <!-- is this submit button the same as the one below? just that the one above uses an image instead? -->
+
+                            
+                            <button type="button" class="btn submit-button2-toAvoid"  @click="handleSubmit">Submit</button>    
+                            <!-- do we need this? user already using generate meal plan instead  -->
+                        </div>     
                     </div>
+                    <div class="form-check col-xxl-10 col-xl-10 col-l-12 col-md-12 col-sm-12" style="padding-left: 2.7rem; padding-top: 0.5rem;">
+                        <input @change="limitIngredient" class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                        <label class="form-check-label" for="flexCheckDefault" style="font-size: small;">
+                            Only specified ingredients
+                        </label>
+                    </div>   
                 </div>
-            </div>
+
+            </div>           
+        </div>
         </main>
     </div>
 </template>
@@ -275,7 +265,6 @@ export default {
             dayArr: [],
             mealDates: [],
             outputObject: {}, // EXTRACT DATE AND MEALS FOR SEAN
-            mealCount: 0,
             mealCountArr: [],
             mealValidation: false,
             pageOneValidation: true,
@@ -300,9 +289,14 @@ export default {
             mealPrepInputUnits: ["ml", "litre", "g", "kg", "item-quantity"],
             mealPrepLimitIngedient: false,
             uuidMealPrep: crypto.randomUUID(),
-            have_ingredients: null,
 
+            // FINAL OUTPUT OBJECT (JUN KAI)
+            // res --> FINAL OUTPUT OBJECT (SEAN)
+            // number of res output depends on number of mealCount
+            resJunKai: {},
+            resSean: {}
 
+            
         }
     },
     computed: {
@@ -426,11 +420,6 @@ export default {
                     this.mealValidation = false;
                 }
             }
-
-            // return dates & specific meals
-            console.log(this.outputObject);
-            // return num of people eating 
-            console.log(this.people);
         },
         submitClick() {
             this.pageOneValidation = false;
@@ -553,72 +542,26 @@ export default {
                 console.log(this.mealPrepIngredientList);
                 // return only use entered ingredients?
                 console.log("Cook with specified ingredients only?: " + this.mealPrepLimitIngedient);
-                this.$router.push('/mealschedule');
+
+                // num of meals (num of objects in final output obj)
+                var mealCount = 0;
+                for(var i = 0; i < this.mealCountArr.length; i++) {
+                    mealCount += this.mealCountArr[i];
+                }
+                console.log(mealCount);
 
 
-                // Once the user keys in all the necessary details, and clicks generate
-                // meal plan, it will prompt chatGPT and will generate the meal plan
-                // and with this generated meal plan, it will be sent to the backend
-                // end through a GET request with the following query parameters
+                // generate output for sean 
+                // this.resSean will change everytime user presses generate recipe, you will have to do data manipulation here 
+                this.resSean["people"] = this.people;
+                this.resSean["dates and meals"] = this.outputObject;
+                this.resSean["avoidList"] = this.avoidList;
+                this.resSean["ingreients"] = this.mealPrepIngredientList;
+                this.resSean["cook_with_specified"] = this.mealPrepLimitIngedient;
+            
 
-                // const requestData = [
-                //     {
-                //         user: 1,
-                //         meal_date: '2023-10-15',
-                //         meal_type: 1,
-                //         recipe_name: 'Breakfast on Monday',
-                //         have_ingredients: {
-                //             eggs: '2EA',
-                //             bacon: '3EA',
-                //             bread: '3EA',
-                //             rice: '200g',
-                //         },
-                //         no_ingredients: null,
-                //         preparation_steps: 'Prepare breakfast on Monday',
-                //         canMake: false,
-                //         isCompleted: false,
-                //     },
-                //     // Add more objects as needed
-                // ];
-                // const requestData = [];
-                // for (const date in this.outputObject) {
-                //     for (const meal of this.outputObject[date]) {
-                //         let nameMeal;
-                //         if (meal===1){
-                //             nameMeal='Breakfast'
-                //         } else if (meal===2){
-                //             nameMeal='Lunch'
-                //         } else if (meal===3){
-                //             nameMeal='Dinner'
-                //         }
-                //         requestData.push({
-                //             user: 1,
-                //             meal_date: date,
-                //             meal_type: meal,
-                //             recipe_name: '',
-                //             have_ingredients: this.have_ingredients,
-                //             no_ingredients: this.avoidList.length>0?this.avoidList:null,
-                //             preparation_steps: `Prepare ${nameMeal} on ${date}`,
-                //             canMake: false,
-                //             isCompleted: false,
-                //         });
-                //     }
-                // }
-
-                // try {
-                //     // Make a GET request with query parameters to save data to the database
-                //     await this.$axios.get('/user-meal-plan', { params: queryParams });
-
-                //     // Handle success, maybe show a success message
-                //     console.log('Meal plans generated and saved successfully!');
-                // } catch (error) {
-                //     // Handle errors
-                //     console.error('Error generating and saving meal plans:', error);
-                // }
-
-
-
-            }
+                console.log(this.resSean);
+            }           
         },
 
         limitIngredient(event) {
