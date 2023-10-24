@@ -12,10 +12,10 @@
         
         <div v-else class="row">
             
-            <h1 class="text-center" style="margin-top: 3%;">Questionnaire</h1>
+            <h1 class="text-center" style="margin-top: 5%;">Questionnaire</h1>
             <form action="#" class="was-validated col-12">
                 <!-- enter meal parameters -->
-                <div class="row d-flex justify-content-center" style="margin-top: 2%;">
+                <div class="row d-flex justify-content-center" style="margin-top: 3%;">
                     <div class="col-lg-3 col-md-4 col-sm-7">
                         <label>How many people?</label>
                         <input v-model="people" class="form-control input-lg" type="number" min="1" id="people" placeholder="Number of people" required>
@@ -131,6 +131,7 @@
                         <svg width="32" height="32" viewBox="0 0 24 24" class="arrow"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2 .01 7z"/></svg>                        
                         </span>                    
                     </button>
+                    <button type="button" class="btn submit-button2"  @click="submitClick2">Create Recipe</button>
                 </div>
                 <div class="list-wrapper">
                     <ul class="list-container-toAvoid">
