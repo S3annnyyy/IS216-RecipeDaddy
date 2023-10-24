@@ -153,8 +153,8 @@
 
     <div v-if="pageThreeValidation">
         <main class="row justify-content-center align-items-center" style="height: 92vh;">        
-        <div class="col-xl-6 col-l-6 col-md-6 col-sm-12 ingredient-list-LHS">
-            <div class="container-fluid ingredient-list-box position-relative">
+        <div class="col-xl-6 col-l-6 col-md-6 col-sm-12 mealPrepIngredient-list-LHS">
+            <div class="container-fluid mealPrepIngredient-list-box position-relative">
                 <div class="row title">
                     <div class="col-12">
                         <h3>Ingredient List:</h3>
@@ -163,58 +163,52 @@
                 <div class="row ingredients-list-wrapper">
                     <div class="col-10">
                         <ol class="list-container">
-                            <li v-for="(item, index) in mealPrepIngredientList" :key="index" class="ingredients">
-                                <div class="item-content">
-                                    <span>{{ item }}</span>
-                                    <span class="material-icons-outlined" @click="removeItem(index)">close</span>
+                            <li v-for="(item, index) in mealPrepIngredientList" :key="index" class="ingredients ">
+                                <div class="mealPrepItem-content">
+                                    <span>{{ index + 1 }}. {{ item }}</span>
+                                    <span class="material-icons-outlined" @click="mealPrepRemoveItem(index)">close</span>
                                 </div>                  
                             </li>
                         </ol>  
                     </div>                  
-                </div>
-                <button class="position-absolute bottom-0 end-0 m-4 submit-meal-plan-btn" @click="generateMealPlan">Generate meal plan</button>          
+                </div>                
+                <button class=" position-absolute bottom-0 end-0 m-4 mealPrepSubmit-meal-plan-btn" @click="mealPrepGenerateMealPlan">Generate meal plan</button>                
             </div>
         </div>
         
-               
                
         <div class="col-xl-6 col-l-6 col-md-6 col-sm-12 search-bar-RHS">
             <div class="container-fluid">
                 <div class="row justify-content-center">
                     <div class="col-xxl-10 col-xl-10 col-l-12 col-md-12 col-sm-12 text-center">
-                        <div class="input-group input-group-md search-bar-content">
-                            <input type="text" class="form-control ingredient" placeholder="Enter Ingredient, Unit & Amount!" v-model="mealPrepSearchInput">
+                        <div class="input-group input-group-md mealPrepSearch-bar-content">
+                            <input type="text" class="form-control mealPrepIngredient" placeholder="Enter ingredient, unit & amount and press enter!" v-model="mealPrepSearchInput">
                             
-                            <input type="number" class="form-control amount" placeholder="Amount" v-model="mealPrepSelectedAmount" v-on:change="handleAmount">
+                            <input type="number" class="form-control amount" placeholder="Amount" v-model="mealPrepSelectedAmount" v-on:change="mealPrepHandleAmount">
 
                             <button class="btn dropdown-toggle unit" type="button" data-bs-toggle="dropdown" aria-expanded="false">{{ mealPrepSelectedUnit }}</button>   
                             <ol class="dropdown-menu">
-                                <li v-for="unit in mealPrepInputUnits" :key="unit" class="dropdown-item" @click="handleUnit(unit)">{{ unit }}</li>
-                            </ol>      
+                                <li v-for="unit in mealPrepInputUnits" :key="unit" class="dropdown-item" @click="mealPrepHandleUnit(unit)">{{ unit }}</li>
+                            </ol>   
 
-                            <!-- <button class="btn submit-button-CookWith" type="submit" aria-expanded="false" @click="handleSubmit">                   
+                            <button class="btn submit-button" type="submit" aria-expanded="false" @click="mealPrepHandleSubmit">                   
                                 <span class="submit-button-content">
                                 <svg width="32" height="32" viewBox="0 0 24 24" class="arrow"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2 .01 7z"/></svg>                        
                                 </span>                    
-                            </button>    -->
-                            <!-- is this submit button the same as the one below? just that the one above uses an image instead? -->
-
-                            
-                            <button type="button" class="btn submit-button2-toAvoid"  @click="handleSubmit">Submit</button>    
-                            <!-- do we need this? user already using generate meal plan instead  -->
-                        </div>     
+                            </button>   
+                            <button type="button" class="btn mealPrepSubmit-button2"  @click="mealPrepHandleSubmit">Add Recipe</button>                         
+                        </div>                       
                     </div>
                     <div class="form-check col-xxl-10 col-xl-10 col-l-12 col-md-12 col-sm-12" style="padding-left: 2.7rem; padding-top: 0.5rem;">
                         <input @change="limitIngredient" class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
                         <label class="form-check-label" for="flexCheckDefault" style="font-size: small;">
                             Only specified ingredients
                         </label>
-                    </div>   
+                    </div>    
                 </div>
-
             </div>           
         </div>
-        </main>
+    </main>
     </div>
 
 
@@ -257,8 +251,8 @@ export default {
             mealPrepSelectedAmount: 0, 
             mealPrepIngredientList: [],          
             mealPrepInputUnits: ["ml", "litre", "g", "kg", "item-quantity"],
+            uuid: crypto.randomUUID(),
             mealPrepLimitIngedient: false,
-            uuidMealPrep: crypto.randomUUID(),
 
             // FINAL OUTPUT OBJECT (JUN KAI)
             // res --> FINAL OUTPUT OBJECT (SEAN)
@@ -451,9 +445,9 @@ export default {
         // mealPrepSearch methods 
 
 
-        handleSubmit() {
+        mealPrepHandleSubmit() {
             // validate input for amount and units
-            if (this.validateInput()[1]) {
+            if (this.mealPrepValidateInput()[1]) {
                 // push to ingredient list as a string                
                 this.mealPrepIngredientList.push(`${this.mealPrepSelectedAmount} ${this.mealPrepSelectedUnit} of ${this.mealPrepSearchInput}`)
                 console.log(`Added ${this.mealPrepSearchInput} into ingredient list`, this.mealPrepIngredientList)
@@ -461,12 +455,12 @@ export default {
                 this.mealPrepSearchInput =''
             } else {
                 // populate errors on alert
-                let errors = this.validateInput()[0]
+                let errors = this.mealPrepValidateInput()[0]
                 let errorMsg = errors.join("")
                 alert(errorMsg)
             }           
         },
-        validateInput() {
+        mealPrepValidateInput() {
             let errors = []
             if (this.mealPrepSelectedAmount === 0) {errors.push("Please input an appropriate amount\n")}
             if (this.mealPrepSelectedUnit === "Unit") {errors.push("Please add in an appropriate unit\n")}
@@ -478,18 +472,18 @@ export default {
                 return [errors, true]
             }
         },
-        handleAmount() {
+        mealPrepHandleAmount() {
             console.log(`${this.mealPrepSelectedAmount} chosen`)            
         },
-        handleUnit(unit) {
+        mealPrepHandleUnit(unit) {
             console.log(`${unit} chosen`)
             this.mealPrepSelectedUnit = unit
         },  
-        removeItem(item_index) {
+        mealPrepRemoveItem(item_index) {
             // params is item_index, rm from list
             this.mealPrepIngredientList.splice(item_index, 1)
         },
-        generateMealPlan()  {
+        mealPrepGenerateMealPlan()  {
             // validate Input if empty
             if (this.mealPrepIngredientList.length === 0) {
                 alert("List cannot be empty")
@@ -658,17 +652,17 @@ export default {
         opacity: 1;
     }
     
-    .ingredient-list-LHS {
+    .mealPrepIngredient-list-LHS {
         vertical-align: middle;
         color: var(--light);
-        .ingredient-list-box {
+        .mealPrepIngredient-list-box {
             background-color: #194252;
             height: 90vh;
             /* width: 45vw; */
             padding: 1rem 2rem;
             border-radius: 20px;
         }       
-        .item-content {
+        .mealPrepItem-content {
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -682,7 +676,7 @@ export default {
             }
         }
         
-        .submit-meal-plan-btn {
+        .mealPrepSubmit-meal-plan-btn {
             background-color: var(--light);
             border-radius: 50px;
             box-shadow: 0 4px 2px -2px var(--dark);
@@ -690,21 +684,20 @@ export default {
             transition: border 0.2s ease-in-out;  
         }
 
-        .submit-meal-plan-btn:hover {
+        .mealPrepSubmit-meal-plan-btn:hover {
            border: 5px solid green;
         }
                 
     }
-    .search-bar-content {
+    .mealPrepSearch-bar-content {
         border-radius: 50px;
         box-shadow: 0 4px 2px -2px var(--text-light-secondary);
         border: 1px solid #6c757d;
-        .submit-button2-CookWith {
+        .mealPrepSubmit-button2 {
             display: none;
         }
-        .ingredient {
+        .mealPrepIngredient {
             border-radius: 50px;
-            
         }
         .amount {
             max-width: 6vw;
@@ -715,31 +708,31 @@ export default {
     }    
 
     @media (max-width: 700px) {        
-        .search-bar-content {
+        .mealPrepSearch-bar-content {
             margin: 1rem 0rem;          
             display: block;                        
             border-radius: 10px;
             box-shadow: none;
                         
-            .ingredient, .amount, .unit {
+            .mealPrepIngredient, .amount, .unit {
                 max-width: none;
                 border-radius: 0;
                 width: 100%;                
                 margin-left: 0 !important;    
                                       
             }
-            .ingredient {
+            .mealPrepIngredient {
                 border-top-right-radius: 10px !important;
                 border-top-left-radius: 10px !important;
             }
-            .ingredient::placeholder {
+            .mealPrepIngredient::placeholder {
                 font-size: 0.7rem;
                 text-align: center;
             }           
             .dropdown-menu {
                 width: 100%;
             }
-            .submit-button2-CookWith {
+            .mealPrepSubmit-button2 {
                 display: block;
                 width: 100%;
                 background-color: #194252;
@@ -748,7 +741,7 @@ export default {
                 border-bottom-right-radius: 10px !important;
                 border-bottom-left-radius: 10px !important;
             }
-            .submit-button-CookWith {
+            .submit-button {
                 display: none;
             }
             
