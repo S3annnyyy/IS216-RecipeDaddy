@@ -79,8 +79,7 @@ export default {
             // Add in logic to check backend whether there is any conflict with user's existing schedule?  
         }
     },
-    mounted() {
-        // this.stepCount = this.placeholder.testRecipe.steps.length // get recipe step count     
+    mounted() {          
         // console.log(this.data) // data logging
         this.promptuuid = this.$route.params.id; // get promptuuid                    
         // make mock API call 
@@ -135,6 +134,7 @@ export default {
                 this.placeholder.testRecipe.recipeTitle = "Beef Wellington Recipe";
                 // initialize recipe img               
                 this.placeholder.testRecipe.recipeImg = new URL("../assets/test_image.jpg", import.meta.url).href;
+                this.stepCount = this.placeholder.testRecipe.steps.length // get recipe step count   
             })
                 .catch((err) => {
                 console.log("API Call Not Successful");
