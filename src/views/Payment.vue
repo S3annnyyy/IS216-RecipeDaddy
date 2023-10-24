@@ -64,6 +64,7 @@ export default {
 </script>
   
 <style scoped>
+
 .payment-container {
     max-width: 600px;
     margin: 0 auto;
@@ -122,6 +123,12 @@ ul {
   background-color: #fff; /* Set the content background color */
   border: none; /* Remove borders if needed */
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+}
+.modal {
+    /* Add your custom styles here */
+    /* For example, you can set a background color */
+    background-color: white;
+    /* You can adjust the modal's size, border, and other properties here */
 }
 </style>
   

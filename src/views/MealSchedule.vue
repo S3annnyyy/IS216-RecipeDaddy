@@ -149,9 +149,9 @@
                                             <div class="card" v-for="(date, index) in dates" :key="index">
                                                 <div :id="`heading${index}`" class="card-header">
                                                     <h2 class="mb-0 text-center">
-                                                        <button class="btn btn-link text-decoration-none" type="button" data-bs-toggle="collapse"
-                                                            :data-bs-target="`#collapse${index}`" aria-expanded="true"
-                                                            :aria-controls="`collapse${index}`">
+                                                        <button class="btn btn-link text-decoration-none" type="button"
+                                                            data-bs-toggle="collapse" :data-bs-target="`#collapse${index}`"
+                                                            aria-expanded="true" :aria-controls="`collapse${index}`">
                                                             <span v-html="formatCordionDate(date)"></span>
                                                         </button>
                                                     </h2>
@@ -184,8 +184,9 @@
                                         <button type="button" class="btn btn-secondary"
                                             data-bs-dismiss="modal">Close</button>
                                         <!-- ... -->
-                                        <button type="button" class="btn btn-primary">
-                                            <router-link class="text-white text-decoration-none" to="/payment">Go to payment</router-link>
+                                        <button type="button" class="btn btn-primary" @click="redirectToPaymentPage">
+                                            <span class="text-white text-decoration-none">Go to
+                                                payment</span>
                                         </button>
                                         <!-- ... -->
 
@@ -220,8 +221,7 @@
                     <!-- TO DO: add logic to redirect to recipe -->
                     <!-- <router-link
             :to="{ name: 'recipeSearch', params: { mealType: 'dinner' } }"
-            class="view-recipe-button"
-          >
+            class="view-recipe-button">
             View Recipe
           </router-link> -->
                     <button class="replace-button">Replace</button>
@@ -273,6 +273,7 @@
     }
 } */
 import { formatDate } from "@vueuse/core";
+import axios from "axios";
 
 Date.prototype.GetFirstDayOfWeek = function () {
     const firstDayOfWeek = new Date(this);
@@ -301,7 +302,7 @@ export default {
             dates: [],
             mealSchedule: {
                 breakfast: true,
-                lunch: false,
+                lunch: true,
                 dinner: true,
                 receivedData: null,
 
@@ -375,11 +376,41 @@ export default {
         setCurrentDate(date) {
             this.currentDate = date;
         },
-    },
-    // mounted() {
-    //     this.receivedData = JSON.parse(this.$route.query.data);
-    //     console.log(this.receivedData);
+        closeOverviewModal() {
+            // Use Bootstrap's modal method to close the modal
+            $(this.$refs.modalElement).modal('hide');
+        },
+        redirectToPaymentPage() {
+            this.closeOverviewModal();
+            this.$router.push({
+                name: "payment",
+                query: {
+                    data: JSON.stringify(this.mealSchedule)
+                }
+            });
+        },
 
-    // },
+    },
+    mounted() {
+        // get token
+        // const token = localStorage.getItem("token");
+        const email = "wowtest@gmail.com";
+        const password = "wowtest";
+        const baseUrl = "http://127.0.0.1:8000"
+        const token = axios.get(`${baseUrl}/api/token/`, {
+            auth: {
+                username: email,
+                password: password
+            }
+        }).then((response) => {
+            console.log(response.data.access);
+            return response.data.access;
+        }).catch((error) => {
+            console.log(error);
+        });
+        
+
+
+    },
 };
 </script>
