@@ -542,25 +542,10 @@ export default {
                 console.log(this.mealPrepIngredientList);
                 // return only use entered ingredients?
                 console.log("Cook with specified ingredients only?: " + this.mealPrepLimitIngedient);
-
-                // num of meals (num of objects in final output obj)
-                var mealCount = 0;
-                for(var i = 0; i < this.mealCountArr.length; i++) {
-                    mealCount += this.mealCountArr[i];
-                }
-                console.log(mealCount);
-
-
-                // generate output for sean 
-                // this.resSean will change everytime user presses generate recipe, you will have to do data manipulation here 
-                this.resSean["people"] = this.people;
-                this.resSean["dates and meals"] = this.outputObject;
-                this.resSean["avoidList"] = this.avoidList;
-                this.resSean["ingreients"] = this.mealPrepIngredientList;
-                this.resSean["cook_with_specified"] = this.mealPrepLimitIngedient;
-            
-
-                console.log(this.resSean);
+                this.$router.push({
+                    path: `mealschedule`,
+                    // query: {data: JSON.stringify(recipeObject)}
+                })
             }           
         },
 
