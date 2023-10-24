@@ -3,10 +3,10 @@
         <div class="col-lg-4 col-md-10 col-sm-10 image-menu-schedule-LHS">
             <div class="container-fluid">
                 <div class="row">
-                    <h3 class="recipe-title">{{ placeholder.testRecipe.guide }}</h3>
+                    <h3 class="recipe-title">{{ placeholder.testRecipe.recipeTitle }}</h3>
                 </div>
                 <div class="row justify-content-center text-center">
-                    <img src="../assets/test_image.jpg" class="recipe-image-cover">
+                    <img :src="placeholder.testRecipe.recipeImg" class="recipe-image-cover">
                 </div>
                 <div class="row meal-schedule justify-content-center">                               
                     <div class="input-group datepicker">
@@ -48,11 +48,49 @@ export default {
             promptuuid: '',
             data: JSON.parse(this.$route.query.data),
             stepCount: 0,
-            placeholder: {
-                phImage: "../assets/test_image.jpg",
+            placeholder: {               
                 testRecipe: {
-                "guide": "Beef Wellington Recipe",
-                "steps": [
+                    "recipeTitle": null,
+                    "steps": null,
+                    "recipeImg": null,
+                }
+            }
+        }
+    },
+    methods: {
+       handleInput(elem) {
+            console.log(`Selected TimeOfDay: ${elem}`)
+            this.timeOfDay = elem
+       },
+       addToSchedule() {
+            console.log(`Submitted! Selected date is ${this.inputDate}`)
+           
+            // reset variables to default again
+            this.timeOfDay = "TimeOfDay"
+            this.inputDate = ""
+            // send to mealSchedule & backend once mealSchedule is set up
+                
+            this.$router.push({ name: 'mealschedule', query: { data: JSON.stringify(this.data) } });
+
+
+            // TODO
+            // Add in logic to check backend whether there is any conflict with user's existing schedule?  
+
+       }
+    },
+    mounted() {
+
+        // this.stepCount = this.placeholder.testRecipe.steps.length // get recipe step count     
+        // console.log(this.data) // data logging
+        this.promptuuid = this.$route.params.id // get promptuuid                    
+               
+        // make mock API call 
+        setTimeout(() => {
+        axios.get("https://api.kanye.rest/")
+            .then((res) => {
+                console.log(res.data);
+                // initialize recipe response
+                this.placeholder.testRecipe.steps = [
                     {
                     "step": 1,
                     "instruction": "Season a beef tenderloin with salt and pepper. Sear it in a hot pan with olive oil until browned on all sides."
@@ -94,45 +132,29 @@ export default {
                     "instruction": "Serve with your favorite sauce or gravy. Enjoy!"
                     }
                 ]
-                }
-            }
-        }
-    },
-    methods: {
-       handleInput(elem) {
-            console.log(`Selected TimeOfDay: ${elem}`)
-            this.timeOfDay = elem
-       },
-       addToSchedule() {
-            console.log(`Submitted! Selected date is ${this.inputDate}`)
-           
-            // reset variables to default again
-            this.timeOfDay = "TimeOfDay"
-            this.inputDate = ""
-            // send to mealSchedule & backend once mealSchedule is set up
+
+                // initialize recipe title
+                this.placeholder.testRecipe.recipeTitle = "Beef Wellington Recipe"
+
+                // initialize recipe img               
+                this.placeholder.testRecipe.recipeImg = new URL("../assets/test_image.jpg", import.meta.url).href                    
+               
                 
-            this.$router.push({ name: 'mealschedule', query: { data: JSON.stringify(this.data) } });
 
-
-            // TODO
-            // Add in logic to check backend whether there is any conflict with user's existing schedule?  
-
-       }
-    },
-    mounted() {
-        // get promptuuid
-        this.promptuuid = this.$route.params.id
-
-        // get recipe step count
-        this.stepCount = this.placeholder.testRecipe.steps.length     
+            })
+            .catch((err) => {
+                console.log("API Call Not Successful");
+            });
+        }, 5000); 
         
-        // get user inputs
-        console.log(this.data)
-        
-        // make API calls here
-        // axios.get("https://api.kanye.rest/")
-        // .then((res) => {
-        //     console.log(res.data)
+
+        // CALL lLama endpoint with prompt as body
+        // const URL = "http://127.0.0.1:8000/get-ai-prompt"
+        // axios.get(URL)
+        // .then((res) => {            
+        //     let aiResponse = res.data
+        //     console.log(aiResponse)
+        //     console.log(type(aiResponse))
         // })
         // .catch((err) => {
         //     console.log("API Call Not successful")

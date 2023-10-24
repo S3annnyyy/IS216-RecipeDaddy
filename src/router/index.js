@@ -32,7 +32,7 @@ const router = createRouter({
     {
       path: '/recipesearch/:id',
       name: 'recipesearchgenerated',
-      component: () => import('../views/AdHocRecipe.vue')
+      component: () => import('../views/Recipe.vue')
     },
     {
       path: '/preferences',
