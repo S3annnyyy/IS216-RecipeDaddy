@@ -10,9 +10,11 @@
             </div>
         </div>
         
-        <div v-else class="row">
-            <h1 class="text-center">Questionnaire</h1>
+        <div v-else class="row" style="height: 80vh;">
+            
+            <h1 class="text-center" style="margin-top: 10%;">Questionnaire</h1>
             <form action="#" class="was-validated col-12">
+                
                 <!-- enter meal parameters -->
                 <div class="row d-flex justify-content-center">
                     <div class="col-lg-3 col-md-4 col-sm-7">
@@ -121,11 +123,10 @@
 
     <div v-if="pageTwoValidation">
         <main class="row justify-content-center align-items-center " style="height: 92vh;">
-            
             <div class="col-xl-8 col-lg-8 col-md-8 col-sm-10">
                 <h1 class="text-center">Please Enter Ingredients to avoid!</h1>
                 <div class="input-group input-group-lg search-bar">
-                    <input type="text" class="form-control " placeholder="Enter ingredients you would like to avoid!" v-model="avoidInput" @keydown.enter="handleEnter">
+                    <input type="text" class="form-control" placeholder="Enter ingredients you would like to avoid!" v-model="avoidInput" @keydown.enter="handleEnter">
                     <button class="btn submit-button" type="submit" @click="submitClick2" aria-expanded="false">                   
                         <span class="submit-button-content">
                         <svg width="32" height="32" viewBox="0 0 24 24" class="arrow"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2 .01 7z"/></svg>                        
@@ -525,7 +526,7 @@ export default {
         list-style-type: none;
     }
     .sameSize {
-        width:80%;
+        width:90%;
     }
     .sameHeight{
         height:28px;
