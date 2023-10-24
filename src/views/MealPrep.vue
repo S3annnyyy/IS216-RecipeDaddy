@@ -182,7 +182,7 @@
                 <div class="row justify-content-center">
                     <div class="col-xxl-10 col-xl-10 col-l-12 col-md-12 col-sm-12 text-center">
                         <div class="input-group input-group-md mealPrepSearch-bar-content">
-                            <input type="text" class="form-control mealPrepIngredient" placeholder="Enter ingredient, unit & amount and press enter!" v-model="mealPrepSearchInput">
+                            <input type="text" class="form-control mealPrepIngredient" placeholder="Enter ingredient, unit & amount and press enter!" @keydown.enter="mealPrepHandleSubmit" v-model="mealPrepSearchInput">
                             
                             <input type="number" class="form-control amount" placeholder="Amount" v-model="mealPrepSelectedAmount" v-on:change="mealPrepHandleAmount">
 
@@ -191,12 +191,12 @@
                                 <li v-for="unit in mealPrepInputUnits" :key="unit" class="dropdown-item" @click="mealPrepHandleUnit(unit)">{{ unit }}</li>
                             </ol>   
 
-                            <button class="btn submit-button" type="submit" aria-expanded="false" @click="mealPrepHandleSubmit">                   
+                            <!-- <button class="btn submit-button" type="submit" aria-expanded="false" @click="mealPrepHandleSubmit">                   
                                 <span class="submit-button-content">
                                 <svg width="32" height="32" viewBox="0 0 24 24" class="arrow"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2 .01 7z"/></svg>                        
                                 </span>                    
                             </button>   
-                            <button type="button" class="btn mealPrepSubmit-button2"  @click="mealPrepHandleSubmit">Add Recipe</button>                         
+                            <button type="button" class="btn mealPrepSubmit-button2"  @click="mealPrepHandleSubmit">Add Recipe</button>                          -->
                         </div>                       
                     </div>
                     <div class="form-check col-xxl-10 col-xl-10 col-l-12 col-md-12 col-sm-12" style="padding-left: 2.7rem; padding-top: 0.5rem;">
