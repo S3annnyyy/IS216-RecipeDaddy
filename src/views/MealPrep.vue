@@ -12,11 +12,10 @@
         
         <div v-else class="row" style="height: 80vh;">
             
-            <h1 class="text-center" style="margin-top: 10%;">Questionnaire</h1>
+            <h1 class="text-center" style="margin-top: 5%;">Questionnaire</h1>
             <form action="#" class="was-validated col-12">
-                
                 <!-- enter meal parameters -->
-                <div class="row d-flex justify-content-center">
+                <div class="row d-flex justify-content-center" style="margin-top: 0;">
                     <div class="col-lg-3 col-md-4 col-sm-7">
                         <label>How many people?</label>
                         <input v-model="people" class="form-control input-lg" type="number" min="1" id="people" placeholder="Number of people" required>
@@ -31,10 +30,10 @@
                     </div>  
                     
                     <!-- Schedule -->
-                    <div class="row row-cols-1 row-cols-md-3 row-cols-lg-5 d-flex justify-content-center">
+                    <div class="row d-flex justify-content-center">
                         <!-- Each Col holds one day -->
-                        <div v-if="days > 0" class="col">
-                            <div class="card shadow-sm text-center">
+                        <div v-if="days > 0" class="col-lg-2 col-md-4 col-sm-7">
+                            <div class="card shadow-sm text-center" style="margin-top: 3%;">
                                 <div class="card-body ">
                                     <input v-model="enteredStartDate" @change="setDate" type="date" class="sameSize spacing form-control" style="height:30px; margin-left: auto; margin-right: auto;" required>
                                     <br>
@@ -71,8 +70,8 @@
                         </div>
 
                         <!-- repeat based on number of days -->
-                        <div v-for="(day, ind) in dayArr" class="col">
-                            <div class="card shadow-sm">
+                        <div v-for="(day, ind) in dayArr" class="col-lg-2 col-md-4 col-sm-7">
+                            <div class="card shadow-sm" style="margin-top: 3%;">
                                 <div class="card-body text-center">
                                     <input type="text" class="spacing sameSize sameHeight form-control" disabled :value="mealDates[ind + 1]" style="margin-left: auto; margin-right: auto;" required>
                                     <br>
