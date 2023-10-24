@@ -126,12 +126,7 @@
             <div class="col-xl-8 col-lg-8 col-md-8 col-sm-10">
                 <h1 class="text-center">Please Enter Ingredients to avoid!</h1>
                 <div class="input-group input-group-lg search-bar">
-                    <button class="btn dropdown-toggle input" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="min-width: 8vw;">{{ selectedInputType }}</button>
-                    <ul class="dropdown-menu">
-                        <li v-for="item in inputFormat" :key="item" class="dropdown-item" @click="handleInputType(item)">{{ item }}</li>
-                    </ul>               
-
-                    <input type="text" class="form-control " placeholder="Enter an ingredient and press Enter! " v-model="avoidInput" @keydown.enter="handleEnter">
+                    <input type="text" class="form-control " placeholder="Enter ingredients you would like to avoid!" v-model="avoidInput" @keydown.enter="handleEnter">
                     <button class="btn submit-button" type="submit" @click="submitClick2" aria-expanded="false">                   
                         <span class="submit-button-content">
                         <svg width="32" height="32" viewBox="0 0 24 24" class="arrow"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2 .01 7z"/></svg>                        
@@ -189,14 +184,7 @@
                             <button class="btn dropdown-toggle unit" type="button" data-bs-toggle="dropdown" aria-expanded="false">{{ mealPrepSelectedUnit }}</button>   
                             <ol class="dropdown-menu">
                                 <li v-for="unit in mealPrepInputUnits" :key="unit" class="dropdown-item" @click="mealPrepHandleUnit(unit)">{{ unit }}</li>
-                            </ol>   
-
-                            <!-- <button class="btn submit-button" type="submit" aria-expanded="false" @click="mealPrepHandleSubmit">                   
-                                <span class="submit-button-content">
-                                <svg width="32" height="32" viewBox="0 0 24 24" class="arrow"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2 .01 7z"/></svg>                        
-                                </span>                    
-                            </button>   
-                            <button type="button" class="btn mealPrepSubmit-button2"  @click="mealPrepHandleSubmit">Add Recipe</button>                          -->
+                            </ol>
                         </div>                       
                     </div>
                     <div class="form-check col-xxl-10 col-xl-10 col-l-12 col-md-12 col-sm-12" style="padding-left: 2.7rem; padding-top: 0.5rem;">
