@@ -392,25 +392,46 @@ export default {
 
     },
     mounted() {
-        // get token
-        // const token = localStorage.getItem("token");
         const email = "wowtest@gmail.com";
+        const user = "wowtest";
         const password = "wowtest";
-        const baseUrl = "http://127.0.0.1:8000"
-        const token = axios.get(`${baseUrl}/api/token/`, {
-            auth: {
-                username: email,
-                password: password
-            }
-        }).then((response) => {
-            console.log(response.data.access);
-            return response.data.access;
-        }).catch((error) => {
-            console.log(error);
-        });
-        
+        const baseUrl = "http://127.0.0.1:8000";
+        let token; // Define the token variable in a wider scope
 
+        // Step 1: Get the token
+        const requestData = {
+            email: email,
+            password: password,
+        };
 
+        this.$axios
+            .post(`${baseUrl}/api/token/`, requestData)
+            .then((response) => {
+                // Successful request
+                token = response.data.access; // Assign the token
+                console.log('Token:', token);
+
+                // Step 2: Get meal schedule using the token
+                this.$axios
+                    .get(`${baseUrl}/user-meal-plan?username=${user}`, {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    })
+                    .then((mealResponse) => {
+                        console.log(mealResponse.data);
+                        // Assuming you want to do something with the meal data
+                        // this.mealSchedule.receivedData = mealResponse.data;
+                    })
+                    .catch((mealError) => {
+                        console.error('Error fetching meal schedule:', mealError);
+                    });
+            })
+            .catch((error) => {
+                // Request for token failed
+                console.error('Error fetching token:', error);
+            });
     },
+
 };
 </script>

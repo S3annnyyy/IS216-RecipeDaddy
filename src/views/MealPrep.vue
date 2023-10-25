@@ -121,26 +121,26 @@
 
                                 <!-- dinner -->
                                 <div v-if="enteredStartDate == ''">
-                                    <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[ind + 1] + ' 3'" autocomplete="off" disabled>
-                                    <label class="btn btn-outline-primary spacing sameSize" :for="mealDates[ind + 1] + ' 3'">Dinner</label><br>
+                                    <input @click="addMeal" type="checkbox" class="btn-check"
+                                        :id="mealDates[ind + 1] + ' 3'" autocomplete="off" disabled>
+                                    <label class="btn btn-outline-primary spacing sameSize"
+                                        :for="mealDates[ind + 1] + ' 3'">Dinner</label><br>
 
                                 </div>
                                 <div v-else>
-                                    <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[ind + 1] + ' 3'" autocomplete="off">
-                                    <label class="btn btn-outline-primary spacing sameSize" :for="mealDates[ind + 1] + ' 3'">Dinner</label><br>
+                                    <input @click="addMeal" type="checkbox" class="btn-check"
+                                        :id="mealDates[ind + 1] + ' 3'" autocomplete="off">
+                                    <label class="btn btn-outline-primary spacing sameSize"
+                                        :for="mealDates[ind + 1] + ' 3'">Dinner</label><br>
                                 </div>
-
                             </div>
                         </div>
                     </div>
-
                     <!-- submit button -->
                     <div v-if="mealValidation" @click="submitClick" class="d-grid col-2 mx-auto mt-3">
                         <button class="btn btn-primary" type="button">Continue!</button>
                     </div>
-
                 </div>
-
             </form>
         </div>
     </div>
@@ -184,40 +184,41 @@
     <!-- Page Three: Ingredients to cook with -->
 
     <div v-if="pageThreeValidation">
-        <main class="row justify-content-center align-items-center" style="height: 92vh;">        
-        <div class="col-xl-6 col-l-6 col-md-6 col-sm-12 ingredient-list-LHS">
-            <div class="container-fluid ingredient-list-box position-relative">
-                <div class="row title">
-                    <div class="col-12">
-                        <h3>Ingredient List:</h3>
+        <main class="row justify-content-center align-items-center" style="height: 92vh;">
+            <div class="col-xl-6 col-l-6 col-md-6 col-sm-12 ingredient-list-LHS">
+                <div class="container-fluid ingredient-list-box position-relative">
+                    <div class="row title">
+                        <div class="col-12">
+                            <h3>Ingredient List:</h3>
+                        </div>
                     </div>
+                    <div class="row ingredients-list-wrapper">
+                        <div class="col-10">
+                            <ol class="list-container">
+                                <li v-for="(item, index) in mealPrepIngredientList" :key="index" class="ingredients">
+                                    <div class="item-content">
+                                        <span>{{ item }}</span>
+                                        <span class="material-icons-outlined" @click="removeItem(index)">close</span>
+                                    </div>
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                    <button class="position-absolute bottom-0 end-0 m-4 submit-meal-plan-btn"
+                        @click="generateMealPlan">Generate meal plan</button>
                 </div>
-                <div class="row ingredients-list-wrapper">
-                    <div class="col-10">
-                        <ol class="list-container">
-                            <li v-for="(item, index) in mealPrepIngredientList" :key="index" class="ingredients">
-                                <div class="item-content">
-                                    <span>{{ item }}</span>
-                                    <span class="material-icons-outlined" @click="removeItem(index)">close</span>
-                                </div>                  
-                            </li>
-                        </ol>  
-                    </div>                  
-                </div>
-                <button class="position-absolute bottom-0 end-0 m-4 submit-meal-plan-btn" @click="generateMealPlan">Generate meal plan</button>          
             </div>
-        </div>
-        
-               
-               
-        <div class="col-xl-6 col-l-6 col-md-6 col-sm-12 search-bar-RHS">
-            <div class="container-fluid">
-                <div class="row justify-content-center">
-                    <div class="col-xxl-10 col-xl-10 col-l-12 col-md-12 col-sm-12 text-center">
-                        <div class="input-group input-group-md search-bar-content">
-                            <input type="text" class="form-control ingredient" placeholder="Enter Ingredient, Unit & Amount!" v-model="mealPrepSearchInput">
-                            
-                            <input type="number" class="form-control amount" placeholder="Amount" v-model="mealPrepSelectedAmount" v-on:change="handleAmount">
+
+            <div class="col-xl-6 col-l-6 col-md-6 col-sm-12 search-bar-RHS">
+                <div class="container-fluid">
+                    <div class="row justify-content-center">
+                        <div class="col-xxl-10 col-xl-10 col-l-12 col-md-12 col-sm-12 text-center">
+                            <div class="input-group input-group-md search-bar-content">
+                                <input type="text" class="form-control ingredient"
+                                    placeholder="Enter Ingredient, Unit & Amount!" v-model="mealPrepSearchInput">
+
+                                <input type="number" class="form-control amount" placeholder="Amount"
+                                    v-model="mealPrepSelectedAmount" v-on:change="handleAmount">
 
                                 <button class="btn dropdown-toggle unit" type="button" data-bs-toggle="dropdown"
                                     aria-expanded="false">{{ mealPrepSelectedUnit }}</button>
@@ -226,28 +227,31 @@
                                         @click="handleUnit(unit)">{{ unit }}</li>
                                 </ol>
 
-                            <!-- <button class="btn submit-button-CookWith" type="submit" aria-expanded="false" @click="handleSubmit">                   
+                                <!-- <button class="btn submit-button-CookWith" type="submit" aria-expanded="false" @click="handleSubmit">                   
                                 <span class="submit-button-content">
                                 <svg width="32" height="32" viewBox="0 0 24 24" class="arrow"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2 .01 7z"/></svg>                        
                                 </span>                    
                             </button>    -->
-                            <!-- is this submit button the same as the one below? just that the one above uses an image instead? -->
+                                <!-- is this submit button the same as the one below? just that the one above uses an image instead? -->
 
-                            
-                            <button type="button" class="btn submit-button2-toAvoid"  @click="handleSubmit">Submit</button>    
-                            <!-- do we need this? user already using generate meal plan instead  -->
-                        </div>     
+
+                                <button type="button" class="btn submit-button2-toAvoid"
+                                    @click="handleSubmit">Submit</button>
+                                <!-- do we need this? user already using generate meal plan instead  -->
+                            </div>
+                        </div>
+                        <div class="form-check col-xxl-10 col-xl-10 col-l-12 col-md-12 col-sm-12"
+                            style="padding-left: 2.7rem; padding-top: 0.5rem;">
+                            <input @change="limitIngredient" class="form-check-input" type="checkbox" value=""
+                                id="flexCheckDefault">
+                            <label class="form-check-label" for="flexCheckDefault" style="font-size: small;">
+                                Only specified ingredients
+                            </label>
+                        </div>
                     </div>
-                    <div class="form-check col-xxl-10 col-xl-10 col-l-12 col-md-12 col-sm-12" style="padding-left: 2.7rem; padding-top: 0.5rem;">
-                        <input @change="limitIngredient" class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                        <label class="form-check-label" for="flexCheckDefault" style="font-size: small;">
-                            Only specified ingredients
-                        </label>
-                    </div>   
-                </div>
 
-            </div>           
-        </div>
+                </div>
+            </div>
         </main>
     </div>
 </template>
@@ -296,7 +300,7 @@ export default {
             resJunKai: {},
             resSean: {}
 
-            
+
         }
     },
     computed: {
@@ -546,7 +550,7 @@ export default {
                     path: `mealschedule`,
                     // query: {data: JSON.stringify(recipeObject)}
                 })
-            }           
+            }
         },
 
         limitIngredient(event) {
