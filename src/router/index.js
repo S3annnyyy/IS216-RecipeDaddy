@@ -35,6 +35,11 @@ const router = createRouter({
       name: 'leaderboard',
       component: () => import('../views/Leaderboard.vue')
     },
+    {
+      path: '/analytics',
+      name: 'analytics',
+      component: () => import('../views/Analytics.vue')
+    },
     // error 404
     {
       path:'/:catchAll(.*)',

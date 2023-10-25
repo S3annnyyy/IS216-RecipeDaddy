@@ -61,6 +61,7 @@
     { textName: 'Recipe Search', icon: 'visibility', link: '/recipesearch' },
     { textName: 'Meal Prep', icon: 'group', link: '/mealprep' },
     { textName: 'Leaderboard', icon: 'group', link: '/leaderboard' },
+    { textName: 'Analytics', icon: 'group', link: '/analytics' },
     { textName: 'Contact Us', icon: 'email', link: '/contact' }
     ]; // routing contents + icons for navigation bar
     const isMenuOpen = ref(localStorage.getItem("isMenuOpen") === true); // Initialization for Mobile Navigation bar
