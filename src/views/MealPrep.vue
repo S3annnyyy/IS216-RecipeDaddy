@@ -18,13 +18,21 @@
                 <div class="row d-flex justify-content-center" style="margin-top: 3%;">
                     <div class="col-lg-3 col-md-4 col-sm-7">
                         <label>How many people?</label>
-                        <input v-model="people" class="form-control input-lg" type="number" min="1" id="people" placeholder="Number of people" required>
+                        <input v-model="people" class="form-control input-lg" type="number" min="1" id="people" required>
                         <div class="valid-feedback">Valid. Thanks!</div>
                         <div class="invalid-feedback">Please enter number of people</div>
                     </div>
                     <div v-show="people > 0" class="col-lg-3 col-md-4 col-sm-7">
                         <label>How many days?</label>
-                        <input v-model="days" @change="addDay" class="form-control" type="number" min="1" max="5" id="days" placeholder="Number of days" required>
+                        <select class="form-select form-select-md" v-model="days" @change="addDay" id="days" required>
+                            <option selected>Please select days</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                        <!-- <input v-model="days" @change="addDay" class="form-control" type="number" min="1" max="5" id="days" placeholder="Number of days" required> -->
                         <div class="valid-feedback">Valid. Thanks!</div>
                         <div class="invalid-feedback">Minimum 0, Maximum 5</div>
                     </div>  
@@ -108,7 +116,7 @@
                     </div>
 
                     <!-- submit button -->
-                    <div v-if="mealValidation" @click="submitClick" class="d-grid col-2 mx-auto mt-3">
+                    <div v-if="mealValidation" @click="submitClick" class="d-flex justify-content-center col-4 mt-3 mb-3" >
                         <button class="btn btn-primary" type="button">Continue!</button>
                     </div>
                     
