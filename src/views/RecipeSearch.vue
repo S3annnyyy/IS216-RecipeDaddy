@@ -70,7 +70,7 @@ export default {
         },
         populatePrompt(item_list, cuisineType) {
             let ingredients = item_list.join(", ")
-            let result = `Create me a ${cuisineType} cuisine recipe using just the following ingredients: ${ingredients}. DO NOT use any additional ingredients`
+            let result = `Create a ${cuisineType} cuisine recipe using just the following ingredients: ${ingredients}. DO NOT use any additional ingredients.Return the data as a JSON object`            
             return result
         },
         validateInput() {
