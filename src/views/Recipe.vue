@@ -82,9 +82,6 @@ export default {
     mounted() {          
         // console.log(this.data) // data logging
         this.promptuuid = this.$route.params.id; // get promptuuid   
-        this.placeholder.testRecipe.recipeImg = "https://image.pollinations.ai/prompt/A%20refreshing%20cucumber%20and%20egg%20salad%20with%20crisp%20cucumber%20slices,%20hard-boiled%20eggs,%20and%20vibrant%20green%20lettuce.%20The%20salad%20is%20elegantly%20arranged%20in%20a%20glass%20bowl,%20garnished%20with%20fresh%20dill%20and%20drizzled%20with%20a%20light%20vinaigrette%20dressing";
-                 
-     
 
         // CALL GPT-305 daVinci endpoint with prompt as body
         const URL = "http://127.0.0.1:8000/get-ai-prompt"
@@ -93,6 +90,10 @@ export default {
         const schema = { //Define schema for JSON response
             "type": "object",
             "properties": {
+                "imageUrl": {
+                    "type": "string",
+                    "link": "URL link"
+                },
                 "dish": {
                     "type": "string",
                     "description": "Descriptive title of the dish"
@@ -137,7 +138,7 @@ export default {
             this.placeholder.testRecipe.steps = aiResponse.instructions
 
             // initialize recipe image
-            // this.placeholder.testRecipe.recipeImg = new URL("../assets/test_image.jpg", import.meta.url).href;
+            this.placeholder.testRecipe.recipeImg = aiResponse.imageUrl
         })
         .catch((err) => {
             console.log(`API Call Not Successful: ${err}`)
