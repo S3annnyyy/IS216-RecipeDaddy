@@ -3,7 +3,7 @@
     <div v-if="pageOneValidation">
         <!-- Original page  -->
         <div v-if="planning === false" class="row d-flex justify-content-center align-items-center" style="height: 80vh;">
-            <div class="col-4 text-center">
+            <div class="col-12 text-center">
                 <h1>Meal Planner</h1>
                 <p>Get meal plans specially curated for you!</p>
                 <button @click="planMeal" class="btn btn-secondary">Get Started</button>
