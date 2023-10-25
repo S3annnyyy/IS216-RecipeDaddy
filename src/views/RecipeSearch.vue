@@ -70,7 +70,14 @@ export default {
         },
         populatePrompt(item_list, cuisineType) {
             let ingredients = item_list.join(", ")
-            let result = `Create me a ${cuisineType} cuisine recipe using just the following ingredients: ${ingredients}. DO NOT use any additional ingredients`
+            let result = `Create a ${cuisineType} cuisine recipe using just the following ingredients: ${ingredients}. DO NOT use any additional ingredients.Return the data as a JSON object
+            You are also a prompt generator. 
+            You will create a prompt that could be used for image-generation based on your generated title of the dish description  
+            Once I described the image, include the following markdown. shown in the function call schema set_recipe under "imageUrl"
+            ![Image](https://image.pollinations.ai/prompt/{description})
+            where {description} is:
+            {sceneDetailed}%20{adjective}%20{charactersDetailed}%20{visualStyle}%20{genre}%20{artistReference}
+            Make sure the prompts in the URL are encoded. Don't quote the generated markdown or put any code box around it.`            
             return result
         },
         validateInput() {
