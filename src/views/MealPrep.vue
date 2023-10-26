@@ -538,6 +538,7 @@ export default {
                     ${specifiedOnly}.
                     Come up with recipes for these dates: ${schedule}
                     Outline the steps to create each recipe as well. 
+                    Make sure you fully utilise the ingredients mentioned.
                     Return the data as a JSON object as specified in the schema. 
                     You are also a prompt generator. 
                     You will create a prompt that could be used for image-generation based on your generated title of the dish description  
@@ -545,7 +546,9 @@ export default {
                     ![Image](https://image.pollinations.ai/prompt/{description})
                     where {description} is:
                     {sceneDetailed}%20{adjective}%20{charactersDetailed}%20{visualStyle}%20{genre}%20{artistReference}
-                    Make sure the prompts in the URL are encoded. Don't quote the generated markdown or put any code box around it.` 
+                    Make sure the prompts in the URL are encoded. Don't quote the generated markdown or put any code box around it.
+                    Generate the image links, do not use placeholders. Do not send me any additional response other than the output.
+                    Remember that the "no_ingredients" field should only contain the ingredients that are not found in the input, rather than the ones to avoid.` 
                 console.log(finalPrompt)
 
                 // format schema
@@ -624,7 +627,7 @@ export default {
 
                 // CALL GPT-305 daVinci endpoint with prompt as body
                 const URL = "http://127.0.0.1:8000/get-ai-prompt"
-                axios.post(URL, {userPrompt, schema})
+                axios.post(URL, {finalPrompt, schema})
                 .then((res) => {            
                     let aiResponse = JSON.parse(res.data.generated_text)
                     console.log(aiResponse)
