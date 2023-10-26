@@ -211,6 +211,8 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
     data() {
         return {
@@ -503,23 +505,183 @@ export default {
 
                 // generate output for sean 
                 // this.resSean will change everytime user presses generate recipe, you will have to do data manipulation here 
-                this.resSean["people"] = this.people;
-                this.resSean["dates and meals"] = this.outputObject;
-                this.resSean["avoidList"] = this.avoidList;
-                this.resSean["ingreients"] = this.mealPrepIngredientList;
-                this.resSean["cook_with_specified"] = this.mealPrepLimitIngedient;
-            
+                this.resSean["people"] = this.people;                                //
+                this.resSean["dates_and_meals"] = this.outputObject;                 //
+                this.resSean["avoidList"] = this.avoidList;                          //
+                this.resSean["ingredients"] = this.mealPrepIngredientList;           //
+                this.resSean["cook_with_specified"] = this.mealPrepLimitIngedient;   //        
 
                 console.log(this.resSean);
 
-                // 
+                // format prompt
+                const ingredientsToAvoid = this.resSean.avoidList.join(", ")
+                const ingredientsToUse = this.resSean.ingredients.join(", ")
+                const specifiedOnly = (this.resSean.cook_with_specified) ? 
+                    "You are to cook with only the ingredients listed, do not use any additional in the recipes" 
+                    : 
+                    "You can add in additional ingredients to complement the recipes"               
+                let schedule = ""   
+                Object.entries(this.resSean.dates_and_meals).forEach(([key, value]) => {
+                    let tOD =""
+                    for (let num of value) {
+                        num = parseInt(num)
+                        if (num == 1) {tOD += "Breakfast, "}
+                        if (num == 2) {tOD += "Lunch, "}
+                        if (num == 3) {tOD += "Dinner, "}
+                    }
+                    schedule += `${key}: ${tOD}, `                   
+                });    
+               
+                let finalPrompt = `
+                    Create ${mealCount} meal recipes using just the following ingredients: ${ingredientsToUse} for ${this.resSean.people} people.
+                    Avoid using the following ingredients: ${ingredientsToAvoid}.
+                    ${specifiedOnly}.
+                    Come up with recipes for these dates: ${schedule}
+                    Outline the steps to create each recipe as well. 
+                    Return the data as a JSON object as specified in the schema. 
+                    You are also a prompt generator. 
+                    You will create a prompt that could be used for image-generation based on your generated title of the dish description  
+                    Once I described the image, include the following markdown. shown in the function call schema set_recipe under "imageUrl"
+                    ![Image](https://image.pollinations.ai/prompt/{description})
+                    where {description} is:
+                    {sceneDetailed}%20{adjective}%20{charactersDetailed}%20{visualStyle}%20{genre}%20{artistReference}
+                    Make sure the prompts in the URL are encoded. Don't quote the generated markdown or put any code box around it.` 
+                console.log(finalPrompt)
+
+                // format schema
+                const schema = {
+                "type": "object",
+                "properties": {
+                    "dates": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                        "date": {
+                            "type": "string",
+                            "description": "Date in the format YYYY-MM-DD"
+                        },
+                        "meals": {
+                            "type": "array",
+                            "items": {
+                            "type": "object",
+                            "properties": {
+                                "mealtime": {
+                                "type": "string",
+                                "description": "Mealtime (e.g., Breakfast, Lunch, Dinner)"
+                                },
+                                "recipe": {
+                                "type": "object",
+                                "properties": {
+                                    "imageUrl": {
+                                    "type": "string",
+                                    "description": "URL link for the dish image"
+                                    },
+                                    "dish": {
+                                    "type": "string",
+                                    "description": "Descriptive title of the dish"
+                                    },
+                                    "have_ingredients": {
+                                    "type": "object",
+                                    "properties": {
+                                        "type": "string",
+                                        "description": "Object of ingredients with name as key and quantity+unit as string value that are found in the input"
+                                        }
+                                    },
+                                    "no_ingredients": {
+                                    "type": "object",
+                                    "properties": {
+                                        "type": "string",
+                                        "description": "Object of ingredients with name as key and quantity+unit as string value that are not found in the input"
+                                        }
+                                    },
+                                    "instructions": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                        "step": {
+                                            "type": "integer",
+                                            "description": "Step number, numbering from 1"
+                                        },
+                                        "description": {
+                                            "type": "string",
+                                            "description": "Steps to prepare the recipe."
+                                        }
+                                        }
+                                    }
+                                    }
+                                }
+                                }
+                            }
+                            }
+                        }
+                        }
+                    }
+                    }
+                }
+                }
+
+                // CALL GPT-305 daVinci endpoint with prompt as body
+                const URL = "http://127.0.0.1:8000/get-ai-prompt"
+                axios.post(URL, {userPrompt, schema})
+                .then((res) => {            
+                    let aiResponse = JSON.parse(res.data.generated_text)
+                    console.log(aiResponse)
+                    console.log(typeof aiResponse)
+                    
+                    var output = []
+                    for (dateObj of aiResponse.dates)  {                                 
+                    // access object of dates and meals
+                    var scheduleDate = dateObj.date
+                                    
+                    // loop through mealprep meals
+                    for (individualMeal of dateObj.meals) {
+                        // change Breakfast/Lunch/Dinner to numbers
+                        const mealTimeNum = nameToNum(individualMeal.mealtime)                    
+
+                        // access generated recipe
+                        let generatedRecipe = individualMeal.recipe
+                        
+                        const imgUrl = generatedRecipe.imageUrl // string
+                        const h_ingre = generatedRecipe.have_ingredients // object
+                        const n_ingre = generatedRecipe.no_ingredients // object
+                        const recipeTitle = generatedRecipe.dish // string                
+                        const steps = generatedRecipe.instructions // DO NOT TOUCH
+                        const fSteps = objtoString(steps) // string
+                        
+                        // CREATE INSTANCE
+                        var instance = {
+                        "user": 1, // TODO
+                        "meal_date": scheduleDate,
+                        "meal_type": mealTimeNum,
+                        "recipe_name": recipeTitle,
+                        "have_ingredients": h_ingre,
+                        "no_ingredients": n_ingre,
+                        "preparation_steps": fSteps,
+                        "canMake": false,
+                        "isCompleted": false,
+                        "image_url": imgUrl
+                        }       
+
+                        // ADD TO INSTANCE
+                        output.push(instance)
+                    }
+                    }
+                    console.log(output) 
+
+                    // GABRIEL WORK ON IT HERE  
+
+                })
+                .catch((err) => {
+                    console.log(`API Call Not Successful: ${err}`)
+                })
             }           
         },
 
         limitIngredient(event) {
             this.mealPrepLimitIngedient = event.target.checked;
         }
-
         // end of mealPrepSearch methods 
     }
 }
