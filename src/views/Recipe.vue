@@ -3,15 +3,15 @@
         <div class="col-lg-4 col-md-10 col-sm-10 image-menu-schedule-LHS">
             <div class="container-fluid">
                 <div class="row justify-content-center">
-                    <h3 class="recipe-title" v-if="placeholder.testRecipe.recipeTitle">{{ placeholder.testRecipe.recipeTitle }}</h3>
+                    <h3 class="recipe-title" v-if="placeholder.adhocRecipe.recipeTitle">{{ placeholder.adhocRecipe.recipeTitle }}</h3>
                     <AnimatedPlaceholder height="29px" width="442px" margin="1rem 0" borderRadius="10px" v-else/>
                 </div>
                 <div class="row justify-content-center text-center">
-                    <img :src="placeholder.testRecipe.recipeImg" class="recipe-image-cover"  v-if="placeholder.testRecipe.recipeImg">
+                    <img :src="placeholder.adhocRecipe.recipeImg" class="recipe-image-cover"  v-if="placeholder.adhocRecipe.recipeImg">
                     <AnimatedPlaceholder height="300px" width="460px" borderRadius="30px" border="3px solid #194252" margin="0 0 2rem 0" v-else />
                 </div>
                 <div class="row meal-schedule justify-content-center">                               
-                    <div class="input-group datepicker" v-if="placeholder.testRecipe.steps">
+                    <div class="input-group datepicker" v-if="placeholder.adhocRecipe.steps">
                         <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">{{ timeOfDay }}</button>
                         <ul class="dropdown-menu">                             
                             <li class="dropdown-item" @click="handleInput('Breakfast')">Breakfast</li>
@@ -21,7 +21,7 @@
                         <input type="date" class="form-control" v-model="inputDate"/>                
                     </div>
                     <AnimatedPlaceholder height="50px" width="442px" margin="1rem 0" borderRadius="10px" v-else/>
-                    <button type="submit" class="addSchedule" @click="addToSchedule()" v-if="placeholder.testRecipe.steps">Add to schedule</button>
+                    <button type="submit" class="addSchedule" @click="addToSchedule()" v-if="placeholder.adhocRecipe.steps">Add to schedule</button>
                     <AnimatedPlaceholder height="50px" width="10rem" margin="1rem 0 0 0" borderRadius="50px" padding="0.5rem" v-else/>
                 </div> 
             </div>           
@@ -31,8 +31,8 @@
             <div class="recipe-desc">
                 1&nbsp;<span class="material-icons">restaurant</span>{{ stepCount }} steps                
             </div>
-            <ul class="recipe-guide" v-if="placeholder.testRecipe.steps">
-                <li v-for="step in placeholder.testRecipe.steps" :key="step.step" class="step">
+            <ul class="recipe-guide" v-if="placeholder.adhocRecipe.steps">
+                <li v-for="step in placeholder.adhocRecipe.steps" :key="step.step" class="step">
                     <h4>Step: {{ step.step }}</h4>
                     <p>{{ step.description }}</p>                   
                 </li>
@@ -55,7 +55,7 @@ export default {
             data: JSON.parse(this.$route.query.data),
             stepCount: 0,
             placeholder: {
-                testRecipe: {
+                adhocRecipe: {
                     "recipeTitle": null,
                     "steps": null,
                     "recipeImg": null,
@@ -68,15 +68,55 @@ export default {
             console.log(`Selected TimeOfDay: ${elem}`);
             this.timeOfDay = elem;
         },
+        convertToNum(tOD) {
+            if (tOD === "Breakfast") {return 1}
+            else if (tOD === "Lunch") {return 2}
+            else {return 3}
+        },
         addToSchedule() {
             console.log(`Submitted! Selected date is ${this.inputDate}`);
+            
+            // send to mealSchedule page as props 
+            this.$router.push({ name: 'mealschedule', query: { data: JSON.stringify(this.data) } });
+            
+            // format data 
+            // concatenate alll the steps with \n
+            let prepStepsConcat = ""
+            for (step in this.placeholder.adhocRecipe.steps) {
+                prepSteps += `${step.description}\n`
+            }
+            // add all ingredients inside an object
+            let ingredientObject = {};
+            for (item in this.placeholder.adhocRecipe.ingredients) {
+                ingredientObject[item] = "1EA" 
+            }
+            // missing adding image url #TODO
+            let jsonSubmissionTemplate = {
+                "id": 66, // MISSING ID FUNCTION #TODO
+                "meal_date": this.inputDate,
+                "meal_type": this.convertToNum(this.timeOfDay), // convert timeofday to numbers
+                "recipe_name": this.placeholder.adhocRecipe.recipeTitle,
+                "have_ingredients": ingredientObject,
+                "no_ingredients": null,
+                "preparation_steps": prepStepsConcat,
+                "canMake": false,
+                "isCompleted": true,
+                "user": 1
+            }
+            // send to backend
+            const URL = "http://127.0.0.1:8000/user-meal-plan"
+            axios.get(URL, {jsonSubmissionTemplate})
+            .then((res) => {            
+                console.log(`Data sent to backend ${res}`)
+            })
+            .catch((err) => {
+                console.log(`API Call Not Successful: ${err}`)
+            })
+            // Add in logic to check backend whether there is any conflict with user's existing schedule?  
+
             // reset variables to default again
             this.timeOfDay = "TimeOfDay";
-            this.inputDate = "";
-            // send to mealSchedule & backend once mealSchedule is set up
-            this.$router.push({ name: 'mealschedule', query: { data: JSON.stringify(this.data) } });
-            // TODO
-            // Add in logic to check backend whether there is any conflict with user's existing schedule?  
+            this.inputDate = "";            
         },       
     },
     mounted() {          
@@ -129,16 +169,16 @@ export default {
             console.log(typeof aiResponse)
             
             // initialize recipe title
-            this.placeholder.testRecipe.recipeTitle = aiResponse.dish
+            this.placeholder.adhocRecipe.recipeTitle = aiResponse.dish
 
             // initialize step count
             this.stepCount = aiResponse.instructions.length
 
             // initialize steps
-            this.placeholder.testRecipe.steps = aiResponse.instructions
+            this.placeholder.adhocRecipe.steps = aiResponse.instructions
 
             // initialize recipe image
-            this.placeholder.testRecipe.recipeImg = aiResponse.imageUrl
+            this.placeholder.adhocRecipe.recipeImg = aiResponse.imageUrl
         })
         .catch((err) => {
             console.log(`API Call Not Successful: ${err}`)

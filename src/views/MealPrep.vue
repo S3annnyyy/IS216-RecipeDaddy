@@ -3,7 +3,7 @@
     <div v-if="pageOneValidation">
         <!-- Original page  -->
         <div v-if="planning === false" class="row d-flex justify-content-center align-items-center" style="height: 80vh;">
-            <div class="col-4 text-center">
+            <div class="col-12 text-center">
                 <h1>Meal Planner</h1>
                 <p>Get meal plans specially curated for you!</p>
                 <button @click="planMeal" class="btn btn-secondary">Get Started</button>
@@ -11,133 +11,111 @@
         </div>
 
         <div v-else class="row">
-            <h1 class="text-center">Questionnaire</h1>
+            
+            <h1 class="text-center" style="margin-top: 5%;">Questionnaire</h1>
             <form action="#" class="was-validated col-12">
                 <!-- enter meal parameters -->
-                <div class="row d-flex justify-content-center">
+                <div class="row d-flex justify-content-center" style="margin-top: 3%;">
                     <div class="col-lg-3 col-md-4 col-sm-7">
                         <label>How many people?</label>
-                        <input v-model="people" class="form-control input-lg" type="number" min="1" id="people"
-                            placeholder="Number of people" required>
+                        <input v-model="people" class="form-control input-lg" type="number" min="1" id="people" required>
                         <div class="valid-feedback">Valid. Thanks!</div>
                         <div class="invalid-feedback">Please enter number of people</div>
                     </div>
                     <div v-show="people > 0" class="col-lg-3 col-md-4 col-sm-7">
                         <label>How many days?</label>
-                        <input v-model="days" @change="addDay" class="form-control" type="number" min="1" max="5" id="days"
-                            placeholder="Number of days" required>
+                        <select class="form-select form-select-md" v-model="days" @change="addDay" id="days" required>
+                            <option selected>Please select days</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                        <!-- <input v-model="days" @change="addDay" class="form-control" type="number" min="1" max="5" id="days" placeholder="Number of days" required> -->
                         <div class="valid-feedback">Valid. Thanks!</div>
                         <div class="invalid-feedback">Minimum 0, Maximum 5</div>
-                    </div>
-
-                    <!-- schedule table -->
+                    </div>  
+                    
+                    <!-- Schedule -->
                     <div class="row d-flex justify-content-center">
-                        <div v-if="days > 0" class="col-lg-2 col-md-4 col-sm-12 d-flex mt-3 justify-content-center">
-                            <div
-                                style="background-color: white; border: 1px solid lightgrey;padding:20px; border-radius: 20px;">
-                                <input v-model="enteredStartDate" @change="setDate" type="date"
-                                    class="sameSize spacing form-control" style="height:30px" required>
-                                <div class="invalid-feedback">Please enter date</div><br>
+                        <!-- Each Col holds one day -->
+                        <div v-if="days > 0" class="col-lg-2 col-md-4 col-sm-7">
+                            <div class="card shadow-sm text-center" style="margin-top: 3%;">
+                                <div class="card-body ">
+                                    <input v-model="enteredStartDate" @change="setDate" type="date" class="sameSize spacing form-control" style="height:30px; margin-left: auto; margin-right: auto;" required>
+                                    <br>
+                                    <!-- breakfast -->
+                                    <div v-if="enteredStartDate == ''">
+                                        <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[0] + ' 1'" autocomplete="off" disabled>
+                                        <label class="btn btn-outline-primary spacing sameSize" :for="mealDates[0] + ' 1'">Breakfast</label><br>
+                                    </div>
+                                    <div v-else>
+                                        <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[0] + ' 1'" autocomplete="off">
+                                        <label class="btn btn-outline-primary spacing sameSize" :for="mealDates[0] + ' 1'">Breakfast</label><br>
+                                    </div>
 
-
-                                <!-- breakfast -->
-                                <div v-if="enteredStartDate == ''">
-                                    <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[0] + ' 1'"
-                                        autocomplete="off" disabled>
-                                    <label class="btn btn-outline-primary spacing sameSize"
-                                        :for="mealDates[0] + ' 1'">Breakfast</label><br>
+                                    <!-- lunch -->
+                                    <div v-if="enteredStartDate == ''">
+                                        <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[0] + ' 2'" autocomplete="off" disabled>
+                                        <label class="btn btn-outline-primary spacing sameSize" :for="mealDates[0] + ' 2'">Lunch</label><br>
+                                    </div>
+                                    <div v-else>
+                                        <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[0] + ' 2'" autocomplete="off">
+                                        <label class="btn btn-outline-primary spacing sameSize" :for="mealDates[0] + ' 2'">Lunch</label><br>
+                                    </div>
+                                    <!-- dinner -->
+                                    <div v-if="enteredStartDate == ''">
+                                        <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[0] + ' 3'" autocomplete="off" disabled>
+                                        <label class="btn btn-outline-primary spacing sameSize" :for="mealDates[0] + ' 3'">Dinner</label><br>
+                                    </div>
+                                    <div v-else>
+                                        <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[0] + ' 3'" autocomplete="off">
+                                        <label class="btn btn-outline-primary spacing sameSize" :for="mealDates[0] + ' 3'">Dinner</label><br>
+                                    </div>
                                 </div>
-                                <div v-else>
-                                    <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[0] + ' 1'"
-                                        autocomplete="off">
-                                    <label class="btn btn-outline-primary spacing sameSize"
-                                        :for="mealDates[0] + ' 1'">Breakfast</label><br>
-                                </div>
-
-                                <!-- lunch -->
-                                <div v-if="enteredStartDate == ''">
-                                    <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[0] + ' 2'"
-                                        autocomplete="off" disabled>
-                                    <label class="btn btn-outline-primary spacing sameSize"
-                                        :for="mealDates[0] + ' 2'">Lunch</label><br>
-                                </div>
-                                <div v-else>
-                                    <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[0] + ' 2'"
-                                        autocomplete="off">
-                                    <label class="btn btn-outline-primary spacing sameSize"
-                                        :for="mealDates[0] + ' 2'">Lunch</label><br>
-                                </div>
-                                <!-- dinner -->
-                                <div v-if="enteredStartDate == ''">
-                                    <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[0] + ' 3'"
-                                        autocomplete="off" disabled>
-                                    <label class="btn btn-outline-primary spacing sameSize"
-                                        :for="mealDates[0] + ' 3'">Dinner</label><br>
-                                </div>
-                                <div v-else>
-                                    <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[0] + ' 3'"
-                                        autocomplete="off">
-                                    <label class="btn btn-outline-primary spacing sameSize"
-                                        :for="mealDates[0] + ' 3'">Dinner</label><br>
-                                </div>
-
                             </div>
                         </div>
+
                         <!-- repeat based on number of days -->
-                        <div v-for="(day, ind) in dayArr"
-                            class="col-lg-2 col-md-4 col-sm-12 d-flex mt-3 justify-content-center">
-                            <div
-                                style="background-color: white; border: 1px solid lightgrey; padding:20px; border-radius: 20px;">
-                                <input type="text" class="spacing sameSize sameHeight form-control" disabled
-                                    :value="mealDates[ind + 1]"> <br>
-
-                                <!-- breakfast -->
-                                <div v-if="enteredStartDate == ''">
-                                    <input @click="addMeal" type="checkbox" class="btn-check"
-                                        :id="mealDates[ind + 1] + ' 1'" autocomplete="off" disabled>
-                                    <label class="btn btn-outline-primary spacing sameSize"
-                                        :for="mealDates[ind + 1] + ' 1'">Breakfast</label><br>
-                                </div>
-                                <div v-else>
-                                    <input @click="addMeal" type="checkbox" class="btn-check"
-                                        :id="mealDates[ind + 1] + ' 1'" autocomplete="off">
-                                    <label class="btn btn-outline-primary spacing sameSize"
-                                        :for="mealDates[ind + 1] + ' 1'">Breakfast</label><br>
-                                </div>
-
-                                <!-- lunch -->
-                                <div v-if="enteredStartDate == ''">
-                                    <input @click="addMeal" type="checkbox" class="btn-check"
-                                        :id="mealDates[ind + 1] + ' 2'" autocomplete="off" disabled>
-                                    <label class="btn btn-outline-primary spacing sameSize"
-                                        :for="mealDates[ind + 1] + ' 2'">Lunch</label><br>
-                                </div>
-                                <div v-else>
-                                    <input @click="addMeal" type="checkbox" class="btn-check"
-                                        :id="mealDates[ind + 1] + ' 2'" autocomplete="off">
-                                    <label class="btn btn-outline-primary spacing sameSize"
-                                        :for="mealDates[ind + 1] + ' 2'">Lunch</label><br>
-                                </div>
-
-                                <!-- dinner -->
-                                <div v-if="enteredStartDate == ''">
-                                    <input @click="addMeal" type="checkbox" class="btn-check"
-                                        :id="mealDates[ind + 1] + ' 3'" autocomplete="off" disabled>
-                                    <label class="btn btn-outline-primary spacing sameSize"
-                                        :for="mealDates[ind + 1] + ' 3'">Dinner</label><br>
-
-                                </div>
-                                <div v-else>
-                                    <input @click="addMeal" type="checkbox" class="btn-check"
-                                        :id="mealDates[ind + 1] + ' 3'" autocomplete="off">
-                                    <label class="btn btn-outline-primary spacing sameSize"
-                                        :for="mealDates[ind + 1] + ' 3'">Dinner</label><br>
+                        <div v-for="(day, ind) in dayArr" class="col-lg-2 col-md-4 col-sm-7">
+                            <div class="card shadow-sm" style="margin-top: 3%;">
+                                <div class="card-body text-center">
+                                    <input type="text" class="spacing sameSize sameHeight form-control" disabled :value="mealDates[ind + 1]" style="margin-left: auto; margin-right: auto;" required>
+                                    <br>
+                                    <!-- breakfast -->
+                                    <div v-if="enteredStartDate == ''">
+                                        <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[ind + 1] + ' 1'" autocomplete="off" disabled>
+                                        <label class="btn btn-outline-primary spacing sameSize" :for="mealDates[ind + 1] + ' 1'">Breakfast</label><br>
+                                    </div>
+                                    <div v-else>
+                                        <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[ind + 1] + ' 1'" autocomplete="off">
+                                        <label class="btn btn-outline-primary spacing sameSize" :for="mealDates[ind + 1] + ' 1'">Breakfast</label><br>
+                                    </div>
+                                    <!-- lunch -->
+                                    <div v-if="enteredStartDate == ''">
+                                        <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[ind + 1] + ' 2'" autocomplete="off" disabled>
+                                        <label class="btn btn-outline-primary spacing sameSize" :for="mealDates[ind + 1] + ' 2'">Lunch</label><br>
+                                    </div>
+                                    <div v-else>
+                                        <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[ind + 1] + ' 2'" autocomplete="off">
+                                        <label class="btn btn-outline-primary spacing sameSize" :for="mealDates[ind + 1] + ' 2'">Lunch</label><br>
+                                    </div>
+                                    <!-- dinner -->
+                                    <div v-if="enteredStartDate == ''">
+                                        <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[ind + 1] + ' 3'" autocomplete="off" disabled>
+                                        <label class="btn btn-outline-primary spacing sameSize" :for="mealDates[ind + 1] + ' 3'">Dinner</label><br>
+                                    </div>
+                                    <div v-else>
+                                        <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[ind + 1] + ' 3'" autocomplete="off">
+                                        <label class="btn btn-outline-primary spacing sameSize" :for="mealDates[ind + 1] + ' 3'">Dinner</label><br>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <!-- submit button -->
-                    <div v-if="mealValidation" @click="submitClick" class="d-grid col-2 mx-auto mt-3">
+                    <div v-if="mealValidation" @click="submitClick" class="d-flex justify-content-center col-4 mt-3 mb-3" >
                         <button class="btn btn-primary" type="button">Continue!</button>
                     </div>
                 </div>
@@ -149,26 +127,18 @@
 
     <div v-if="pageTwoValidation">
         <main class="row justify-content-center align-items-center " style="height: 92vh;">
-
             <div class="col-xl-8 col-lg-8 col-md-8 col-sm-10">
                 <h1 class="text-center">Please Enter Ingredients to avoid!</h1>
                 <div class="input-group input-group-lg search-bar">
-                    <button class="btn dropdown-toggle input" type="button" data-bs-toggle="dropdown" aria-expanded="false"
-                        style="min-width: 8vw;">{{ selectedInputType }}</button>
-                    <ul class="dropdown-menu">
-                        <li v-for="item in inputFormat" :key="item" class="dropdown-item" @click="handleInputType(item)">{{
-                            item }}</li>
-                    </ul>
-
-                    <input type="text" class="form-control " placeholder="Enter an ingredient and press Enter! "
-                        v-model="avoidInput" @keydown.enter="handleEnter">
-                    <button class="btn submit-button" type="submit" @click="submitClick2" aria-expanded="false">
+                    <input type="text" class="form-control" placeholder="Enter ingredients you would like to avoid!" v-model="avoidInput" @keydown.enter="handleEnter">
+                    <button class="btn submit-button" type="submit" @click="submitClick2" aria-expanded="false">                   
                         <span class="submit-button-content">
                             <svg width="32" height="32" viewBox="0 0 24 24" class="arrow">
                                 <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2 .01 7z" />
                             </svg>
                         </span>
                     </button>
+                    <button type="button" class="btn submit-button2"  @click="submitClick2">Create Recipe</button>
                 </div>
                 <div class="list-wrapper">
                     <ul class="list-container-toAvoid">
@@ -184,79 +154,62 @@
     <!-- Page Three: Ingredients to cook with -->
 
     <div v-if="pageThreeValidation">
-        <main class="row justify-content-center align-items-center" style="height: 92vh;">
-            <div class="col-xl-6 col-l-6 col-md-6 col-sm-12 ingredient-list-LHS">
-                <div class="container-fluid ingredient-list-box position-relative">
-                    <div class="row title">
-                        <div class="col-12">
-                            <h3>Ingredient List:</h3>
-                        </div>
+        <main class="row justify-content-center align-items-center" style="height: 92vh;">        
+        <div class="col-xl-6 col-l-6 col-md-6 col-sm-12 mealPrepIngredient-list-LHS">
+            <div class="container-fluid mealPrepIngredient-list-box position-relative">
+                <div class="row title">
+                    <div class="col-12">
+                        <h3>Ingredient List:</h3>
                     </div>
-                    <div class="row ingredients-list-wrapper">
-                        <div class="col-10">
-                            <ol class="list-container">
-                                <li v-for="(item, index) in mealPrepIngredientList" :key="index" class="ingredients">
-                                    <div class="item-content">
-                                        <span>{{ item }}</span>
-                                        <span class="material-icons-outlined" @click="removeItem(index)">close</span>
-                                    </div>
-                                </li>
+                </div>
+                <div class="row ingredients-list-wrapper">
+                    <div class="col-10">
+                        <ol class="list-container">
+                            <li v-for="(item, index) in mealPrepIngredientList" :key="index" class="ingredients ">
+                                <div class="mealPrepItem-content">
+                                    <span>{{ index + 1 }}. {{ item }}</span>
+                                    <span class="material-icons-outlined" @click="mealPrepRemoveItem(index)">close</span>
+                                </div>                  
+                            </li>
+                        </ol>  
+                    </div>                  
+                </div>                
+                <button class=" position-absolute bottom-0 end-0 m-4 mealPrepSubmit-meal-plan-btn" @click="mealPrepGenerateMealPlan">Generate meal plan</button>                
+            </div>
+        </div>
+        
+               
+        <div class="col-xl-6 col-l-6 col-md-6 col-sm-12 search-bar-RHS">
+            <div class="container-fluid">
+                <div class="row justify-content-center">
+                    <div class="col-xxl-10 col-xl-10 col-l-12 col-md-12 col-sm-12 text-center">
+                        <div class="input-group input-group-md mealPrepSearch-bar-content">
+                            <input type="text" class="form-control mealPrepIngredient" placeholder="Enter ingredient, unit & amount and press enter!" @keydown.enter="mealPrepHandleSubmit" v-model="mealPrepSearchInput">
+                            
+                            <input type="number" class="form-control amount" placeholder="Amount" v-model="mealPrepSelectedAmount" v-on:change="mealPrepHandleAmount">
+
+                            <button class="btn dropdown-toggle unit" type="button" data-bs-toggle="dropdown" aria-expanded="false">{{ mealPrepSelectedUnit }}</button>   
+                            <ol class="dropdown-menu">
+                                <li v-for="unit in mealPrepInputUnits" :key="unit" class="dropdown-item" @click="mealPrepHandleUnit(unit)">{{ unit }}</li>
                             </ol>
-                        </div>
+                        </div>                       
                     </div>
-                    <button class="position-absolute bottom-0 end-0 m-4 submit-meal-plan-btn"
-                        @click="generateMealPlan">Generate meal plan</button>
+                    <div class="form-check col-xxl-10 col-xl-10 col-l-12 col-md-12 col-sm-12" style="padding-left: 2.7rem; padding-top: 0.5rem;">
+                        <input @change="limitIngredient" class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                        <label class="form-check-label" for="flexCheckDefault" style="font-size: small;">
+                            Only specified ingredients
+                        </label>
+                    </div>    
                 </div>
-            </div>
-
-            <div class="col-xl-6 col-l-6 col-md-6 col-sm-12 search-bar-RHS">
-                <div class="container-fluid">
-                    <div class="row justify-content-center">
-                        <div class="col-xxl-10 col-xl-10 col-l-12 col-md-12 col-sm-12 text-center">
-                            <div class="input-group input-group-md search-bar-content">
-                                <input type="text" class="form-control ingredient"
-                                    placeholder="Enter Ingredient, Unit & Amount!" v-model="mealPrepSearchInput">
-
-                                <input type="number" class="form-control amount" placeholder="Amount"
-                                    v-model="mealPrepSelectedAmount" v-on:change="handleAmount">
-
-                                <button class="btn dropdown-toggle unit" type="button" data-bs-toggle="dropdown"
-                                    aria-expanded="false">{{ mealPrepSelectedUnit }}</button>
-                                <ol class="dropdown-menu">
-                                    <li v-for="unit in mealPrepInputUnits" :key="unit" class="dropdown-item"
-                                        @click="handleUnit(unit)">{{ unit }}</li>
-                                </ol>
-
-                                <!-- <button class="btn submit-button-CookWith" type="submit" aria-expanded="false" @click="handleSubmit">                   
-                                <span class="submit-button-content">
-                                <svg width="32" height="32" viewBox="0 0 24 24" class="arrow"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2 .01 7z"/></svg>                        
-                                </span>                    
-                            </button>    -->
-                                <!-- is this submit button the same as the one below? just that the one above uses an image instead? -->
-
-
-                                <button type="button" class="btn submit-button2-toAvoid"
-                                    @click="handleSubmit">Submit</button>
-                                <!-- do we need this? user already using generate meal plan instead  -->
-                            </div>
-                        </div>
-                        <div class="form-check col-xxl-10 col-xl-10 col-l-12 col-md-12 col-sm-12"
-                            style="padding-left: 2.7rem; padding-top: 0.5rem;">
-                            <input @change="limitIngredient" class="form-check-input" type="checkbox" value=""
-                                id="flexCheckDefault">
-                            <label class="form-check-label" for="flexCheckDefault" style="font-size: small;">
-                                Only specified ingredients
-                            </label>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </main>
+            </div>           
+        </div>
+    </main>
     </div>
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
     data() {
         return {
@@ -291,8 +244,8 @@ export default {
             mealPrepSelectedAmount: 0,
             mealPrepIngredientList: [],
             mealPrepInputUnits: ["ml", "litre", "g", "kg", "item-quantity"],
+            uuid: crypto.randomUUID(),
             mealPrepLimitIngedient: false,
-            uuidMealPrep: crypto.randomUUID(),
 
             // FINAL OUTPUT OBJECT (JUN KAI)
             // res --> FINAL OUTPUT OBJECT (SEAN)
@@ -485,17 +438,9 @@ export default {
         // mealPrepSearch methods 
 
 
-        handleSubmit() {
+        mealPrepHandleSubmit() {
             // validate input for amount and units
-            if (this.validateInput()[1]) {
-                const newIngredient = {};
-                newIngredient[this.mealPrepSearchInput] =
-                    `${this.mealPrepSelectedAmount} ${this.mealPrepSelectedUnit}`;
-
-                if (typeof this.have_ingredients !== 'object') {
-                    this.have_ingredients = {};
-                }
-                this.have_ingredients = { ...this.have_ingredients, ...newIngredient };
+            if (this.mealPrepValidateInput()[1]) {
                 // push to ingredient list as a string                
                 this.mealPrepIngredientList.push(`${this.mealPrepSelectedAmount} ${this.mealPrepSelectedUnit} of ${this.mealPrepSearchInput}`)
                 console.log(`Added ${this.mealPrepSearchInput} into ingredient list`, this.mealPrepIngredientList)
@@ -503,12 +448,12 @@ export default {
                 this.mealPrepSearchInput = ''
             } else {
                 // populate errors on alert
-                let errors = this.validateInput()[0]
+                let errors = this.mealPrepValidateInput()[0]
                 let errorMsg = errors.join("")
                 alert(errorMsg)
             }
         },
-        validateInput() {
+        mealPrepValidateInput() {
             let errors = []
             if (this.mealPrepSelectedAmount === 0) { errors.push("Please input an appropriate amount\n") }
             if (this.mealPrepSelectedUnit === "Unit") { errors.push("Please add in an appropriate unit\n") }
@@ -520,18 +465,18 @@ export default {
                 return [errors, true]
             }
         },
-        handleAmount() {
-            console.log(`${this.mealPrepSelectedAmount} chosen`)
+        mealPrepHandleAmount() {
+            console.log(`${this.mealPrepSelectedAmount} chosen`)            
         },
-        handleUnit(unit) {
+        mealPrepHandleUnit(unit) {
             console.log(`${unit} chosen`)
             this.mealPrepSelectedUnit = unit
-        },
-        removeItem(item_index) {
+        },  
+        mealPrepRemoveItem(item_index) {
             // params is item_index, rm from list
             this.mealPrepIngredientList.splice(item_index, 1)
         },
-        generateMealPlan() {
+        mealPrepGenerateMealPlan()  {
             // validate Input if empty
             if (this.mealPrepIngredientList.length === 0) {
                 alert("List cannot be empty")
@@ -546,9 +491,190 @@ export default {
                 console.log(this.mealPrepIngredientList);
                 // return only use entered ingredients?
                 console.log("Cook with specified ingredients only?: " + this.mealPrepLimitIngedient);
-                this.$router.push({
-                    path: `mealschedule`,
-                    // query: {data: JSON.stringify(recipeObject)}
+
+                // num of meals (num of objects in final output obj)
+                var mealCount = 0;
+                for(var i = 0; i < this.mealCountArr.length; i++) {
+                    mealCount += this.mealCountArr[i];
+                }
+                console.log(mealCount);
+
+
+                // generate output for sean 
+                // this.resSean will change everytime user presses generate recipe, you will have to do data manipulation here 
+                this.resSean["people"] = this.people;                                //
+                this.resSean["dates_and_meals"] = this.outputObject;                 //
+                this.resSean["avoidList"] = this.avoidList;                          //
+                this.resSean["ingredients"] = this.mealPrepIngredientList;           //
+                this.resSean["cook_with_specified"] = this.mealPrepLimitIngedient;   //        
+
+                console.log(this.resSean);
+
+                // format prompt
+                const ingredientsToAvoid = this.resSean.avoidList.join(", ")
+                const ingredientsToUse = this.resSean.ingredients.join(", ")
+                const specifiedOnly = (this.resSean.cook_with_specified) ? 
+                    "You are to cook with only the ingredients listed, do not use any additional in the recipes" 
+                    : 
+                    "You can add in additional ingredients to complement the recipes"               
+                let schedule = ""   
+                Object.entries(this.resSean.dates_and_meals).forEach(([key, value]) => {
+                    let tOD =""
+                    for (let num of value) {
+                        num = parseInt(num)
+                        if (num == 1) {tOD += "Breakfast, "}
+                        if (num == 2) {tOD += "Lunch, "}
+                        if (num == 3) {tOD += "Dinner, "}
+                    }
+                    schedule += `${key}: ${tOD}, `                   
+                });    
+               
+                let finalPrompt = `
+                    Create ${mealCount} meal recipes using just the following ingredients: ${ingredientsToUse} for ${this.resSean.people} people.
+                    Avoid using the following ingredients: ${ingredientsToAvoid}.
+                    ${specifiedOnly}.
+                    Come up with recipes for these dates: ${schedule}
+                    Outline the steps to create each recipe as well. 
+                    Make sure you fully utilise the ingredients mentioned.
+                    Return the data as a JSON object as specified in the schema. 
+                    You are also a prompt generator. 
+                    You will create a prompt that could be used for image-generation based on your generated title of the dish description  
+                    Once I described the image, include the following markdown. shown in the function call schema set_recipe under "imageUrl"
+                    ![Image](https://image.pollinations.ai/prompt/{description})
+                    where {description} is:
+                    {sceneDetailed}%20{adjective}%20{charactersDetailed}%20{visualStyle}%20{genre}%20{artistReference}
+                    Make sure the prompts in the URL are encoded. Don't quote the generated markdown or put any code box around it.
+                    Generate the image links, do not use placeholders. Do not send me any additional response other than the output.
+                    Remember that the "no_ingredients" field should only contain the ingredients that are not found in the input, rather than the ones to avoid.` 
+                console.log(finalPrompt)
+
+                // format schema
+                const schema = {
+                "type": "object",
+                "properties": {
+                    "dates": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                        "date": {
+                            "type": "string",
+                            "description": "Date in the format YYYY-MM-DD"
+                        },
+                        "meals": {
+                            "type": "array",
+                            "items": {
+                            "type": "object",
+                            "properties": {
+                                "mealtime": {
+                                "type": "string",
+                                "description": "Mealtime (e.g., Breakfast, Lunch, Dinner)"
+                                },
+                                "recipe": {
+                                "type": "object",
+                                "properties": {
+                                    "imageUrl": {
+                                    "type": "string",
+                                    "description": "URL link for the dish image"
+                                    },
+                                    "dish": {
+                                    "type": "string",
+                                    "description": "Descriptive title of the dish"
+                                    },
+                                    "have_ingredients": {
+                                    "type": "object",
+                                    "properties": {
+                                        "type": "string",
+                                        "description": "Object of ingredients with name as key and quantity+unit as string value that are found in the input"
+                                        }
+                                    },
+                                    "no_ingredients": {
+                                    "type": "object",
+                                    "properties": {
+                                        "type": "string",
+                                        "description": "Object of ingredients with name as key and quantity+unit as string value that are not found in the input"
+                                        }
+                                    },
+                                    "instructions": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                        "step": {
+                                            "type": "integer",
+                                            "description": "Step number, numbering from 1"
+                                        },
+                                        "description": {
+                                            "type": "string",
+                                            "description": "Steps to prepare the recipe."
+                                        }
+                                        }
+                                    }
+                                    }
+                                }
+                                }
+                            }
+                            }
+                        }
+                        }
+                    }
+                    }
+                }
+                }
+
+                // CALL GPT-305 daVinci endpoint with prompt as body
+                const URL = "http://127.0.0.1:8000/get-ai-prompt"
+                axios.post(URL, {finalPrompt, schema})
+                .then((res) => {            
+                    let aiResponse = JSON.parse(res.data.generated_text)
+                    console.log(aiResponse)
+                    console.log(typeof aiResponse)
+                    
+                    var output = []
+                    for (dateObj of aiResponse.dates)  {                                 
+                    // access object of dates and meals
+                    var scheduleDate = dateObj.date
+                                    
+                    // loop through mealprep meals
+                    for (individualMeal of dateObj.meals) {
+                        // change Breakfast/Lunch/Dinner to numbers
+                        const mealTimeNum = nameToNum(individualMeal.mealtime)                    
+
+                        // access generated recipe
+                        let generatedRecipe = individualMeal.recipe
+                        
+                        const imgUrl = generatedRecipe.imageUrl // string
+                        const h_ingre = generatedRecipe.have_ingredients // object
+                        const n_ingre = generatedRecipe.no_ingredients // object
+                        const recipeTitle = generatedRecipe.dish // string                
+                        const steps = generatedRecipe.instructions // DO NOT TOUCH
+                        const fSteps = objtoString(steps) // string
+                        
+                        // CREATE INSTANCE
+                        var instance = {
+                        "user": 1, // TODO
+                        "meal_date": scheduleDate,
+                        "meal_type": mealTimeNum,
+                        "recipe_name": recipeTitle,
+                        "have_ingredients": h_ingre,
+                        "no_ingredients": n_ingre,
+                        "preparation_steps": fSteps,
+                        "canMake": false,
+                        "isCompleted": false,
+                        "image_url": imgUrl
+                        }       
+
+                        // ADD TO INSTANCE
+                        output.push(instance)
+                    }
+                    }
+                    console.log(output) 
+
+                    // GABRIEL WORK ON IT HERE  
+
+                })
+                .catch((err) => {
+                    console.log(`API Call Not Successful: ${err}`)
                 })
             }
         },
@@ -556,28 +682,25 @@ export default {
         limitIngredient(event) {
             this.mealPrepLimitIngedient = event.target.checked;
         }
-
         // end of mealPrepSearch methods 
     }
 }
 
 </script>
 
-<style scoped>  .spacing {
-      margin-bottom: 10px;
-  }
-
-  li {
-      list-style-type: none;
-  }
-
-  .sameSize {
-      width: 160px;
-  }
-
-  .sameHeight {
-      height: 28px;
-  }
+<style scoped>  
+    .spacing {
+        margin-bottom:10px;
+    }
+    li{
+        list-style-type: none;
+    }
+    .sameSize {
+        width:90%;
+    }
+    .sameHeight{
+        height:28px;
+    }
 
   /* ingredientsToAvoid styles */
   .submit-button2 {
@@ -691,123 +814,107 @@ export default {
 
 
 
-  /* mealPrepSearch styles */
-  input[type=number]::-webkit-inner-spin-button,
-  input[type=number]::-webkit-outer-spin-button {
-      opacity: 1;
-  }
+    /* mealPrepSearch styles */
+    input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button {  
+        opacity: 1;
+    }
+    
+    .mealPrepIngredient-list-LHS {
+        vertical-align: middle;
+        color: var(--light);
+        .mealPrepIngredient-list-box {
+            background-color: #194252;
+            height: 90vh;
+            /* width: 45vw; */
+            padding: 1rem 2rem;
+            border-radius: 20px;
+        }       
+        .mealPrepItem-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-direction: row;
+            margin-bottom: 0.1rem;
 
-  .ingredient-list-LHS {
-      vertical-align: middle;
-      color: var(--light);
+            .material-icons-outlined {
+                background-color: red;
+                cursor: pointer;
+                border-radius: 5px;
+            }
+        }
+        
+        .mealPrepSubmit-meal-plan-btn {
+            background-color: var(--light);
+            border-radius: 50px;
+            box-shadow: 0 4px 2px -2px var(--dark);
+            padding: 1rem;
+            transition: border 0.2s ease-in-out;  
+        }
 
-      .ingredient-list-box {
-          background-color: #194252;
-          height: 90vh;
-          /* width: 45vw; */
-          padding: 1rem 2rem;
-          border-radius: 20px;
-      }
+        .mealPrepSubmit-meal-plan-btn:hover {
+           border: 5px solid green;
+        }
+                
+    }
+    .mealPrepSearch-bar-content {
+        border-radius: 50px;
+        box-shadow: 0 4px 2px -2px var(--text-light-secondary);
+        border: 1px solid #6c757d;
+        .mealPrepSubmit-button2 {
+            display: none;
+        }
+        .mealPrepIngredient {
+            border-radius: 50px;
+        }
+        .amount {
+            max-width: 6vw;
+        } 
+        .unit {
+            max-width:8vw;
+        }       
+    }    
 
-      .item-content {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          flex-direction: row;
-          margin-bottom: 0.1rem;
+    @media (max-width: 700px) {        
+        .mealPrepSearch-bar-content {
+            margin: 1rem 0rem;          
+            display: block;                        
+            border-radius: 10px;
+            box-shadow: none;
+                        
+            .mealPrepIngredient, .amount, .unit {
+                max-width: none;
+                border-radius: 0;
+                width: 100%;                
+                margin-left: 0 !important;    
+                                      
+            }
+            .mealPrepIngredient {
+                border-top-right-radius: 10px !important;
+                border-top-left-radius: 10px !important;
+            }
+            .mealPrepIngredient::placeholder {
+                font-size: 0.7rem;
+                text-align: center;
+            }           
+            .dropdown-menu {
+                width: 100%;
+            }
+            .mealPrepSubmit-button2 {
+                display: block;
+                width: 100%;
+                background-color: #194252;
+                color: var(--light) ;
+                border-top-right-radius: 0 !important;
+                border-bottom-right-radius: 10px !important;
+                border-bottom-left-radius: 10px !important;
+            }
+            .submit-button {
+                display: none;
+            }
+            
+        }
+        
+    }
+    /* END OF MEALPREPSEARCH STYLES */
 
-          .material-icons-outlined {
-              background-color: red;
-              cursor: pointer;
-              border-radius: 5px;
-          }
-      }
-
-      .submit-meal-plan-btn {
-          background-color: var(--light);
-          border-radius: 50px;
-          box-shadow: 0 4px 2px -2px var(--dark);
-          padding: 1rem;
-          transition: border 0.2s ease-in-out;
-      }
-
-      .submit-meal-plan-btn:hover {
-          border: 5px solid green;
-      }
-
-  }
-
-  .search-bar-content {
-      border-radius: 50px;
-      box-shadow: 0 4px 2px -2px var(--text-light-secondary);
-      border: 1px solid #6c757d;
-
-      .submit-button2-CookWith {
-          display: none;
-      }
-
-      .ingredient {
-          border-radius: 50px;
-
-      }
-
-      .amount {
-          max-width: 6vw;
-      }
-
-      .unit {
-          max-width: 8vw;
-      }
-  }
-
-  @media (max-width: 700px) {
-      .search-bar-content {
-          margin: 1rem 0rem;
-          display: block;
-          border-radius: 10px;
-          box-shadow: none;
-
-          .ingredient,
-          .amount,
-          .unit {
-              max-width: none;
-              border-radius: 0;
-              width: 100%;
-              margin-left: 0 !important;
-
-          }
-
-          .ingredient {
-              border-top-right-radius: 10px !important;
-              border-top-left-radius: 10px !important;
-          }
-
-          .ingredient::placeholder {
-              font-size: 0.7rem;
-              text-align: center;
-          }
-
-          .dropdown-menu {
-              width: 100%;
-          }
-
-          .submit-button2-CookWith {
-              display: block;
-              width: 100%;
-              background-color: #194252;
-              color: var(--light);
-              border-top-right-radius: 0 !important;
-              border-bottom-right-radius: 10px !important;
-              border-bottom-left-radius: 10px !important;
-          }
-
-          .submit-button-CookWith {
-              display: none;
-          }
-
-      }
-
-  }
-
-  /* END OF MEALPREPSEARCH STYLES */
 </style>
