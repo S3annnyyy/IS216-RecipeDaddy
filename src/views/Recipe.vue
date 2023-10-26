@@ -123,7 +123,7 @@ export default {
         console.log(userPrompt)
 
         axios.post(URL, {userPrompt, schema})
-        .then((res) => {            
+        .then((res) => {   
             let aiResponse = JSON.parse(res.data.generated_text)
             console.log(aiResponse)
             console.log(typeof aiResponse)
