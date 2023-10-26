@@ -74,9 +74,9 @@
             <div class="card" style="background-color: #ddecf8;">
                 <div class="card-body"> 
                     <img src="../assets/food.png" width="54px" height="auto">
-                    <p class="card-text mt-4">
+                    <p class="card-text mt-4" style="color: #545454;">
                         You saved
-                        <span style="font-size: 20px; font-weight: bold;">57g</span>
+                        <span style="font-size: 20px; font-weight: bold; color: black;">57g</span>
                         of food today!
                     </p>
                 </div> 
@@ -149,8 +149,10 @@
         <div class="col-lg-4 col-md-12 col-sm-12 card-group">
              <div class="card position-relative"> 
                  <div class="card-body"> 
-                    <img src="../assets/profile.png" width="100px" height="auto">
-                    <h5 class="card-title d-inline">Ilovecooking124</h5>
+                    <img src="../assets/profile.png" style="width: 100px;height: auto;">
+                    <!-- Hold a varaible, pull from backend -->
+                    <h5 class="card-title d-inline">{{ nameOne }}</h5>
+                    <!-- add variablie, pull from backend -->
                     <p class="card-text">Total score: 2149</p>
                     <img src="../assets/first.png" class="award">  
                  </div> 
@@ -162,8 +164,10 @@
         <div class="col-lg-4 col-md-6 col-sm-12 card-group">
              <div class="card position-relative"> 
                  <div class="card-body"> 
-                    <img src="../assets/profile.png" width="100px" height="auto">
-                    <h5 class="card-title d-inline">ChefAlberto</h5>
+                    <img src="../assets/profile.png" style="width: 100px; height: auto;">
+                    <!-- Hold a varaible, pull from backend -->
+                    <h5 class="card-title d-inline">{{ nameTwo }}</h5>
+                    <!-- add variable, pull from backend -->
                     <p class="card-text">Total score: 2203</p> 
                     <img src="../assets/second.png" class="award">  
                  </div> 
@@ -175,8 +179,10 @@
         <div class="col-lg-4 col-md-6 col-sm-12 card-group">
              <div class="card position-relative"> 
                  <div class="card-body"> 
-                    <img src="../assets/profile.png" width="100px" height="auto">
-                    <h5 class="card-title d-inline">KingBob</h5>
+                    <img src="../assets/profile.png" style="width: 100px; height: auto;">
+                    <!-- Hold a varaible pull from backend -->
+                    <h5 class="card-title d-inline">{{  nameThree  }}</h5>
+                    <!-- add variable, pull from backend -->
                     <p class="card-text">Total score: 2003</p>  
                     <img src="../assets/third.png" class="award">  
                  </div> 
@@ -200,10 +206,11 @@
         </thead>
 
         <tbody>
+            <!-- add v-for here -->
             <tr>
                 <td>1</td>
                 <td>I💗cooking124</td>
-                <td>Some chart hopefully</td>
+                <td>Some chart hopefully</td> <!-- progress bar bootstrap -->
                 <td>2149</td>
             </tr>
 
@@ -248,6 +255,20 @@
 </template>
 
 <script>
+
+// adding variables that will be changed after pulling from backend
+export default {
+    data() {
+        return {
+            // variables 
+            nameOne: 'iLoveCooking124',
+            nameTwo: 'ChefAlberto',
+            nameThree: 'KingBob'
+        }
+    }
+}
+
+
 // Countdown timer
     // Create a string that sets countdown date to every sunday of the week
     var d = new Date();
