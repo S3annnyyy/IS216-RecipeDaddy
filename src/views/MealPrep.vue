@@ -479,6 +479,19 @@ export default {
             // params is item_index, rm from list
             this.mealPrepIngredientList.splice(item_index, 1)
         },
+        objtoString(instructions) {
+            let final = ""
+            console.log(instructions)
+            for (step of instructions) {
+                final += `${step.description}\n`
+            }
+            return final
+        },
+        nameToNum(name) {
+            if (name == "Breakfast") {return 1}
+            else if (name == "Lunch") {return 2}
+            else {return 3}
+        },
         mealPrepGenerateMealPlan()  {
             // validate Input if empty
             if (this.mealPrepIngredientList.length === 0) {
@@ -532,7 +545,7 @@ export default {
                     schedule += `${key}: ${tOD}, `                   
                 });    
                
-                let finalPrompt = `
+                const userPrompt = `
                     Create ${mealCount} meal recipes using just the following ingredients: ${ingredientsToUse} for ${this.resSean.people} people.
                     Avoid using the following ingredients: ${ingredientsToAvoid}.
                     ${specifiedOnly}.
@@ -549,67 +562,79 @@ export default {
                     Make sure the prompts in the URL are encoded. Don't quote the generated markdown or put any code box around it.
                     Generate the image links, do not use placeholders. Do not send me any additional response other than the output.
                     Remember that the "no_ingredients" field should only contain the ingredients that are not found in the input, rather than the ones to avoid.` 
-                console.log(finalPrompt)
+                console.log(userPrompt)
 
                 // format schema
                 const schema = {
-                "type": "object",
-                "properties": {
-                    "dates": {
-                    "type": "array",
-                    "items": {
-                        "type": "object",
-                        "properties": {
-                        "date": {
-                            "type": "string",
-                            "description": "Date in the format YYYY-MM-DD"
+                type: "object",
+                properties: {
+                    dates: {
+                    type: "array",
+                    items: {
+                        type: "object",
+                        properties: {
+                        date: {
+                            type: "string",
+                            description: "Date in the format YYYY-MM-DD"
                         },
-                        "meals": {
-                            "type": "array",
-                            "items": {
-                            "type": "object",
-                            "properties": {
-                                "mealtime": {
-                                "type": "string",
-                                "description": "Mealtime (e.g., Breakfast, Lunch, Dinner)"
+                        meals: {
+                            type: "array",
+                            items: {
+                            type: "object",
+                            properties: {
+                                mealtime: {
+                                type: "string",
+                                description: "Mealtime (e.g., Breakfast, Lunch, Dinner)"
                                 },
-                                "recipe": {
-                                "type": "object",
-                                "properties": {
-                                    "imageUrl": {
-                                    "type": "string",
-                                    "description": "URL link for the dish image"
+                                recipe: {
+                                type: "object",
+                                properties: {
+                                    imageUrl: {
+                                    type: "string",
+                                    description: "URL link for the dish image"
                                     },
-                                    "dish": {
-                                    "type": "string",
-                                    "description": "Descriptive title of the dish"
+                                    dish: {
+                                    type: "string",
+                                    description: "Descriptive title of the dish"
                                     },
-                                    "have_ingredients": {
-                                    "type": "object",
-                                    "properties": {
-                                        "type": "string",
-                                        "description": "Object of ingredients with name as key and quantity+unit as string value that are found in the input"
-                                        }
-                                    },
-                                    "no_ingredients": {
-                                    "type": "object",
-                                    "properties": {
-                                        "type": "string",
-                                        "description": "Object of ingredients with name as key and quantity+unit as string value that are not found in the input"
-                                        }
-                                    },
-                                    "instructions": {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "object",
-                                        "properties": {
-                                        "step": {
-                                            "type": "integer",
-                                            "description": "Step number, numbering from 1"
+                                    have_ingredients: {
+                                    type: "object",
+                                    properties: {
+                                        "ingredient_name_1": {
+                                            type: "string",
+                                            description: "Ingredient quantity & amount based on given input"
                                         },
-                                        "description": {
-                                            "type": "string",
-                                            "description": "Steps to prepare the recipe."
+                                        "ingredient_name_2": {
+                                            type: "string",
+                                            description: "Ingredient quantity & amount based on given input"
+                                        },
+                                    }
+                                    },
+                                    no_ingredients: {
+                                    type: "object",
+                                    properties: {
+                                        "ingredient_name_1": {
+                                            type: "string",
+                                            description: "Ingredient quantity & amount NOT FOUND IN ingredients input but present in recipe"
+                                        },
+                                        "ingredient_name_2": {
+                                            type: "string",
+                                            description: "Ingredient quantity & amount NOT FOUND IN ingredients input but present in recipe"
+                                        },
+                                    }
+                                    },
+                                    instructions: {
+                                    type: "array",
+                                    items: {
+                                        type: "object",
+                                        properties: {
+                                        step: {
+                                            type: "integer",
+                                            description: "Step number, numbering from 1"
+                                        },
+                                        description: {
+                                            type: "string",
+                                            description: "Steps to prepare the recipe."
                                         }
                                         }
                                     }
@@ -623,12 +648,13 @@ export default {
                     }
                     }
                 }
-                }
-
+                };
+                
                 // CALL GPT-305 daVinci endpoint with prompt as body
                 const URL = "http://127.0.0.1:8000/get-ai-prompt"
-                axios.post(URL, {finalPrompt, schema})
-                .then((res) => {            
+                axios.post(URL, {userPrompt, schema})
+                .then((res) => {
+                    console.log(res)            
                     let aiResponse = JSON.parse(res.data.generated_text)
                     console.log(aiResponse)
                     console.log(typeof aiResponse)
