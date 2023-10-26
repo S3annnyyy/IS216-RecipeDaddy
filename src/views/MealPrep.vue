@@ -514,7 +514,7 @@ export default {
 
                 console.log(this.resSean);
 
-                // 
+            
             }           
         },
         
