@@ -482,7 +482,7 @@ export default {
         objtoString(instructions) {
             let final = ""
             console.log(instructions)
-            for (step of instructions) {
+            for (const step of instructions) {
                 final += `${step.description}\n`
             }
             return final
@@ -492,7 +492,7 @@ export default {
             else if (name == "Lunch") {return 2}
             else {return 3}
         },
-        mealPrepGenerateMealPlan()  {
+        async mealPrepGenerateMealPlan()  {
             // validate Input if empty
             if (this.mealPrepIngredientList.length === 0) {
                 alert("List cannot be empty")
@@ -652,50 +652,55 @@ export default {
                 
                 // CALL GPT-305 daVinci endpoint with prompt as body
                 const URL = "http://127.0.0.1:8000/get-ai-prompt"
-                axios.post(URL, {userPrompt, schema})
+                await axios.post(URL, {userPrompt, schema})
                 .then((res) => {
                     console.log(res)            
-                    let aiResponse = JSON.parse(res.data.generated_text)
+                    var aiResponse = JSON.parse(res.data.generated_text)
                     console.log(aiResponse)
                     console.log(typeof aiResponse)
                     
                     var output = []
-                    for (dateObj of aiResponse.dates)  {                                 
+                    console.log(aiResponse.dates)
+
+                    for (let dateObj of aiResponse.dates)  {                                 
                     // access object of dates and meals
+                    console.log(dateObj)
                     var scheduleDate = dateObj.date
                                     
-                    // loop through mealprep meals
-                    for (individualMeal of dateObj.meals) {
-                        // change Breakfast/Lunch/Dinner to numbers
-                        const mealTimeNum = nameToNum(individualMeal.mealtime)                    
+                        // loop through mealprep meals
+                        for (let individualMeal of dateObj.meals) {
+                            // change Breakfast/Lunch/Dinner to numbers
+                            const mealTimeNum = this.nameToNum(individualMeal.mealtime)  
+                            console.log(individualMeal)                  
 
-                        // access generated recipe
-                        let generatedRecipe = individualMeal.recipe
-                        
-                        const imgUrl = generatedRecipe.imageUrl // string
-                        const h_ingre = generatedRecipe.have_ingredients // object
-                        const n_ingre = generatedRecipe.no_ingredients // object
-                        const recipeTitle = generatedRecipe.dish // string                
-                        const steps = generatedRecipe.instructions // DO NOT TOUCH
-                        const fSteps = objtoString(steps) // string
-                        
-                        // CREATE INSTANCE
-                        var instance = {
-                        "user": 1, // TODO
-                        "meal_date": scheduleDate,
-                        "meal_type": mealTimeNum,
-                        "recipe_name": recipeTitle,
-                        "have_ingredients": h_ingre,
-                        "no_ingredients": n_ingre,
-                        "preparation_steps": fSteps,
-                        "canMake": false,
-                        "isCompleted": false,
-                        "image_url": imgUrl
-                        }       
+                            // access generated recipe
+                            let generatedRecipe = individualMeal.recipe
+                            
+                            const imgUrl = generatedRecipe.imageUrl // string
+                            const h_ingre = generatedRecipe.have_ingredients // object
+                            const n_ingre = generatedRecipe.no_ingredients // object
+                            const recipeTitle = generatedRecipe.dish // string                
+                            const steps = generatedRecipe.instructions // DO NOT TOUCH
+                            const fSteps = this.objtoString(steps) // string
+                            console.log(imgUrl, recipeTitle, fSteps, h_ingre, n_ingre)
+                            
+                            // CREATE INSTANCE
+                            var instance = {
+                            "user": 1, // TODO
+                            "meal_date": scheduleDate,
+                            "meal_type": mealTimeNum,
+                            "recipe_name": recipeTitle,
+                            "have_ingredients": h_ingre,
+                            "no_ingredients": n_ingre,
+                            "preparation_steps": fSteps,
+                            "canMake": false,
+                            "isCompleted": false,
+                            "image_url": imgUrl
+                            }       
 
-                        // ADD TO INSTANCE
-                        output.push(instance)
-                    }
+                            // ADD TO INSTANCE
+                            output.push(instance)
+                        }
                     }
                     console.log(output) 
 
