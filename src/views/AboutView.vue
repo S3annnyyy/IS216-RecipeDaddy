@@ -62,7 +62,7 @@ const props = defineProps(); // Define props
       <div class="container mx-0 p-0">
         <div class="row">
           <div class="col-md-8 p-0">
-            <div class="image-container">
+            <div class="image-container d-none d-md-block">
               <img :src="WasteSVG" alt="Waste Icon" />
             </div>
           </div>
@@ -75,24 +75,56 @@ const props = defineProps(); // Define props
                     <h1 style="font-size: 75px;width: 100%;">THE PROBLEM</h1>
                   </div>
                 </div>
+                <!-- Item 1 -->
                 <div class="row mt-5">
                   <h2 class="col" style="font-size: 50px;font-weight: 900;">
                     20%
                   </h2>
                   <div class="col">
                     Increase in food waste generation over the past decade
+                    asdas
                   </div>
                 </div>
+                <!-- Item 2 -->
+                <div class="row mt-5">
+                  <h2 class="col" style="font-size: 50px;font-weight: 900;">
+                    744
+                  </h2>
+                  <div class="col">
+                    Kg of food wasted in 2019 alone
+                  </div>
+                </div>
+                <!-- Item 3 -->
+                <div class="row mt-5">
+                  <h2 class="col" style="font-size: 50px;font-weight: 900;">
+                    144 
+                  </h2>
+                  <div class="col">
+                    kg of food waste per capita.
+                  </div>
+                </div>
+
+                <!-- Item 4 -->
+                <div class="row mt-5">
+                  <h2 class="col" style="font-size: 50px;font-weight: 900;">
+                    342
+                  </h2>
+                  <div class="col">
+                    Million dollars lost through food waste
+                  </div>
+                </div>
+                <!-- Item 5 -->
+                <div class="row mt-5">
+                  <h2 class="col" style="font-size: 50px;font-weight: 900;">
+                    40% 
+                  </h2>
+                  <div class="col">
+                    of food waste was still fit for consumption
+                  </div>
+                </div>
+
               </div>
 
-              <div class="row mt-5">
-                <h2 class="col" style="font-size: 50px;font-weight: 900;">
-                  744m
-                </h2>
-                <div class="col">
-                  Kg of food wasted in 2019 alone
-                </div>
-              </div>
 
             </div>
           </div>
