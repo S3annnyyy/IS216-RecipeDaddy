@@ -500,6 +500,21 @@ export default {
         );
         if (Object.keys(formattedItemObject).length === 0) {return null} else {return formattedItemObject}
         },
+        convertDate(inputDate) {
+            // THIS FUNCTION CONVERTS ANY DATE STRING TO YYYY-MM-DD format 
+            var parsedDate = new Date(inputDate); // try convert date
+
+            if (!isNaN(parsedDate.getTime())) { // validation
+                // Extract the year, month, and day components
+                var year = parsedDate.getFullYear();
+                var month = String(parsedDate.getMonth() + 1).padStart(2, '0'); 
+                var day = String(parsedDate.getDate()).padStart(2, '0');
+
+                return  year + '-' + month + '-' + day;
+            } else {
+            return "2023-27-10";  // Handle the case where the input date is not in a parseable format
+            }
+        },  
         ////// END OF HELPER FUNCTIONS ////////
         async mealPrepGenerateMealPlan()  {
             // validate Input if empty
@@ -678,7 +693,7 @@ export default {
                     for (let dateObj of aiResponse.dates)  {                                 
                     // access object of dates and meals
                     console.log(dateObj)
-                    var scheduleDate = dateObj.date
+                    var scheduleDate = this.convertDate(dateObj.date)
                                     
                         // loop through mealprep meals
                         for (let individualMeal of dateObj.meals) {

@@ -73,8 +73,23 @@ export default {
             else if (tOD === "Lunch") {return 2}
             else {return 3}
         },
+        convertDate(inputDate) {
+            // THIS FUNCTION CONVERTS ANY DATE STRING TO YYYY-MM-DD format 
+            var parsedDate = new Date(inputDate); // try convert date
+
+            if (!isNaN(parsedDate.getTime())) { // validation
+                // Extract the year, month, and day components
+                var year = parsedDate.getFullYear();
+                var month = String(parsedDate.getMonth() + 1).padStart(2, '0'); 
+                var day = String(parsedDate.getDate()).padStart(2, '0');
+
+                return  year + '-' + month + '-' + day;
+            } else {
+            return "2023-27-10";  // Handle the case where the input date is not in a parseable format
+            }
+        },  
         addToSchedule() {
-            console.log(`Submitted! Selected date is ${this.inputDate}`);
+            console.log(`Submitted! Selected date is ${this.convertDate(this.inputDate)}`);
             
             // send to mealSchedule page as props 
             this.$router.push({ name: 'mealschedule', query: { data: JSON.stringify(this.data) } });
@@ -93,7 +108,7 @@ export default {
             // missing adding image url #TODO
             let jsonSubmissionTemplate = {
                 "id": 66, // MISSING ID FUNCTION #TODO
-                "meal_date": this.inputDate,
+                "meal_date": this.convertDate(this.inputDate),
                 "meal_type": this.convertToNum(this.timeOfDay), // convert timeofday to numbers
                 "recipe_name": this.placeholder.adhocRecipe.recipeTitle,
                 "have_ingredients": ingredientObject,
