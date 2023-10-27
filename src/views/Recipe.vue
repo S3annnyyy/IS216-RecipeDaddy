@@ -179,6 +179,7 @@ export default {
 
         axios.post(URL, {userPrompt, schema})
         .then((res) => {   
+            console.log(typeof res);
             let aiResponse = JSON.parse(res.data.generated_text)
             console.log(aiResponse)
             console.log(typeof aiResponse)
@@ -193,6 +194,7 @@ export default {
             this.placeholder.adhocRecipe.steps = aiResponse.instructions
 
             // initialize recipe image
+            console.log(aiResponse.imageUrl);
             this.placeholder.adhocRecipe.recipeImg = aiResponse.imageUrl
         })
         .catch((err) => {

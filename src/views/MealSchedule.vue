@@ -210,21 +210,21 @@
         </div>
     </div>
 
-    <main class="row w-85 py-5 mb-5" id="food-section">
+    <!-- <main class="row w-85 py-5 mb-5" id="food-section">
         <div class="col card breakfast" v-if="mealSchedule.breakfast">
             <h3 class="card-title text-left">Breakfast</h3>
             <img src="../assets/pancakes.jpg" alt="Breakfast" class="card-img-top img-fluid">
             <div class="card-body">
                 <div class="card-text breakfast-recipe">Berries Pancake</div>
                 <div class="buttons">
-                    <button class="view-recipe-button">View Recipe</button>
-                    <!-- TO DO: add logic to redirect to recipe -->
-                    <!-- <router-link
+                    <button class="view-recipe-button">View Recipe</button> -->
+    <!-- TO DO: add logic to redirect to recipe -->
+    <!-- <router-link
             :to="{ name: 'recipeSearch', params: { mealType: 'dinner' } }"
             class="view-recipe-button">
             View Recipe
           </router-link> -->
-                    <button class="replace-button">Replace</button>
+    <!-- <button class="replace-button">Replace</button>
                     <button class="delete-button">Delete</button>
                 </div>
             </div>
@@ -250,6 +250,22 @@
                     <button class="view-recipe-button">View Recipe</button>
                     <button class="replace-button">Replace</button>
                     <button class="delete-button">Delete</button>
+                </div>
+            </div>
+        </div>
+    </main> -->
+    <main class="row w-85 py-5 mb-5" id="food-section">
+        <div v-if="mealSchedule.receivedData != null">
+            <div class="col card" v-for="(meal, index) in mealSchedule.receivedData" :key="index">
+                <h3 class="card-title text-left">{{ formatMealType(meal.meal_type) }}</h3>
+                <img :src="extractLinkFromParentheses(meal.image_url)" alt="Meal" class="card-img-top img-fluid">
+                <div class="card-body">
+                    <div class="card-text">{{ meal.recipe_name }}</div>
+                    <div class="buttons">
+                        <button class="view-recipe-button" @click="viewRecipe(meal)">View Recipe</button>
+                        <button class="replace-button" @click="replaceMeal(meal)">Replace</button>
+                        <button class="delete-button" @click="deleteMeal(meal)">Delete</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -421,7 +437,7 @@ export default {
                         .then((mealResponse) => {
                             console.log(mealResponse.data);
                             // Assuming you want to do something with the meal data
-                            // this.mealSchedule.receivedData = mealResponse.data;
+                            this.mealSchedule.receivedData = mealResponse.data;
                         })
                         .catch((mealError) => {
                             console.error('Error fetching meal schedule:', mealError);
@@ -431,6 +447,31 @@ export default {
                     // Request for token failed
                     console.error('Error fetching token:', error);
                 });
+        },
+        formatMealType(num) {
+            if (num == "1") {
+                return "Breakfast"
+            } else if (num == "2") {
+                return "Lunch"
+            } else if (num == "3") {
+                return "Dinner"
+            }
+        },
+        extractLinkFromParentheses(input) {
+            // Define a regular expression to match the link inside parentheses
+            const regex = /\((.*?)\)/;
+
+            // Use the regular expression to extract the link
+            const match = regex.exec(input);
+
+            // Check if a match is found
+            if (match && match.length > 1) {
+                // The link will be in match[1]
+                return match[1];
+            } else {
+                // No match found
+                return null;
+            }
         }
 
     },
