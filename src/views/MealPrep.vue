@@ -530,12 +530,27 @@ export default {
             else { return 3 }
         },
         formatIngredientList(itemObject) {
-            const formattedItemObject = Object.fromEntries(itemObject
-                .filter(item => item.amount !== "")  // Remove items with empty amount
-                .map(item => [item.ingredient_name, item.amount]) // map to name: amount
-            );
-            if (Object.keys(formattedItemObject).length === 0) { return null } else { return formattedItemObject }
+        const formattedItemObject = Object.fromEntries(itemObject
+            .filter(item => item.amount !== "")  // Remove items with empty amount
+            .map(item => [item.ingredient_name, item.amount]) // map to name: amount
+        );
+        if (Object.keys(formattedItemObject).length === 0) {return null} else {return formattedItemObject}
         },
+        convertDate(inputDate) {
+            // THIS FUNCTION CONVERTS ANY DATE STRING TO YYYY-MM-DD format 
+            var parsedDate = new Date(inputDate); // try convert date
+
+            if (!isNaN(parsedDate.getTime())) { // validation
+                // Extract the year, month, and day components
+                var year = parsedDate.getFullYear();
+                var month = String(parsedDate.getMonth() + 1).padStart(2, '0'); 
+                var day = String(parsedDate.getDate()).padStart(2, '0');
+
+                return  year + '-' + month + '-' + day;
+            } else {
+            return "2023-27-10";  // Handle the case where the input date is not in a parseable format
+            }
+        },  
         ////// END OF HELPER FUNCTIONS ////////
         async mealPrepGenerateMealPlan() {
 
@@ -714,16 +729,16 @@ export default {
                         var output = []
                         console.log(aiResponse.dates)
 
-                        for (let dateObj of aiResponse.dates) {
-                            // access object of dates and meals
-                            console.log(dateObj)
-                            var scheduleDate = dateObj.date
-
-                            // loop through mealprep meals
-                            for (let individualMeal of dateObj.meals) {
-                                // change Breakfast/Lunch/Dinner to numbers
-                                const mealTimeNum = this.nameToNum(individualMeal.mealtime)
-                                console.log(individualMeal)
+                    for (let dateObj of aiResponse.dates)  {                                 
+                    // access object of dates and meals
+                    console.log(dateObj)
+                    var scheduleDate = this.convertDate(dateObj.date)
+                                    
+                        // loop through mealprep meals
+                        for (let individualMeal of dateObj.meals) {
+                            // change Breakfast/Lunch/Dinner to numbers
+                            const mealTimeNum = this.nameToNum(individualMeal.mealtime)  
+                            console.log(individualMeal)                  
 
                                 // access generated recipe
                                 let generatedRecipe = individualMeal.recipe

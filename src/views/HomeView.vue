@@ -1,27 +1,31 @@
 <template>
-  <main class="row">
+  <main class="row justify-content-center">
     <div class="video-container">
-      <video src="../assets/video.mp4" muted loop autoplay class="video-obj" id="video-obj"></video>
+      <video src="../assets/video.mp4" muted loop autoplay class="video-obj" id="video-obj"></video>      
+      <div class="video-text">
+        <WordAnimation />
+      </div>       
     </div>
 
     <div class="content-container">
       <div class="target" ref="targetEl">
         <AboutView/>
-
       </div>
       <div class="target2" ref="targetEl2">
         <Footer/>
       </div>
-
     </div>
   </main>
 </template>
 
+
+
 <script setup>
 import { useMotion } from '@vueuse/motion'
-import { ref, computed, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import AboutView from './AboutView.vue'
-import Footer from '../components/Footer.vue';
+import Footer from '../components/Footer.vue'
+import WordAnimation from '../components/WordAnimation.vue'
 
 const template = {
   initial: {
@@ -33,10 +37,10 @@ const template = {
     y: 0,
     transition: {
       delay: 800,
-
     }
   }
 }
+
 const targetEl = ref()
 const targetEl2 = ref()
 
@@ -68,6 +72,16 @@ useMotion(targetEl2, template)
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+.video-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); 
+  color: var(--light);  
+  text-align: center; 
+  width: 100%; 
 }
 
 .content-container {
