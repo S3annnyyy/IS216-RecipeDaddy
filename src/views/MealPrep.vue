@@ -479,6 +479,7 @@ export default {
             // params is item_index, rm from list
             this.mealPrepIngredientList.splice(item_index, 1)
         },
+        // THESE ARE HELPER FUNCTIONS FOR  mealPrepGenerateMealPlan()
         objtoString(instructions) {
             let final = ""
             console.log(instructions)
@@ -492,6 +493,14 @@ export default {
             else if (name == "Lunch") {return 2}
             else {return 3}
         },
+        formatIngredientList(itemObject) {
+        const formattedItemObject = Object.fromEntries(itemObject
+            .filter(item => item.amount !== "")  // Remove items with empty amount
+            .map(item => [item.ingredient_name, item.amount]) // map to name: amount
+        );
+        if (Object.keys(formattedItemObject).length === 0) {return null} else {return formattedItemObject}
+        },
+        ////// END OF HELPER FUNCTIONS ////////
         async mealPrepGenerateMealPlan()  {
             // validate Input if empty
             if (this.mealPrepIngredientList.length === 0) {
@@ -532,7 +541,7 @@ export default {
                 const specifiedOnly = (this.resSean.cook_with_specified) ? 
                     "You are to cook with only the ingredients listed, do not use any additional in the recipes" 
                     : 
-                    "You can add in additional ingredients to complement the recipes"               
+                    "You are to diversify and create different variety of recipes using additional ingredients to generate the recipes"               
                 let schedule = ""   
                 Object.entries(this.resSean.dates_and_meals).forEach(([key, value]) => {
                     let tOD =""
@@ -546,7 +555,7 @@ export default {
                 });    
                
                 const userPrompt = `
-                    Create ${mealCount} meal recipes using just the following ingredients: ${ingredientsToUse} for ${this.resSean.people} people.
+                    I want you to act as a creative meal preparation chef. Create ${mealCount} meal recipes using just the following ingredients: ${ingredientsToUse} for ${this.resSean.people} people.
                     Avoid using the following ingredients: ${ingredientsToAvoid}.
                     ${specifiedOnly}.
                     Come up with recipes for these dates: ${schedule}
@@ -597,30 +606,36 @@ export default {
                                     type: "string",
                                     description: "Descriptive title of the dish"
                                     },
-                                    have_ingredients: {
-                                    type: "object",
-                                    properties: {
-                                        "ingredient_name_1": {
-                                            type: "string",
-                                            description: "Ingredient quantity & amount based on given input"
+                                    "have_ingredients": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                        "ingredient_name": {
+                                            "type": "string",
+                                            "description": "Name of the ingredient found inside the given input and present in the recipe."
                                         },
-                                        "ingredient_name_2": {
-                                            type: "string",
-                                            description: "Ingredient quantity & amount based on given input"
-                                        },
+                                        "amount": {
+                                            "type": "string",
+                                            "description": "Ingredient amount with unit found inside given input and present in the recipe."
+                                        }
+                                        }
                                     }
                                     },
-                                    no_ingredients: {
-                                    type: "object",
-                                    properties: {
-                                        "ingredient_name_1": {
-                                            type: "string",
-                                            description: "Ingredient quantity & amount NOT FOUND IN ingredients input but present in recipe"
+                                    "no_ingredients": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                        "ingredient_name": {
+                                            "type": "string",
+                                            "description": "Name of the ingredient not found inside the given input but present in the recipe."
                                         },
-                                        "ingredient_name_2": {
-                                            type: "string",
-                                            description: "Ingredient quantity & amount NOT FOUND IN ingredients input but present in recipe"
-                                        },
+                                        "amount": {
+                                            "type": "string",
+                                            "description": "Ingredient amount with unit not found inside given input and present in the recipe."
+                                        }
+                                        }
                                     }
                                     },
                                     instructions: {
@@ -653,12 +668,10 @@ export default {
                 // CALL GPT-305 daVinci endpoint with prompt as body
                 const URL = "http://127.0.0.1:8000/get-ai-prompt"
                 await axios.post(URL, {userPrompt, schema})
-                .then((res) => {
-                    console.log(res)            
+                .then((res) => {                           
                     var aiResponse = JSON.parse(res.data.generated_text)
-                    console.log(aiResponse)
-                    console.log(typeof aiResponse)
-                    
+                    console.log(aiResponse, typeof aiResponse)
+                                        
                     var output = []
                     console.log(aiResponse.dates)
 
@@ -677,8 +690,8 @@ export default {
                             let generatedRecipe = individualMeal.recipe
                             
                             const imgUrl = generatedRecipe.imageUrl // string
-                            const h_ingre = generatedRecipe.have_ingredients // object
-                            const n_ingre = generatedRecipe.no_ingredients // object
+                            const h_ingre = this.formatIngredientList(generatedRecipe.have_ingredients) // objects
+                            const n_ingre = this.formatIngredientList(generatedRecipe.no_ingredients) // objects
                             const recipeTitle = generatedRecipe.dish // string                
                             const steps = generatedRecipe.instructions // DO NOT TOUCH
                             const fSteps = this.objtoString(steps) // string
