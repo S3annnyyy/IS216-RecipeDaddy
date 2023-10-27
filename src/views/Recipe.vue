@@ -97,12 +97,12 @@ export default {
             // format data 
             // concatenate alll the steps with \n
             let prepStepsConcat = ""
-            for (step in this.placeholder.adhocRecipe.steps) {
+            for (let step in this.placeholder.adhocRecipe.steps) {
                 prepSteps += `${step.description}\n`
             }
             // add all ingredients inside an object
             let ingredientObject = {};
-            for (item in this.placeholder.adhocRecipe.ingredients) {
+            for (let item in this.placeholder.adhocRecipe.ingredients) {
                 ingredientObject[item] = "1EA" 
             }
             // missing adding image url #TODO
