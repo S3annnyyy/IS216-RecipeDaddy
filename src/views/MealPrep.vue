@@ -11,7 +11,7 @@
         </div>
 
         <div v-else class="row">
-            
+
             <h1 class="text-center" style="margin-top: 5%;">Questionnaire</h1>
             <form action="#" class="was-validated col-12">
                 <!-- enter meal parameters -->
@@ -35,43 +35,57 @@
                         <!-- <input v-model="days" @change="addDay" class="form-control" type="number" min="1" max="5" id="days" placeholder="Number of days" required> -->
                         <div class="valid-feedback">Valid. Thanks!</div>
                         <div class="invalid-feedback">Minimum 0, Maximum 5</div>
-                    </div>  
-                    
+                    </div>
+
                     <!-- Schedule -->
                     <div class="row d-flex justify-content-center">
                         <!-- Each Col holds one day -->
                         <div v-if="days > 0" class="col-lg-2 col-md-4 col-sm-7">
                             <div class="card shadow-sm text-center" style="margin-top: 3%;">
                                 <div class="card-body ">
-                                    <input v-model="enteredStartDate" @change="setDate" type="date" class="sameSize spacing form-control" style="height:30px; margin-left: auto; margin-right: auto;" required>
+                                    <input v-model="enteredStartDate" @change="setDate" type="date"
+                                        class="sameSize spacing form-control"
+                                        style="height:30px; margin-left: auto; margin-right: auto;" required>
                                     <br>
                                     <!-- breakfast -->
                                     <div v-if="enteredStartDate == ''">
-                                        <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[0] + ' 1'" autocomplete="off" disabled>
-                                        <label class="btn btn-outline-primary spacing sameSize" :for="mealDates[0] + ' 1'">Breakfast</label><br>
+                                        <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[0] + ' 1'"
+                                            autocomplete="off" disabled>
+                                        <label class="btn btn-outline-primary spacing sameSize"
+                                            :for="mealDates[0] + ' 1'">Breakfast</label><br>
                                     </div>
                                     <div v-else>
-                                        <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[0] + ' 1'" autocomplete="off">
-                                        <label class="btn btn-outline-primary spacing sameSize" :for="mealDates[0] + ' 1'">Breakfast</label><br>
+                                        <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[0] + ' 1'"
+                                            autocomplete="off">
+                                        <label class="btn btn-outline-primary spacing sameSize"
+                                            :for="mealDates[0] + ' 1'">Breakfast</label><br>
                                     </div>
 
                                     <!-- lunch -->
                                     <div v-if="enteredStartDate == ''">
-                                        <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[0] + ' 2'" autocomplete="off" disabled>
-                                        <label class="btn btn-outline-primary spacing sameSize" :for="mealDates[0] + ' 2'">Lunch</label><br>
+                                        <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[0] + ' 2'"
+                                            autocomplete="off" disabled>
+                                        <label class="btn btn-outline-primary spacing sameSize"
+                                            :for="mealDates[0] + ' 2'">Lunch</label><br>
                                     </div>
                                     <div v-else>
-                                        <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[0] + ' 2'" autocomplete="off">
-                                        <label class="btn btn-outline-primary spacing sameSize" :for="mealDates[0] + ' 2'">Lunch</label><br>
+                                        <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[0] + ' 2'"
+                                            autocomplete="off">
+                                        <label class="btn btn-outline-primary spacing sameSize"
+                                            :for="mealDates[0] + ' 2'">Lunch</label><br>
                                     </div>
                                     <!-- dinner -->
                                     <div v-if="enteredStartDate == ''">
-                                        <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[0] + ' 3'" autocomplete="off" disabled>
-                                        <label class="btn btn-outline-primary spacing sameSize" :for="mealDates[0] + ' 3'">Dinner</label><br>
+                                        <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[0] + ' 3'"
+                                            autocomplete="off" disabled>
+                                        <label class="btn btn-outline-primary spacing sameSize"
+                                            :for="mealDates[0] + ' 3'">Dinner</label><br>
                                     </div>
                                     <div v-else>
-                                        <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[0] + ' 3'" autocomplete="off">
-                                        <label class="btn btn-outline-primary spacing sameSize" :for="mealDates[0] + ' 3'">Dinner</label><br>
+                                        <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[0] + ' 3'"
+                                            autocomplete="off">
+                                        <label class="btn btn-outline-primary spacing sameSize"
+                                            :for="mealDates[0] + ' 3'">Dinner</label><br>
                                     </div>
                                 </div>
                             </div>
@@ -81,41 +95,54 @@
                         <div v-for="(day, ind) in dayArr" class="col-lg-2 col-md-4 col-sm-7">
                             <div class="card shadow-sm" style="margin-top: 3%;">
                                 <div class="card-body text-center">
-                                    <input type="text" class="spacing sameSize sameHeight form-control" disabled :value="mealDates[ind + 1]" style="margin-left: auto; margin-right: auto;" required>
+                                    <input type="text" class="spacing sameSize sameHeight form-control" disabled
+                                        :value="mealDates[ind + 1]" style="margin-left: auto; margin-right: auto;" required>
                                     <br>
                                     <!-- breakfast -->
                                     <div v-if="enteredStartDate == ''">
-                                        <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[ind + 1] + ' 1'" autocomplete="off" disabled>
-                                        <label class="btn btn-outline-primary spacing sameSize" :for="mealDates[ind + 1] + ' 1'">Breakfast</label><br>
+                                        <input @click="addMeal" type="checkbox" class="btn-check"
+                                            :id="mealDates[ind + 1] + ' 1'" autocomplete="off" disabled>
+                                        <label class="btn btn-outline-primary spacing sameSize"
+                                            :for="mealDates[ind + 1] + ' 1'">Breakfast</label><br>
                                     </div>
                                     <div v-else>
-                                        <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[ind + 1] + ' 1'" autocomplete="off">
-                                        <label class="btn btn-outline-primary spacing sameSize" :for="mealDates[ind + 1] + ' 1'">Breakfast</label><br>
+                                        <input @click="addMeal" type="checkbox" class="btn-check"
+                                            :id="mealDates[ind + 1] + ' 1'" autocomplete="off">
+                                        <label class="btn btn-outline-primary spacing sameSize"
+                                            :for="mealDates[ind + 1] + ' 1'">Breakfast</label><br>
                                     </div>
                                     <!-- lunch -->
                                     <div v-if="enteredStartDate == ''">
-                                        <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[ind + 1] + ' 2'" autocomplete="off" disabled>
-                                        <label class="btn btn-outline-primary spacing sameSize" :for="mealDates[ind + 1] + ' 2'">Lunch</label><br>
+                                        <input @click="addMeal" type="checkbox" class="btn-check"
+                                            :id="mealDates[ind + 1] + ' 2'" autocomplete="off" disabled>
+                                        <label class="btn btn-outline-primary spacing sameSize"
+                                            :for="mealDates[ind + 1] + ' 2'">Lunch</label><br>
                                     </div>
                                     <div v-else>
-                                        <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[ind + 1] + ' 2'" autocomplete="off">
-                                        <label class="btn btn-outline-primary spacing sameSize" :for="mealDates[ind + 1] + ' 2'">Lunch</label><br>
+                                        <input @click="addMeal" type="checkbox" class="btn-check"
+                                            :id="mealDates[ind + 1] + ' 2'" autocomplete="off">
+                                        <label class="btn btn-outline-primary spacing sameSize"
+                                            :for="mealDates[ind + 1] + ' 2'">Lunch</label><br>
                                     </div>
                                     <!-- dinner -->
                                     <div v-if="enteredStartDate == ''">
-                                        <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[ind + 1] + ' 3'" autocomplete="off" disabled>
-                                        <label class="btn btn-outline-primary spacing sameSize" :for="mealDates[ind + 1] + ' 3'">Dinner</label><br>
+                                        <input @click="addMeal" type="checkbox" class="btn-check"
+                                            :id="mealDates[ind + 1] + ' 3'" autocomplete="off" disabled>
+                                        <label class="btn btn-outline-primary spacing sameSize"
+                                            :for="mealDates[ind + 1] + ' 3'">Dinner</label><br>
                                     </div>
                                     <div v-else>
-                                        <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[ind + 1] + ' 3'" autocomplete="off">
-                                        <label class="btn btn-outline-primary spacing sameSize" :for="mealDates[ind + 1] + ' 3'">Dinner</label><br>
+                                        <input @click="addMeal" type="checkbox" class="btn-check"
+                                            :id="mealDates[ind + 1] + ' 3'" autocomplete="off">
+                                        <label class="btn btn-outline-primary spacing sameSize"
+                                            :for="mealDates[ind + 1] + ' 3'">Dinner</label><br>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <!-- submit button -->
-                    <div v-if="mealValidation" @click="submitClick" class="d-flex justify-content-center col-4 mt-3 mb-3" >
+                    <div v-if="mealValidation" @click="submitClick" class="d-flex justify-content-center col-4 mt-3 mb-3">
                         <button class="btn btn-primary" type="button">Continue!</button>
                     </div>
                 </div>
@@ -130,15 +157,16 @@
             <div class="col-xl-8 col-lg-8 col-md-8 col-sm-10">
                 <h1 class="text-center">Please Enter Ingredients to avoid!</h1>
                 <div class="input-group input-group-lg search-bar">
-                    <input type="text" class="form-control" placeholder="Enter ingredients you would like to avoid!" v-model="avoidInput" @keydown.enter="handleEnter">
-                    <button class="btn submit-button" type="submit" @click="submitClick2" aria-expanded="false">                   
+                    <input type="text" class="form-control" placeholder="Enter ingredients you would like to avoid!"
+                        v-model="avoidInput" @keydown.enter="handleEnter">
+                    <button class="btn submit-button" type="submit" @click="submitClick2" aria-expanded="false">
                         <span class="submit-button-content">
                             <svg width="32" height="32" viewBox="0 0 24 24" class="arrow">
                                 <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2 .01 7z" />
                             </svg>
                         </span>
                     </button>
-                    <button type="button" class="btn submit-button2"  @click="submitClick2">Create Recipe</button>
+                    <button type="button" class="btn submit-button2" @click="submitClick2">Create Recipe</button>
                 </div>
                 <div class="list-wrapper">
                     <ul class="list-container-toAvoid">
@@ -154,56 +182,65 @@
     <!-- Page Three: Ingredients to cook with -->
 
     <div v-if="pageThreeValidation">
-        <main class="row justify-content-center align-items-center" style="height: 92vh;">        
-        <div class="col-xl-6 col-l-6 col-md-6 col-sm-12 mealPrepIngredient-list-LHS">
-            <div class="container-fluid mealPrepIngredient-list-box position-relative">
-                <div class="row title">
-                    <div class="col-12">
-                        <h3>Ingredient List:</h3>
+        <main class="row justify-content-center align-items-center" style="height: 92vh;">
+            <div class="col-xl-6 col-l-6 col-md-6 col-sm-12 mealPrepIngredient-list-LHS">
+                <div class="container-fluid mealPrepIngredient-list-box position-relative">
+                    <div class="row title">
+                        <div class="col-12">
+                            <h3>Ingredient List:</h3>
+                        </div>
                     </div>
-                </div>
-                <div class="row ingredients-list-wrapper">
-                    <div class="col-10">
-                        <ol class="list-container">
-                            <li v-for="(item, index) in mealPrepIngredientList" :key="index" class="ingredients ">
-                                <div class="mealPrepItem-content">
-                                    <span>{{ index + 1 }}. {{ item }}</span>
-                                    <span class="material-icons-outlined" @click="mealPrepRemoveItem(index)">close</span>
-                                </div>                  
-                            </li>
-                        </ol>  
-                    </div>                  
-                </div>                
-                <button class=" position-absolute bottom-0 end-0 m-4 mealPrepSubmit-meal-plan-btn" @click="mealPrepGenerateMealPlan">Generate meal plan</button>                
-            </div>
-        </div>
-        
-               
-        <div class="col-xl-6 col-l-6 col-md-6 col-sm-12 search-bar-RHS">
-            <div class="container-fluid">
-                <div class="row justify-content-center">
-                    <div class="col-xxl-10 col-xl-10 col-l-12 col-md-12 col-sm-12 text-center">
-                        <div class="input-group input-group-md mealPrepSearch-bar-content">
-                            <input type="text" class="form-control mealPrepIngredient" placeholder="Enter ingredient, unit & amount and press enter!" @keydown.enter="mealPrepHandleSubmit" v-model="mealPrepSearchInput">
-                            
-                            <input type="number" class="form-control amount" placeholder="Amount" v-model="mealPrepSelectedAmount" v-on:change="mealPrepHandleAmount">
-
-                            <button class="btn dropdown-toggle unit" type="button" data-bs-toggle="dropdown" aria-expanded="false">{{ mealPrepSelectedUnit }}</button>   
-                            <ol class="dropdown-menu">
-                                <li v-for="unit in mealPrepInputUnits" :key="unit" class="dropdown-item" @click="mealPrepHandleUnit(unit)">{{ unit }}</li>
+                    <div class="row ingredients-list-wrapper">
+                        <div class="col-10">
+                            <ol class="list-container">
+                                <li v-for="(item, index) in mealPrepIngredientList" :key="index" class="ingredients ">
+                                    <div class="mealPrepItem-content">
+                                        <span>{{ index + 1 }}. {{ item }}</span>
+                                        <span class="material-icons-outlined"
+                                            @click="mealPrepRemoveItem(index)">close</span>
+                                    </div>
+                                </li>
                             </ol>
-                        </div>                       
+                        </div>
                     </div>
-                    <div class="form-check col-xxl-10 col-xl-10 col-l-12 col-md-12 col-sm-12" style="padding-left: 2.7rem; padding-top: 0.5rem;">
-                        <input @change="limitIngredient" class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                        <label class="form-check-label" for="flexCheckDefault" style="font-size: small;">
-                            Only specified ingredients
-                        </label>
-                    </div>    
+                    <button class=" position-absolute bottom-0 end-0 m-4 mealPrepSubmit-meal-plan-btn"
+                        @click="mealPrepGenerateMealPlan">Generate meal plan</button>
                 </div>
-            </div>           
-        </div>
-    </main>
+            </div>
+
+
+            <div class="col-xl-6 col-l-6 col-md-6 col-sm-12 search-bar-RHS">
+                <div class="container-fluid">
+                    <div class="row justify-content-center">
+                        <div class="col-xxl-10 col-xl-10 col-l-12 col-md-12 col-sm-12 text-center">
+                            <div class="input-group input-group-md mealPrepSearch-bar-content">
+                                <input type="text" class="form-control mealPrepIngredient"
+                                    placeholder="Enter ingredient, unit & amount and press enter!"
+                                    @keydown.enter="mealPrepHandleSubmit" v-model="mealPrepSearchInput">
+
+                                <input type="number" class="form-control amount" placeholder="Amount"
+                                    v-model="mealPrepSelectedAmount" v-on:change="mealPrepHandleAmount">
+
+                                <button class="btn dropdown-toggle unit" type="button" data-bs-toggle="dropdown"
+                                    aria-expanded="false">{{ mealPrepSelectedUnit }}</button>
+                                <ol class="dropdown-menu">
+                                    <li v-for="unit in mealPrepInputUnits" :key="unit" class="dropdown-item"
+                                        @click="mealPrepHandleUnit(unit)">{{ unit }}</li>
+                                </ol>
+                            </div>
+                        </div>
+                        <div class="form-check col-xxl-10 col-xl-10 col-l-12 col-md-12 col-sm-12"
+                            style="padding-left: 2.7rem; padding-top: 0.5rem;">
+                            <input @change="limitIngredient" class="form-check-input" type="checkbox" value=""
+                                id="flexCheckDefault">
+                            <label class="form-check-label" for="flexCheckDefault" style="font-size: small;">
+                                Only specified ingredients
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
     </div>
 </template>
 
@@ -269,7 +306,8 @@ export default {
 
             // format startDate
             var parts = this.enteredStartDate.split('-');
-            var formattedStartDate = parts[2] + '/' + parts[1] + '/' + parts[0];
+            var formattedStartDate = parts[0] + '/' + parts[1] + '/' + parts[2];
+            console.log(formattedStartDate);
 
             dateArr.push(formattedStartDate);
 
@@ -277,7 +315,8 @@ export default {
             // Format and push the initial date
             var formattedDay = currentDay < 10 ? '0' + currentDay : currentDay;
             var formattedMonth = currentMonth < 10 ? '0' + currentMonth : currentMonth;
-            var formattedDate = `${formattedDay}/${formattedMonth}/${currentYear}`;
+            var formattedDate = `${currentYear}/${formattedMonth}/${formattedDay}`;
+            console.log(formattedDate);
 
             for (var i = 0; i < 4; i++) {
                 // check if date is the last day of the month
@@ -300,7 +339,7 @@ export default {
                 //format to dd/mm/yyyy
                 formattedDay = currentDay < 10 ? '0' + currentDay : currentDay;
                 formattedMonth = currentMonth < 10 ? '0' + currentMonth : currentMonth;
-                formattedDate = `${formattedDay}/${formattedMonth}/${currentYear}`;
+                formattedDate = `${currentYear}/${formattedMonth}/${formattedDay}`;
                 dateArr.push(formattedDate);
             }
 
@@ -466,12 +505,12 @@ export default {
             }
         },
         mealPrepHandleAmount() {
-            console.log(`${this.mealPrepSelectedAmount} chosen`)            
+            console.log(`${this.mealPrepSelectedAmount} chosen`)
         },
         mealPrepHandleUnit(unit) {
             console.log(`${unit} chosen`)
             this.mealPrepSelectedUnit = unit
-        },  
+        },
         mealPrepRemoveItem(item_index) {
             // params is item_index, rm from list
             this.mealPrepIngredientList.splice(item_index, 1)
@@ -486,19 +525,20 @@ export default {
             return final
         },
         nameToNum(name) {
-            if (name == "Breakfast") {return 1}
-            else if (name == "Lunch") {return 2}
-            else {return 3}
+            if (name == "Breakfast") { return 1 }
+            else if (name == "Lunch") { return 2 }
+            else { return 3 }
         },
         formatIngredientList(itemObject) {
-        const formattedItemObject = Object.fromEntries(itemObject
-            .filter(item => item.amount !== "")  // Remove items with empty amount
-            .map(item => [item.ingredient_name, item.amount]) // map to name: amount
-        );
-        if (Object.keys(formattedItemObject).length === 0) {return null} else {return formattedItemObject}
+            const formattedItemObject = Object.fromEntries(itemObject
+                .filter(item => item.amount !== "")  // Remove items with empty amount
+                .map(item => [item.ingredient_name, item.amount]) // map to name: amount
+            );
+            if (Object.keys(formattedItemObject).length === 0) { return null } else { return formattedItemObject }
         },
         ////// END OF HELPER FUNCTIONS ////////
-        async mealPrepGenerateMealPlan()  {
+        async mealPrepGenerateMealPlan() {
+
             // validate Input if empty
             if (this.mealPrepIngredientList.length === 0) {
                 alert("List cannot be empty")
@@ -516,7 +556,7 @@ export default {
 
                 // num of meals (num of objects in final output obj)
                 var mealCount = 0;
-                for(var i = 0; i < this.mealCountArr.length; i++) {
+                for (var i = 0; i < this.mealCountArr.length; i++) {
                     mealCount += this.mealCountArr[i];
                 }
                 console.log(mealCount);
@@ -535,22 +575,22 @@ export default {
                 // format prompt
                 const ingredientsToAvoid = this.resSean.avoidList.join(", ")
                 const ingredientsToUse = this.resSean.ingredients.join(", ")
-                const specifiedOnly = (this.resSean.cook_with_specified) ? 
-                    "You are to cook with only the ingredients listed, do not use any additional in the recipes" 
-                    : 
-                    "You are to diversify and create different variety of recipes using additional ingredients to generate the recipes"               
-                let schedule = ""   
+                const specifiedOnly = (this.resSean.cook_with_specified) ?
+                    "You are to cook with only the ingredients listed, do not use any additional in the recipes"
+                    :
+                    "You are to diversify and create different variety of recipes using additional ingredients to generate the recipes"
+                let schedule = ""
                 Object.entries(this.resSean.dates_and_meals).forEach(([key, value]) => {
-                    let tOD =""
+                    let tOD = ""
                     for (let num of value) {
                         num = parseInt(num)
-                        if (num == 1) {tOD += "Breakfast, "}
-                        if (num == 2) {tOD += "Lunch, "}
-                        if (num == 3) {tOD += "Dinner, "}
+                        if (num == 1) { tOD += "Breakfast, " }
+                        if (num == 2) { tOD += "Lunch, " }
+                        if (num == 3) { tOD += "Dinner, " }
                     }
-                    schedule += `${key}: ${tOD}, `                   
-                });    
-               
+                    schedule += `${key}: ${tOD}, `
+                });
+
                 const userPrompt = `
                     I want you to act as a creative meal preparation chef. Create ${mealCount} meal recipes using just the following ingredients: ${ingredientsToUse} for ${this.resSean.people} people.
                     Avoid using the following ingredients: ${ingredientsToAvoid}.
@@ -567,184 +607,238 @@ export default {
                     {sceneDetailed}%20{adjective}%20{charactersDetailed}%20{visualStyle}%20{genre}%20{artistReference}
                     Make sure the prompts in the URL are encoded. Don't quote the generated markdown or put any code box around it.
                     Generate the image links, do not use placeholders. Do not send me any additional response other than the output.
-                    Remember that the "no_ingredients" field should only contain the ingredients that are not found in the input, rather than the ones to avoid.` 
+                    Remember that the "no_ingredients" field should only contain the ingredients that are not found in the input, rather than the ones to avoid.`
                 console.log(userPrompt)
 
                 // format schema
                 const schema = {
-                type: "object",
-                properties: {
-                    dates: {
-                    type: "array",
-                    items: {
-                        type: "object",
-                        properties: {
-                        date: {
-                            type: "string",
-                            description: "Date in the format YYYY-MM-DD"
-                        },
-                        meals: {
+                    type: "object",
+                    properties: {
+                        dates: {
                             type: "array",
                             items: {
-                            type: "object",
-                            properties: {
-                                mealtime: {
-                                type: "string",
-                                description: "Mealtime (e.g., Breakfast, Lunch, Dinner)"
-                                },
-                                recipe: {
                                 type: "object",
                                 properties: {
-                                    imageUrl: {
-                                    type: "string",
-                                    description: "URL link for the dish image"
+                                    date: {
+                                        type: "string",
+                                        description: "Date in the format YYYY-MM-DD"
                                     },
-                                    dish: {
-                                    type: "string",
-                                    description: "Descriptive title of the dish"
-                                    },
-                                    "have_ingredients": {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "object",
-                                        "properties": {
-                                        "ingredient_name": {
-                                            "type": "string",
-                                            "description": "Name of the ingredient found inside the given input and present in the recipe."
-                                        },
-                                        "amount": {
-                                            "type": "string",
-                                            "description": "Ingredient amount with unit found inside given input and present in the recipe."
+                                    meals: {
+                                        type: "array",
+                                        items: {
+                                            type: "object",
+                                            properties: {
+                                                mealtime: {
+                                                    type: "string",
+                                                    description: "Mealtime (e.g., Breakfast, Lunch, Dinner)"
+                                                },
+                                                recipe: {
+                                                    type: "object",
+                                                    properties: {
+                                                        imageUrl: {
+                                                            type: "string",
+                                                            description: "URL link for the dish image"
+                                                        },
+                                                        dish: {
+                                                            type: "string",
+                                                            description: "Descriptive title of the dish"
+                                                        },
+                                                        "have_ingredients": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "ingredient_name": {
+                                                                        "type": "string",
+                                                                        "description": "Name of the ingredient found inside the given input and present in the recipe."
+                                                                    },
+                                                                    "amount": {
+                                                                        "type": "string",
+                                                                        "description": "Ingredient amount with unit found inside given input and present in the recipe."
+                                                                    }
+                                                                }
+                                                            }
+                                                        },
+                                                        "no_ingredients": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "ingredient_name": {
+                                                                        "type": "string",
+                                                                        "description": "Name of the ingredient not found inside the given input but present in the recipe."
+                                                                    },
+                                                                    "amount": {
+                                                                        "type": "string",
+                                                                        "description": "Ingredient amount with unit not found inside given input and present in the recipe."
+                                                                    }
+                                                                }
+                                                            }
+                                                        },
+                                                        instructions: {
+                                                            type: "array",
+                                                            items: {
+                                                                type: "object",
+                                                                properties: {
+                                                                    step: {
+                                                                        type: "integer",
+                                                                        description: "Step number, numbering from 1"
+                                                                    },
+                                                                    description: {
+                                                                        type: "string",
+                                                                        description: "Steps to prepare the recipe."
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
                                         }
-                                        }
-                                    }
-                                    },
-                                    "no_ingredients": {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "object",
-                                        "properties": {
-                                        "ingredient_name": {
-                                            "type": "string",
-                                            "description": "Name of the ingredient not found inside the given input but present in the recipe."
-                                        },
-                                        "amount": {
-                                            "type": "string",
-                                            "description": "Ingredient amount with unit not found inside given input and present in the recipe."
-                                        }
-                                        }
-                                    }
-                                    },
-                                    instructions: {
-                                    type: "array",
-                                    items: {
-                                        type: "object",
-                                        properties: {
-                                        step: {
-                                            type: "integer",
-                                            description: "Step number, numbering from 1"
-                                        },
-                                        description: {
-                                            type: "string",
-                                            description: "Steps to prepare the recipe."
-                                        }
-                                        }
-                                    }
                                     }
                                 }
-                                }
-                            }
                             }
                         }
-                        }
                     }
-                    }
-                }
                 };
-                
+
                 // CALL GPT-305 daVinci endpoint with prompt as body
                 const URL = "http://127.0.0.1:8000/get-ai-prompt"
-                await axios.post(URL, {userPrompt, schema})
-                .then((res) => {                           
-                    var aiResponse = JSON.parse(res.data.generated_text)
-                    console.log(aiResponse, typeof aiResponse)
-                                        
-                    var output = []
-                    console.log(aiResponse.dates)
+                await axios.post(URL, { userPrompt, schema })
+                    .then((res) => {
+                        console.log(typeof res.data);
+                        console.log(typeof res);
+                        var aiResponse = JSON.parse(res.data.generated_text)
+                        console.log(aiResponse, typeof aiResponse)
 
-                    for (let dateObj of aiResponse.dates)  {                                 
-                    // access object of dates and meals
-                    console.log(dateObj)
-                    var scheduleDate = dateObj.date
-                                    
-                        // loop through mealprep meals
-                        for (let individualMeal of dateObj.meals) {
-                            // change Breakfast/Lunch/Dinner to numbers
-                            const mealTimeNum = this.nameToNum(individualMeal.mealtime)  
-                            console.log(individualMeal)                  
+                        var output = []
+                        console.log(aiResponse.dates)
 
-                            // access generated recipe
-                            let generatedRecipe = individualMeal.recipe
-                            
-                            const imgUrl = generatedRecipe.imageUrl // string
-                            const h_ingre = this.formatIngredientList(generatedRecipe.have_ingredients) // objects
-                            const n_ingre = this.formatIngredientList(generatedRecipe.no_ingredients) // objects
-                            const recipeTitle = generatedRecipe.dish // string                
-                            const steps = generatedRecipe.instructions // DO NOT TOUCH
-                            const fSteps = this.objtoString(steps) // string
-                            console.log(imgUrl, recipeTitle, fSteps, h_ingre, n_ingre)
-                            
-                            // CREATE INSTANCE
-                            var instance = {
-                            "user": 1, // TODO
-                            "meal_date": scheduleDate,
-                            "meal_type": mealTimeNum,
-                            "recipe_name": recipeTitle,
-                            "have_ingredients": h_ingre,
-                            "no_ingredients": n_ingre,
-                            "preparation_steps": fSteps,
-                            "canMake": false,
-                            "isCompleted": false,
-                            "image_url": imgUrl
-                            }       
+                        for (let dateObj of aiResponse.dates) {
+                            // access object of dates and meals
+                            console.log(dateObj)
+                            var scheduleDate = dateObj.date
 
-                            // ADD TO INSTANCE
-                            output.push(instance)
+                            // loop through mealprep meals
+                            for (let individualMeal of dateObj.meals) {
+                                // change Breakfast/Lunch/Dinner to numbers
+                                const mealTimeNum = this.nameToNum(individualMeal.mealtime)
+                                console.log(individualMeal)
+
+                                // access generated recipe
+                                let generatedRecipe = individualMeal.recipe
+
+                                const imgUrl = generatedRecipe.imageUrl // string
+                                const h_ingre = this.formatIngredientList(generatedRecipe.have_ingredients) // objects
+                                const n_ingre = this.formatIngredientList(generatedRecipe.no_ingredients) // objects
+                                const recipeTitle = generatedRecipe.dish // string                
+                                const steps = generatedRecipe.instructions // DO NOT TOUCH
+                                const fSteps = this.objtoString(steps) // string
+                                console.log(imgUrl, recipeTitle, fSteps, h_ingre, n_ingre)
+
+                                // CREATE INSTANCE
+                                var instance = {
+                                    "user": "wowtest", // TODO
+                                    "meal_date": scheduleDate,
+                                    "meal_type": mealTimeNum,
+                                    "recipe_name": recipeTitle,
+                                    "have_ingredients": h_ingre,
+                                    "no_ingredients": n_ingre,
+                                    "preparation_steps": fSteps,
+                                    "canMake": false,
+                                    "isCompleted": false,
+                                    "image_url": imgUrl
+                                }
+
+                                // ADD TO INSTANCE
+                                output.push(instance)
+                            }
                         }
-                    }
-                    console.log(output) 
+                        console.log(output)
 
-                    // GABRIEL WORK ON IT HERE  
+                        // GABRIEL WORK ON IT HERE  
+                        //redirect to meal prep page
 
-                })
-                .catch((err) => {
-                    console.log(`API Call Not Successful: ${err}`)
-                })
+
+                        this.postToBackend(output);
+
+                        this.$router.push({ name: 'mealschedule', params: { mealPrepOutput: output } })
+
+
+
+                    })
+                    .catch((err) => {
+                        console.log(`API Call Not Successful: ${err}`)
+                    })
             }
         },
+        async postToBackend(output) {
+            try {
+                const email = "wowtest@gmail.com";
+                const password = "wowtest";
+                const baseUrl = "http://127.0.0.1:8000";
+                const requestData = {
+                    email: email,
+                    password: password,
+                };
+
+                // Step 1: Get the access token
+                const tokenResponse = await axios.post(`${baseUrl}/api/token`, requestData);
+                if (!tokenResponse || !tokenResponse.data || !tokenResponse.data.access) {
+                    throw new Error("Access token not received.");
+                }
+
+                const token = tokenResponse.data.access;
+                const config = {
+                    headers: { Authorization: `Bearer ${token}` },
+                };
+
+                // Step 2: Make a POST request with the output data
+                const userMealPlanResponse = await axios.post(`${baseUrl}/user-meal-plan`, output, config);
+
+                if (!userMealPlanResponse || !userMealPlanResponse.data) {
+                    throw new Error("POST request failed.");
+                }
+
+                console.log('Response:', userMealPlanResponse.data);
+            } catch (err) {
+                console.log(`API Call Not Successful: ${err}`);
+            }
+        }
+        ,
+
 
         limitIngredient(event) {
             this.mealPrepLimitIngedient = event.target.checked;
-        }
+        },
+        formatDate(date) {
+            const year = date.getFullYear();
+            const month = (date.getMonth() + 1).toString().padStart(2, '0');
+            const day = date.getDate().toString().padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        },
+
         // end of mealPrepSearch methods 
     }
 }
 
 </script>
 
-<style scoped>  
-    .spacing {
-        margin-bottom:10px;
-    }
-    li{
-        list-style-type: none;
-    }
-    .sameSize {
-        width:90%;
-    }
-    .sameHeight{
-        height:28px;
-    }
+<style scoped>  .spacing {
+      margin-bottom: 10px;
+  }
+
+  li {
+      list-style-type: none;
+  }
+
+  .sameSize {
+      width: 90%;
+  }
+
+  .sameHeight {
+      height: 28px;
+  }
 
   /* ingredientsToAvoid styles */
   .submit-button2 {
@@ -858,107 +952,122 @@ export default {
 
 
 
-    /* mealPrepSearch styles */
-    input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button {  
-        opacity: 1;
-    }
-    
-    .mealPrepIngredient-list-LHS {
-        vertical-align: middle;
-        color: var(--light);
-        .mealPrepIngredient-list-box {
-            background-color: #194252;
-            height: 90vh;
-            /* width: 45vw; */
-            padding: 1rem 2rem;
-            border-radius: 20px;
-        }       
-        .mealPrepItem-content {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-direction: row;
-            margin-bottom: 0.1rem;
+  /* mealPrepSearch styles */
+  input[type=number]::-webkit-inner-spin-button,
+  input[type=number]::-webkit-outer-spin-button {
+      opacity: 1;
+  }
 
-            .material-icons-outlined {
-                background-color: red;
-                cursor: pointer;
-                border-radius: 5px;
-            }
-        }
-        
-        .mealPrepSubmit-meal-plan-btn {
-            background-color: var(--light);
-            border-radius: 50px;
-            box-shadow: 0 4px 2px -2px var(--dark);
-            padding: 1rem;
-            transition: border 0.2s ease-in-out;  
-        }
+  .mealPrepIngredient-list-LHS {
+      vertical-align: middle;
+      color: var(--light);
 
-        .mealPrepSubmit-meal-plan-btn:hover {
-           border: 5px solid green;
-        }
-                
-    }
-    .mealPrepSearch-bar-content {
-        border-radius: 50px;
-        box-shadow: 0 4px 2px -2px var(--text-light-secondary);
-        border: 1px solid #6c757d;
-        .mealPrepSubmit-button2 {
-            display: none;
-        }
-        .mealPrepIngredient {
-            border-radius: 50px;
-        }
-        .amount {
-            max-width: 6vw;
-        } 
-        .unit {
-            max-width:8vw;
-        }       
-    }    
+      .mealPrepIngredient-list-box {
+          background-color: #194252;
+          height: 90vh;
+          /* width: 45vw; */
+          padding: 1rem 2rem;
+          border-radius: 20px;
+      }
 
-    @media (max-width: 700px) {        
-        .mealPrepSearch-bar-content {
-            margin: 1rem 0rem;          
-            display: block;                        
-            border-radius: 10px;
-            box-shadow: none;
-                        
-            .mealPrepIngredient, .amount, .unit {
-                max-width: none;
-                border-radius: 0;
-                width: 100%;                
-                margin-left: 0 !important;    
-                                      
-            }
-            .mealPrepIngredient {
-                border-top-right-radius: 10px !important;
-                border-top-left-radius: 10px !important;
-            }
-            .mealPrepIngredient::placeholder {
-                font-size: 0.7rem;
-                text-align: center;
-            }           
-            .dropdown-menu {
-                width: 100%;
-            }
-            .mealPrepSubmit-button2 {
-                display: block;
-                width: 100%;
-                background-color: #194252;
-                color: var(--light) ;
-                border-top-right-radius: 0 !important;
-                border-bottom-right-radius: 10px !important;
-                border-bottom-left-radius: 10px !important;
-            }
-            .submit-button {
-                display: none;
-            }
-            
-        }
-        
-    }
-    /* END OF MEALPREPSEARCH STYLES */
+      .mealPrepItem-content {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          flex-direction: row;
+          margin-bottom: 0.1rem;
 
+          .material-icons-outlined {
+              background-color: red;
+              cursor: pointer;
+              border-radius: 5px;
+          }
+      }
+
+      .mealPrepSubmit-meal-plan-btn {
+          background-color: var(--light);
+          border-radius: 50px;
+          box-shadow: 0 4px 2px -2px var(--dark);
+          padding: 1rem;
+          transition: border 0.2s ease-in-out;
+      }
+
+      .mealPrepSubmit-meal-plan-btn:hover {
+          border: 5px solid green;
+      }
+
+  }
+
+  .mealPrepSearch-bar-content {
+      border-radius: 50px;
+      box-shadow: 0 4px 2px -2px var(--text-light-secondary);
+      border: 1px solid #6c757d;
+
+      .mealPrepSubmit-button2 {
+          display: none;
+      }
+
+      .mealPrepIngredient {
+          border-radius: 50px;
+      }
+
+      .amount {
+          max-width: 6vw;
+      }
+
+      .unit {
+          max-width: 8vw;
+      }
+  }
+
+  @media (max-width: 700px) {
+      .mealPrepSearch-bar-content {
+          margin: 1rem 0rem;
+          display: block;
+          border-radius: 10px;
+          box-shadow: none;
+
+          .mealPrepIngredient,
+          .amount,
+          .unit {
+              max-width: none;
+              border-radius: 0;
+              width: 100%;
+              margin-left: 0 !important;
+
+          }
+
+          .mealPrepIngredient {
+              border-top-right-radius: 10px !important;
+              border-top-left-radius: 10px !important;
+          }
+
+          .mealPrepIngredient::placeholder {
+              font-size: 0.7rem;
+              text-align: center;
+          }
+
+          .dropdown-menu {
+              width: 100%;
+          }
+
+          .mealPrepSubmit-button2 {
+              display: block;
+              width: 100%;
+              background-color: #194252;
+              color: var(--light);
+              border-top-right-radius: 0 !important;
+              border-bottom-right-radius: 10px !important;
+              border-bottom-left-radius: 10px !important;
+          }
+
+          .submit-button {
+              display: none;
+          }
+
+      }
+
+  }
+
+  /* END OF MEALPREPSEARCH STYLES */
 </style>
