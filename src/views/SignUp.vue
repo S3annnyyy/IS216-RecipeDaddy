@@ -42,7 +42,7 @@
                                         <p><input type="checkbox" id="input-checkbox" @click="handleCheck()"> By creating an account, you agree to the 
                                             <router-link class="terms-conditions" :to="{path: '/PlAcEhOlDeR'}">Terms & Conditions.</router-link>
                                         </p>   
-                                        <p style="color: red;">{{ promptToCheck }}</p>                                     
+                                        <p style="color: red; height: 1rem;">{{ promptToCheck }}</p>                                     
                                     </div>
                                     <div class="form-group">
                                         <button class="signup-button">Create an Account</button>
@@ -123,8 +123,9 @@ export default {
                     // Get authentication token which will then store to localStorage and route user back home
                     let token = this.getAuthToken(this.signUpEmail, this.signUpPw)
                     console.log(token, typeof token) 
-                    // Store localstorage
-                    localStorage.setItem("AuthToken", token)
+                    // Store token and username in session storage
+                    sessionStorage.setItem("AuthToken", token)
+                    sessionStorage.setItem("user", this.username)                    
                     // route user back home + make sure modal is close
                     localStorage.setItem("isModalOpen", false)
                     this.$router.push({path: '/'})                                        
@@ -220,7 +221,8 @@ img {
     flex-direction: column;
     align-items: center;
     width: 100%;
-    height: 100%;   
+    height: 100%;
+    padding: 0 10px;   
     background: var(--text-light-primary);
 }
 
