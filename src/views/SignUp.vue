@@ -125,10 +125,9 @@ export default {
                     console.log(token, typeof token) 
                     // Store localstorage
                     localStorage.setItem("AuthToken", token)
-                    // route user back home
-                    this.$router.push({
-                    path: '/',                    
-                    })                
+                    // route user back home + make sure modal is close
+                    localStorage.setItem("isModalOpen", false)
+                    this.$router.push({path: '/'})                                        
                 })
                 .catch((err) => {
                     console.log(err.response.data)
