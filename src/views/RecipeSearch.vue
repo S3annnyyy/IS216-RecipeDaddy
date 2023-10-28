@@ -93,27 +93,34 @@ export default {
             
         },
         parseDataToRecipePage() {
-            // validate inputs
-            if (this.validateInput()[1]) {
-                let LLM_PROMPT = this.populatePrompt(this.ingredientList, this.selectedCuisine);
-                let recipeObject = {
-                    unique_id: this.uuid, 
-                    cuisine: this.selectedCuisine, 
-                    format: this.selectedInputType, 
-                    prompt: LLM_PROMPT
-                }
-                
-                this.$router.push({
-                    path: `recipesearch/${this.uuid}`,
-                    query: {data: JSON.stringify(recipeObject)}
-                })
+            // check if user is loggedIn by matching token on sessionStorage
+            if (!sessionStorage.getItem("AuthToken")) {
+                alert("Please log in before creating a recipe!")
+                this.$router.push({path: '/'})
             } else {
-                let errors = this.validateInput()[0].join(",\n")
-                alert(errors)
+                // validate inputs
+                if (this.validateInput()[1]) {
+                    let LLM_PROMPT = this.populatePrompt(this.ingredientList, this.selectedCuisine);
+                    let recipeObject = {
+                        unique_id: this.uuid, 
+                        cuisine: this.selectedCuisine, 
+                        format: this.selectedInputType, 
+                        prompt: LLM_PROMPT
+                    }
+                    
+                    this.$router.push({
+                        path: `recipesearch/${this.uuid}`,
+                        query: {data: JSON.stringify(recipeObject)}
+                    })
+                } else {
+                    let errors = this.validateInput()[0].join(",\n")
+                    alert(errors)
+                }
             }
             
         }
-    } 
+    }
+
 };
 </script>
 

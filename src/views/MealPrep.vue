@@ -350,8 +350,14 @@ export default {
     },
     methods: {
         planMeal() {
+            // check if user is loggedIn by matching token on sessionStorage
+            if (!sessionStorage.getItem("AuthToken")) {
+                alert("Please log in before creating a recipe!")
+                this.$router.push({path: '/'})
+            } else {
             // clear contents in #content
             this.planning = true;
+            }
         },
         addDay() {
             this.dayArr = [];
