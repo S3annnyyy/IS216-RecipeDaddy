@@ -100,6 +100,34 @@
     padding: 5px;
     cursor: pointer
 }
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); 
+    backdrop-filter: blur(5px);
+    z-index: 999; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;   
+}
+
+.login-alert {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    z-index: 1000; 
+    text-align: center;
+}
 </style>
 
 <template>
@@ -254,6 +282,12 @@
             </div>
         </div>
     </main>
+    <div v-if="showLoginAlert" class="overlay" @click="routeBackToHome"></div>
+
+    <!-- Login alert -->
+    <div v-if="showLoginAlert" class="login-alert">
+        <p>Please log in first to access this feature.</p>
+    </div>
 </template>
 <script>
 /* questions  = {
@@ -306,7 +340,8 @@ export default {
                 dinner: true,
                 receivedData: null,
 
-            }
+            },
+            showLoginAlert: false,
         };
     },
     computed: {
@@ -431,10 +466,19 @@ export default {
                     // Request for token failed
                     console.error('Error fetching token:', error);
                 });
-        }
-
+        },
+        // THESE FUNCTIONS ARE FOR USER AUTHENITCATION                
+        routeBackToHome() {
+            this.showLoginAlert = false
+            this.$router.push( {path: '/'})
+        },
+        checkUserLoggedIn() {           
+            if (!sessionStorage.getItem("AuthToken")) {this.showLoginAlert = true}               
+        }         
     },
     mounted() {
+        // check if user is loggedIn
+        this.checkUserLoggedIn();
         this.getMealData();
 
     },
