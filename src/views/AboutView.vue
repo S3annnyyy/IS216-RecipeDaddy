@@ -70,9 +70,9 @@ const props = defineProps(); // Define props
             <div class="content p-0">
               <!-- Add your existing content here -->
               <div class="container">
-                <div class="row">
-                  <div class="col">
-                    <h1 style="font-size: 75px;width: 100%;">THE PROBLEM</h1>
+                <div class="row d-flex justify-content-center">
+                  <div class="col-12">
+                    <h1 style="font-size: 4rem;width: 100%;">THE PROBLEM</h1>
                   </div>
                 </div>
                 <!-- Item 1 -->
@@ -137,14 +137,13 @@ const props = defineProps(); // Define props
       <div class="container mt-5 p-3">
         <div class="row" style="flex-wrap: nowrap;">
           <div class="col-md-6 mx-3">
-            <h1 class="p-3" style="font-size: 75px;width: 100%;">OUR MISSION</h1>
+            <h1 class="p-3" style="font-size: 4rem;width: 100%;">Our Mission</h1>
             <p>RecipeDaddy addresses this issue by leveraging generative AI to provide you with creative recipes, ensuring
               that the ingredients are put to good use before they spoil. By doing so, we contribute to the reduction of
               overall food wastage in Singapore, aligning with the United Nations Sustainable Development Goal 12.</p>
           </div>
-          <div class="col-md-6 order-md-12 mt-5" style="margin-left: 50px">
+          <div class="col-md-6 order-md-12 mt-5 d-none d-md-block" style="margin-left: 50px">
             <img :src="unsdgSVG" style="width:fit-content;" alt="UNSDG logo" id="unsdg">
-          
           </div>
         </div>
       </div>
@@ -156,7 +155,7 @@ const props = defineProps(); // Define props
       <div class="container">
         <div class="row">
           <div class="col-md-12">
-            <h1 class="text-center" style="font-size: 60px;margin-top: 60px;">ABOUT US</h1>
+            <h1 class="text-center" style="font-size: 4rem;margin-top: 60px;">About Us</h1>
             <p class="text-center mt-5 mb-5">We are a group of individuals from SMU who are inspired to effect a change in the environment!
               <br>Our main goal is to reduce environmental waste and be greener.</p>
           </div>
@@ -169,14 +168,14 @@ const props = defineProps(); // Define props
       <div class="container pb-5">
         <div class="row pb-5">
           <div class="col-md-12">
-            <h1 class="text-center p-5" style="font-size: 75px;">MEET THE TEAM</h1>
+            <h1 class="text-center p-5" style="font-size: 75px;">Our Team</h1>
 
             <!-- Card container with three columns -->
             <div class="row team-cards">
               <!-- BS card: Start -->
-              <div class="col-md-4">
+              <div class="col-md-4 d-flex justify-content-center">
                 <div class="card" style="width: 18rem;">
-                  <img src="..." class="card-img-top" alt="sean">
+                  <img src="../assets/placeholderProfilePic/morty.jpg" class="card-img-top" alt="sean">
                   <div class="card-body">
                     <h5 class="card-title">Sean Yap</h5>
                     <p class="card-text">Cool cool cool cool.</p>
@@ -197,9 +196,9 @@ const props = defineProps(); // Define props
 
               <!-- Repeat the card for two more team members -->
               <!-- BS card: Start -->
-              <div class="col-md-4">
+              <div class="col-md-4 d-flex justify-content-center">
                 <div class="card" style="width: 18rem;">
-                  <img src="..." class="card-img-top" alt="huixuan">
+                  <img src="../assets/placeholderProfilePic/screamingSun.jpg" class="card-img-top" alt="huixuan">
                   <div class="card-body">
                     <h5 class="card-title">Hui Xuan</h5>
                     <p class="card-text">Cool cool cool cool.</p>
@@ -219,9 +218,9 @@ const props = defineProps(); // Define props
               <!-- BS card: End -->
 
               <!-- BS card: Start -->
-              <div class="col-md-4">
+              <div class="col-md-4 d-flex justify-content-center">
                 <div class="card" style="width: 18rem;">
-                  <img src="..." class="card-img-top" alt="syahmim">
+                  <img src="../assets/placeholderProfilePic/pickle.png" class="card-img-top" alt="syahmim">
                   <div class="card-body">
                     <h5 class="card-title">Syahmim</h5>
                     <p class="card-text">Cool cool cool cool.</p>
@@ -243,9 +242,9 @@ const props = defineProps(); // Define props
 
             <!-- Additional two team members -->
             <div class="row team-cards">
-              <div class="col-md-4">
+              <div class="col-md-4 d-flex justify-content-center">
                 <div class="card" style="width: 18rem;">
-                  <img src="..." class="card-img-top" alt="sean">
+                  <img src="../assets/placeholderProfilePic/unnamed.jpg" class="card-img-top" alt="sean">
                   <div class="card-body">
                     <h5 class="card-title">Gabriel Loh</h5>
                     <p class="card-text">Cool cool cool cool.</p>
@@ -262,9 +261,9 @@ const props = defineProps(); // Define props
                   </div>
                 </div>
               </div>
-              <div class="col-md-4">
+              <div class="col-md-4 d-flex justify-content-center">
                 <div class="card" style="width: 18rem;">
-                  <img src="..." class="card-img-top" alt="sean">
+                  <img src="../assets/placeholderProfilePic/Snowball.jpg" class="card-img-top" alt="sean">
                   <div class="card-body">
                     <h5 class="card-title">Lim Jun Kai</h5>
                     <p class="card-text">Cool cool cool cool.</p>
