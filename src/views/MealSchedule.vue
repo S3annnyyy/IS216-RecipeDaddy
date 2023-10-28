@@ -184,7 +184,7 @@
                                         <button type="button" class="btn btn-secondary"
                                             data-bs-dismiss="modal">Close</button>
                                         <!-- ... -->
-                                        <button type="button" class="btn btn-primary" @click="redirectToPaymentPage">
+                                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click="redirectToPaymentPage">
                                             <span class="text-white text-decoration-none">Go to
                                                 payment</span>
                                         </button>
