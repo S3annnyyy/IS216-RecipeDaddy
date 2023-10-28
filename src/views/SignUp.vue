@@ -1,32 +1,13 @@
-<script setup>
-import { ref } from 'vue';
-
-// custom v-focus param <==> autofocus in html input tag 
-const vFocus = {
-        mounted: (el) => el.focus()
-    }
-
-// placeholder while backend is being implemented
-const signUpEmail = ref("");
-const name = ref("");
-const signUpPw = ref("");
-
-function handleSignUp() {
-    console.log('form submitted');
-}
-
-</script>
-
 <template>
     <main>
         <section class="section-signup" v-cloak>
             <div class="section-main">
                 <div class="section-signup-1">
                     <div class="section-signup-1-main">
-                        <h1 class="section-signup-1-title">Name Placeholder</h1>
-                        <p class="section-signup-1-text">text placeholder</p>
+                        <h1 class="section-signup-1-title">Recipe Daddy</h1>
+                        <p class="section-signup-1-text">Welcome!</p>
                         <div class="section-signup-1-img">
-                            <img src="../assets/mockup_signup.png" alt="">
+                            <img src="../assets/mockup_signup.png" alt="">                            
                         </div>
                     </div>
                 </div>
@@ -38,21 +19,30 @@ function handleSignUp() {
                                 <div class="signup-form">
                                     <div class='divider'></div>
                                     <div class="form-group">
-                                        <input type="email" id="input-email" class="form-control" placeholder=" " required v-model="signUpEmail" v-focus>
+                                        <input type="email" id="input-email" class="form-control" placeholder=" " required v-model="signUpEmail" v-focus autocomplete="email">
                                         <label for="input-email" class="form-label">Your Email</label>
                                     </div>
                                     <div class="form-group">
-                                        <input type="text" id="input-name" class="form-control" placeholder=" " required v-model="name">
-                                        <label for="input-name" class="form-label">Your Full Name</label>
+                                        <input type="text" id="first-name" class="form-control" placeholder=" " required v-model="firstName" autocomplete="given-name">
+                                        <label for="first-name" class="form-label">Your First Name</label>
                                     </div>
                                     <div class="form-group">
-                                        <input type="password" id="input-password" class="form-control" placeholder=" " required v-model="signUpPw">
+                                        <input type="text" id="last-name" class="form-control" placeholder=" " required v-model="lastName" autocomplete="family-name">
+                                        <label for="last-name" class="form-label">Your Last Name</label>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" id="username" class="form-control" placeholder=" " required v-model="username" autocomplete="name">
+                                        <label for="username" class="form-label">Your Username</label>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="password" id="input-password" class="form-control" placeholder=" " required v-model="signUpPw" autocomplete="current-password">
                                         <label for="input-password" class="form-label">Your Password</label>
                                     </div>
                                     <div class="form-group">
-                                        <p><input type="checkbox" id="input-checkbox"> By creating an account, you agree to the 
+                                        <p><input type="checkbox" id="input-checkbox" @click="handleCheck()"> By creating an account, you agree to the 
                                             <router-link class="terms-conditions" :to="{path: '/PlAcEhOlDeR'}">Terms & Conditions.</router-link>
-                                        </p>
+                                        </p>   
+                                        <p style="color: red;">{{ promptToCheck }}</p>                                     
                                     </div>
                                     <div class="form-group">
                                         <button class="signup-button">Create an Account</button>
@@ -74,12 +64,100 @@ function handleSignUp() {
     </main>
 </template>
 
+<script>
+import axios from 'axios';
+
+export default {
+    directives: {
+        focus: {
+            mounted(el) {
+                el.focus();
+            },
+        },
+    },
+    data() {
+        return {
+            signUpEmail: '',
+            firstName: '',
+            lastName: '',
+            signUpPw: '',
+            username: '',
+            checked: false,
+            promptToCheck: '',
+            authToken: '', 
+        };
+    },
+    methods: {
+        handleCheck() {
+            this.checked = !this.checked
+            if (this.checked) {this.promptToCheck = ''}            
+        },
+        async getAuthToken(email, password) {
+            const URL = "http://127.0.0.1:8000"
+            const requestData = {
+                email: email,
+                password: password,
+            }
+            const response = await axios.post(`${URL}/api/token`, requestData)
+            this.authToken = response.data.access
+            return response.data.access
+        },       
+        handleSignUp() {
+            if (this.checked) {
+                console.log('form submitted');
+
+                // CREATE ACCOUNT
+                const URL = "http://127.0.0.1:8000/user"
+                const body = {
+                    "username": this.username,
+                    "email": this.signUpEmail,
+                    "first_name": this.firstName,
+                    "last_name": this.lastName,
+                    "password": this.signUpPw
+                } 
+
+                axios.post(URL, body)
+                .then((res) => {        
+                    console.log(res)     
+                   
+                    // Get authentication token which will then store to localStorage and route user back home
+                    let token = this.getAuthToken(this.signUpEmail, this.signUpPw)
+                    console.log(token, typeof token) 
+                    // Store localstorage
+                    localStorage.setItem("AuthToken", token)
+                    // route user back home
+                    this.$router.push({
+                    path: '/',                    
+                    })                
+                })
+                .catch((err) => {
+                    console.log(err.response.data)
+
+                    let errorMsg = []
+                    if (err.response.data.email) {
+                        errorMsg.push(err.response.data.email)
+                        this.signUpEmail = ''
+                    }
+                    if (err.response.data.username) {
+                        errorMsg.push(err.response.data.username)
+                        this.username = ''
+                    }
+                    alert(errorMsg.join("\n"))               
+                })
+            } else {
+                this.promptToCheck = "Please check of the button"    
+            }
+        },
+    },
+    };
+</script>
+
 <style scoped>
 
 * {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
+    box-sizing: border-box;    
 }
 
 img {
@@ -143,8 +221,7 @@ img {
     flex-direction: column;
     align-items: center;
     width: 100%;
-    height: 100%;
-    padding: 50px;
+    height: 100%;   
     background: var(--text-light-primary);
 }
 
@@ -190,7 +267,7 @@ img {
             width: 100%;
             position: relative;
             z-index: 3;
-            font-size: 1.2rem;
+            font-size: 1rem;
             background: none;
             border:none;
             padding: 0.5rem ;

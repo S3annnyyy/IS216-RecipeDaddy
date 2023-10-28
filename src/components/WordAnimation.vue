@@ -1,5 +1,5 @@
 <template>
-    <div class="text">
+    <div class="container-fluid text">
       <h1 class="prefix">Lets save the earth, one</h1>
       <h1>
         <span class="word" :class="currentWordClass" @animationend="resetAnimation">{{ words[currentWordIndex] }}</span>
@@ -78,6 +78,6 @@
     to {
       transform: translateY(100%);
     }
-  }
+  } 
   </style>
   
