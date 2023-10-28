@@ -255,10 +255,14 @@
         </div>
     </main> -->
     <main class="row w-85 py-5 mb-5" id="food-section">
-        <div v-if="mealSchedule.receivedData != null">
-            <div class="col card" v-for="(meal, index) in mealSchedule.receivedData" :key="index">
+        <h4 v-if="mealSchedule.receivedData == null || mealSchedule.receivedData.length == 0">
+            Generate a meal and add it to your schedule!
+        </h4>
+        <div v-else-if="mealSchedule.receivedData.length > 0" class="row">
+            <div :class="getColumnClass(mealSchedule.receivedData.length)" class="card"
+                v-for="(meal, index) in mealSchedule.receivedData" :key="index">
                 <h3 class="card-title text-left">{{ formatMealType(meal.meal_type) }}</h3>
-                <img :src="extractLinkFromParentheses(meal.image_url)" alt="Meal" class="card-img-top img-fluid">
+                <img :src="extractLinkFromParentheses(meal.image_url)" alt="Meal" class="card-img-top img-fluid" />
                 <div class="card-body">
                     <div class="card-text">{{ meal.recipe_name }}</div>
                     <div class="buttons">
@@ -317,12 +321,16 @@ export default {
             currentDate: new Date(),
             dates: [],
             mealSchedule: {
-                breakfast: true,
-                lunch: true,
-                dinner: true,
+                breakfast: false,
+                lunch: false,
+                dinner: false,
                 receivedData: null,
 
-            }
+            },
+            baseUrl: "http://127.0.0.1:8000",
+            token: null,
+            username: "wowtest",
+
         };
     },
     computed: {
@@ -345,6 +353,17 @@ export default {
         },
         currentWeekEndText() {
             return this.currentDate.GetLastDayOfWeek().toDateString();
+        },
+        getColumnClass() {
+            return (itemCount) => {
+                if (itemCount === 1) {
+                    return 'col col-md-6 offset-md-3';
+                } else if (itemCount === 2) {
+                    return 'col col-md-6';
+                } else if (itemCount >= 3) {
+                    return 'col col-md-4';
+                }
+            };
         },
     },
     methods: {
@@ -391,7 +410,7 @@ export default {
         },
         setCurrentDate(date) {
             this.currentDate = date;
-            this.getMealData();
+            this.getMealData(this.username, this.currentDate.toISOString().split("T")[0], this.token);
         },
         closeOverviewModal() {
             // Use Bootstrap's modal method to close the modal
@@ -406,46 +425,38 @@ export default {
                 }
             });
         },
-        async getMealData() {
-            const email = "wowtest@gmail.com";
-            const user = "wowtest";
-            const password = "wowtest";
-            const baseUrl = "http://127.0.0.1:8000";
-            let token; // Define the token variable in a wider scope
-
-            // Step 1: Get the token
+        async getAuthToken(email, password) {
             const requestData = {
                 email: email,
                 password: password,
             };
-            const curDate = this.currentDate.toISOString().split('T')[0];
-
-            this.$axios
-                .post(`${baseUrl}/api/token`, requestData)
-                .then((response) => {
-                    // Successful request
-                    token = response.data.access; // Assign the token
-                    console.log('Token:', token);
-
-                    // Step 2: Get meal schedule using the token
-                    this.$axios
-                        .get(`${baseUrl}/user-meal-plan?username=${user}&meal_date=${curDate}`, {
-                            headers: {
-                                Authorization: `Bearer ${token}`,
-                            },
-                        })
-                        .then((mealResponse) => {
-                            console.log(mealResponse.data);
-                            // Assuming you want to do something with the meal data
-                            this.mealSchedule.receivedData = mealResponse.data;
-                        })
-                        .catch((mealError) => {
-                            console.error('Error fetching meal schedule:', mealError);
-                        });
+            const response = await axios.post(`${this.baseUrl}/api/token`, requestData);
+            this.token = response.data.access;
+            return response.data.access;
+        },
+        async getMealData(username, date, token) {
+            axios
+                .get(`${this.baseUrl}/user-meal-plan?username=${username}&meal_date=${date}`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
                 })
-                .catch((error) => {
-                    // Request for token failed
-                    console.error('Error fetching token:', error);
+                .then((mealResponse) => {
+                    console.log(mealResponse.data);
+                    // Assuming you want to do something with the meal data
+                    this.mealSchedule.receivedData = mealResponse.data;
+                    for (let meal of this.mealSchedule.receivedData) {
+                        if (meal.meal_type == 1) {
+                            this.mealSchedule.breakfast = true;
+                        } else if (meal.meal_type == 2) {
+                            this.mealSchedule.lunch = true;
+                        } else if (meal.meal_type == 3) {
+                            this.mealSchedule.dinner = true;
+                        }
+                    }
+                })
+                .catch((mealError) => {
+                    console.error('Error fetching meal schedule:', mealError);
                 });
         },
         formatMealType(num) {
@@ -470,15 +481,69 @@ export default {
                 return match[1];
             } else {
                 // No match found
-                return null;
+                return input;
             }
-        }
+        },
+        viewRecipe(meal) {
+            this.$router.push({
+                path: "mealschedulegenerated/",
+                query: {
+                    data: JSON.stringify(meal)
+                }
+            });
+        },
+        replaceMeal(meal) {
+            this.$router.push({
+                path: "mealschedule/",
+                query: {
+                    data: JSON.stringify(meal)
+                }
+            });
+        },
+        deleteMeal(meal) {
+            const mealId = meal.id;
+            axios
+                .delete(`${this.baseUrl}/user-meal-plan?id=${mealId}`, {
+                    headers: {
+                        Authorization: `Bearer ${this.token}`
+                    }
+                })
+                .then(response => {
+                    console.log(`Meal plan with ID ${mealId} deleted.`);
+                    // Optionally, you can handle any further actions, such as updating the UI.
+                })
+                .catch(error => {
+                    console.error(`Error deleting meal plan: ${error}`);
+                    // Handle the error as needed, e.g., show an error message.
+                });
+            this.mealSchedule.receivedData = this.mealSchedule.receivedData.filter(item => item.id !== mealId);
+
+        },
+        async fetchData() {
+            const email = "wowtest@gmail.com";
+            const password = "wowtest";
+            try {
+                const token = await this.getAuthToken(email, password);
+                const user = "wowtest";
+                const mealData = await this.getMealData(user, this.currentDate.toISOString().split("T")[0], token);
+                this.mealSchedule.receivedData = mealData;
+            } catch (error) {
+                console.error("Error fetching data:", error);
+                // Handle the error, e.g., show an error message.
+            }
+        },
+
 
     },
     mounted() {
-        this.getMealData();
+        this.fetchData();
 
     },
 
 };
 </script>
+
+<!--                 this.$router.push({
+                    path: `recipesearch/${this.uuid}`,
+                    query: {data: JSON.stringify(recipeObject)}
+                }) -->
