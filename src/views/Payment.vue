@@ -1,5 +1,171 @@
 <template>
-    <div class="payment-container">
+    <div>
+        <main class="container">
+            <div class="row g-5 mt-3">
+                <!-- Probably do dynamic mapping of ingredients purchased here -->
+                <div class="col-md-5 col-lg-4 order-md-last">
+                    <h4 class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="text-primary">Your cart</span>
+                    <span class="badge bg-primary rounded-pill">3</span>
+                    </h4>
+                    <ul class="list-group mb-3">
+                    <li class="list-group-item d-flex justify-content-between lh-sm">
+                        <div>
+                        <h6 class="my-0">Product name</h6>
+                        <small class="text-muted">Brief description</small>
+                        </div>
+                        <span class="text-muted">$12</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between lh-sm">
+                        <div>
+                        <h6 class="my-0">Second product</h6>
+                        <small class="text-muted">Brief description</small>
+                        </div>
+                        <span class="text-muted">$8</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between lh-sm">
+                        <div>
+                        <h6 class="my-0">Third item</h6>
+                        <small class="text-muted">Brief description</small>
+                        </div>
+                        <span class="text-muted">$5</span>
+                    </li>
+
+                    <!-- Make this dynamic also -->
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span>Total (USD)</span>
+                        <strong>$25</strong>
+                    </li>
+                    </ul>
+
+                </div>
+                <!-- End of Shopping cart -->
+
+
+                <div class="col-md-7 col-lg-8">
+                    <h4 class="mb-3">Billing address</h4>
+                    <form class="needs-validation" novalidate>
+                    <div class="row g-3">
+                        <div class="col-sm-6">
+                        <label for="firstName" class="form-label">First name</label>
+                        <input type="text" class="form-control" id="firstName" placeholder="" value="" required>
+                        <div class="invalid-feedback">
+                            Valid first name is required.
+                        </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                        <label for="lastName" class="form-label">Last name</label>
+                        <input type="text" class="form-control" id="lastName" placeholder="" value="" required>
+                        <div class="invalid-feedback">
+                            Valid last name is required.
+                        </div>
+                        </div>
+
+                        <div class="col-12">
+                        <label for="address" class="form-label">Address</label>
+                        <input type="text" class="form-control" id="address" placeholder="1234 Main St" required>
+                        <div class="invalid-feedback">
+                            Please enter your shipping address.
+                        </div>
+                        </div>
+
+                        <div class="col-12">
+                        <label for="address2" class="form-label">Address 2 <span class="text-muted">(Optional)</span></label>
+                        <input type="text" class="form-control" id="address2" placeholder="Apartment or suite">
+                        </div>
+
+                        <div class="col-md-5">
+                        <label for="country" class="form-label">Country</label>
+                        <select class="form-select" id="country" required>
+                            <option value="">Choose...</option>
+                            <option>United States</option>
+                        </select>
+                        <div class="invalid-feedback">
+                            Please select a valid country.
+                        </div>
+                        </div>
+
+                        <div class="col-md-4">
+                        <label for="state" class="form-label">State</label>
+                        <select class="form-select" id="state" required>
+                            <option value="">Choose...</option>
+                            <option>California</option>
+                        </select>
+                        <div class="invalid-feedback">
+                            Please provide a valid state.
+                        </div>
+                        </div>
+
+                        <div class="col-md-3">
+                        <label for="zip" class="form-label">Zip</label>
+                        <input type="text" class="form-control" id="zip" placeholder="" required>
+                        <div class="invalid-feedback">
+                            Zip code required.
+                        </div>
+                        </div>
+                    </div>
+
+                    <hr class="my-4">
+
+                    <h4 class="mb-3">Payment</h4>
+
+                    <div class="row gy-3">
+                        <div class="col-md-6">
+                        <label for="cc-name" class="form-label">Name on card</label>
+                        <input type="text" class="form-control" id="cc-name" placeholder="" required>
+                        <small class="text-muted">Full name as displayed on card</small>
+                        <div class="invalid-feedback">
+                            Name on card is required
+                        </div>
+                        </div>
+
+                        <div class="col-md-6">
+                        <label for="cc-number" class="form-label">Credit card number</label>
+                        <input type="text" class="form-control" id="cc-number" placeholder="" required>
+                        <div class="invalid-feedback">
+                            Credit card number is required
+                        </div>
+                        </div>
+
+                        <div class="col-md-3">
+                        <label for="cc-expiration" class="form-label">Expiration</label>
+                        <input type="text" class="form-control" id="cc-expiration" placeholder="" required>
+                        <div class="invalid-feedback">
+                            Expiration date required
+                        </div>
+                        </div>
+
+                        <div class="col-md-3">
+                        <label for="cc-cvv" class="form-label">CVV</label>
+                        <input type="text" class="form-control" id="cc-cvv" placeholder="" required>
+                        <div class="invalid-feedback">
+                            Security code required
+                        </div>
+                        </div>
+                    </div>
+
+                    <hr class="my-4">
+
+                    <button class="w-100 btn btn-primary btn-lg" type="submit">Continue to checkout</button>
+                    </form>
+                </div>
+            </div>
+        </main>
+
+        <footer class="my-5 pt-5 text-muted text-center text-small">
+            <p class="mb-1">&copy; 2017–2021 Company Name</p>
+            <ul class="list-inline">
+                <li class="list-inline-item"><a href="#">Privacy</a></li>
+                <li class="list-inline-item"><a href="#">Terms</a></li>
+                <li class="list-inline-item"><a href="#">Support</a></li>
+            </ul>
+        </footer>
+    </div>
+
+
+
+    <!-- <div class="payment-container">
         <h1>Payment</h1>
 
         <div class="selected-ingredients">
@@ -23,14 +189,14 @@
                 <div class="form-group">
                     <label for="name">Name on Card</label>
                     <input type="text" id="name" class="form-control" v-model="cardName" />
-                </div>
+                </div> -->
 
                 <!-- Add more payment form fields as needed -->
 
-                <button type="submit" class="submit-button">Submit Payment</button>
+                <!-- <button type="submit" class="submit-button">Submit Payment</button>
             </form>
         </div>
-    </div>
+    </div> -->
 </template>
   
 <script>
@@ -59,76 +225,29 @@ export default {
                 firstInput.focus();
             }
         });
+        // idk how the fk the syntasx works but it does form validation HELP 
+        (function () {
+            'use strict'
+
+            var forms = document.querySelectorAll('.needs-validation')
+
+            Array.prototype.slice.call(forms)
+                .forEach(function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (!form.checkValidity()) {
+                            event.preventDefault()
+                            event.stopPropagation()
+                        }
+
+                        form.classList.add('was-validated')
+                    }, false)
+                })
+        })()
     }
 };
 </script>
   
 <style scoped>
 
-.payment-container {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #f9f9f9;
-}
-
-.selected-ingredients {
-    margin-bottom: 20px;
-}
-
-ul {
-    list-style: none;
-    padding: 0;
-}
-
-.checkbox {
-    margin-right: 10px;
-}
-
-.ingredient-label {
-    font-weight: bold;
-}
-
-.form-group {
-    margin-bottom: 15px;
-}
-
-.form-control {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-.submit-button {
-    background-color: #007BFF;
-    color: #fff;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.submit-button:hover {
-    background-color: #0056b3;
-}
-.modal-backdrop {
-  background-color: transparent; /* Make the backdrop transparent */
-}
-
-/* Custom styles for the modal content */
-.modal-content {
-  background-color: #fff; /* Set the content background color */
-  border: none; /* Remove borders if needed */
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
-}
-.modal {
-    /* Add your custom styles here */
-    /* For example, you can set a background color */
-    background-color: white;
-    /* You can adjust the modal's size, border, and other properties here */
-}
 </style>
   
