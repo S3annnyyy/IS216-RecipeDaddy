@@ -1,5 +1,6 @@
 <template>
     <main class="row justify-content-center align-items-center " style="height: 92vh;">
+        <Blob class="blob-background"/>
         <div class="col-xl-8 col-lg-8 col-md-8 col-sm-10">
             <div class="input-group input-group-lg search-bar">
                 <button class="btn dropdown-toggle input" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="min-width: 8vw;">{{ selectedInputType }}</button>
@@ -30,6 +31,8 @@
 </template>
 
 <script>
+import Blob from "../components/Blob.vue"
+
 export default {
     data() {
         return {
@@ -119,12 +122,25 @@ export default {
             }
             
         }
+    },
+    components: {
+        Blob
     }
 
 };
 </script>
 
 <style scoped>   
+    .blob-background {
+        margin-top: 5rem;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 80%;
+        z-index: -1; 
+        /* opacity: 0.3;  */
+    }
     .submit-button2 {
         display: none;
     }
@@ -172,6 +188,7 @@ export default {
         border-radius: 50px;
         box-shadow: 0 4px 2px -2px var(--text-light-secondary);
         border: 1px solid #6c757d;
+        background-color: var(--light);
     }
     .dropdown-item {
         cursor: pointer;

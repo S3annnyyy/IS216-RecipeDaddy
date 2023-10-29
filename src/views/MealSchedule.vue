@@ -282,12 +282,13 @@
             </div>
         </div>
     </main>
+    <!-- THIS PORTION IS FOR USER AUTHENTICATION CHECK -->
     <div v-if="showLoginAlert" class="overlay" @click="routeBackToHome"></div>
-
-    <!-- Login alert -->
     <div v-if="showLoginAlert" class="login-alert">
+        <LoginFailed />      
         <p>Please log in first to access this feature.</p>
     </div>
+    <!-- END OF USER AUTHENTICATION CHECK -->
 </template>
 <script>
 /* questions  = {
@@ -308,6 +309,7 @@
 } */
 import { formatDate } from "@vueuse/core";
 import axios from "axios";
+import LoginFailed from "../components/LoginFailed.vue";
 
 Date.prototype.GetFirstDayOfWeek = function () {
     const firstDayOfWeek = new Date(this);
@@ -482,6 +484,9 @@ export default {
         this.getMealData();
 
     },
+    components: {
+        LoginFailed,
+    }
 
 };
 </script>
