@@ -2,6 +2,9 @@
     <main class="row justify-content-center align-items-center " style="height: 92vh;">
         <Blob class="blob-background"/>
         <div class="col-xl-8 col-lg-8 col-md-8 col-sm-10">
+            <div class="search-text">
+                <h3>Generate recipe with your leftovers</h3>
+            </div>
             <div class="input-group input-group-lg search-bar">
                 <button class="btn dropdown-toggle input" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="min-width: 8vw;">{{ selectedInputType }}</button>
                 <ul class="dropdown-menu">                             
@@ -183,6 +186,19 @@ export default {
     .form-control {
         background-color: transparent;        
         border-radius: 50px;
+    }
+    .search-text {
+        position: absolute;
+        top: 40%;
+        left: 50%; 
+        transform: translateX(-50%);
+        z-index: 1; 
+        text-align: center;
+    }
+
+    .search-text {       
+        color: var(--light); 
+        /* margin-top: -3.8rem; */
     }    
     .search-bar {
         border-radius: 50px;
