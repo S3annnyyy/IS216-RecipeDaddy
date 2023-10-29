@@ -48,7 +48,7 @@
 
 .replace-button {
     background-color: #E6E3E3;
-    border-radius: 20%;
+    border-radius: 25px;
     border: none;
     padding: 5px 10px;
     margin-right: 5px;
@@ -56,7 +56,7 @@
 
 .view-recipe-button {
     background-color: #E6E3E3;
-    border-radius: 20%;
+    border-radius: 25px;
     border: none;
     padding: 5px 10px;
     margin-right: 5px;
@@ -64,7 +64,7 @@
 
 .delete-button {
     background-color: #E6E3E3;
-    border-radius: 20%;
+    border-radius: 25px;
     border: none;
     padding: 5px 10px;
 }
@@ -103,35 +103,34 @@
 </style>
 
 <template>
+    <!-- Meal Schedule header  -->
     <main class="row mt-3 mx-5">
-        <div class="col-3">
+        <div class="col-lg-3 col-md-3 col-sm-12">
             <h1>Meal Schedule</h1>
-            <div style="white-space: nowrap;">
-                <img src="../assets/chef-hat.png" alt="">
-                <p style="white-space: nowrap;">{{ currentWeekStartText }} - {{ currentWeekEndText }}</p>
+            <div>
+                <img style="padding-right: 0.5rem; padding-bottom: 0.5rem;" src="../assets/chef-hat.png" alt="">
+                <span >{{ currentWeekStartText }} - {{ currentWeekEndText }}</span>
             </div>
-
-        </div>
-        <div class="col mt-2">
-            <h3>Progress</h3>
         </div>
         <div class="col">
         </div>
     </main>
 
+    
+    <!-- Current Week  -->
     <main class="row mx-5">
-        <div class="col-3 box">
+        <div class="col-lg-3 col-md-3 col-sm-12 box" style="padding:1rem">
             <h6>CURRENT WEEK</h6>
             <div>
                 <span class="fa-solid fa-angle-left" @click="decrementWeek"></span>
                 {{ formatCurrentDate() }}
                 <span class="fa-solid fa-angle-right" @click="incrementWeek"></span>
                 <div class="row">
+
                     <div class="col">
-                    </div>
-                    <div class="col">
-                        <button type="button" class="button" data-bs-toggle="modal"
-                            data-bs-target="#overviewRecipe">Shopping List</button>
+                        <button type="button" class="button mt-4" data-bs-toggle="modal"
+                            data-bs-target="#overviewRecipe">Shopping List
+                        </button>
                         <!-- Modal -->
                         <div class="modal fade" id="overviewRecipe" tabindex="-1" role="dialog"
                             aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -162,7 +161,7 @@
                                                     <div class="card-body">
                                                         <div class="form-check">
                                                             <input class="form-check-input" type="checkbox" value=""
-                                                                id="flexCheckDefault">
+                                                                id="flexCheckDefault"> 
                                                             <label class="form-check-label" for="flexCheckDefault">
                                                                 100g of chicken
                                                             </label>
@@ -198,11 +197,9 @@
                 </div>
             </div>
         </div>
-        <div class="col">
-            charts
-        </div>
     </main>
 
+    <!-- Calendar -->
     <div class="row mx-5 mt-3 box dates">
         <div @click="setCurrentDate(date)" class="col center indivDate" v-for="(date, index) in weekDates" :key="index"
             :class="{ 'selected-date': isDateSelected(date) }">
@@ -210,46 +207,48 @@
         </div>
     </div>
 
-    <main class="row w-85 py-5 mb-5" id="food-section">
-        <div class="col card breakfast" v-if="mealSchedule.breakfast">
-            <h3 class="card-title text-left">Breakfast</h3>
+
+    <!-- Meals -->
+    <main class="row w-85 py-1 mb-3 d-flex justify-content-center" id="food-section">
+        <div class="col-sm-12 col-md-7 col-lg-4 card breakfast" v-if="mealSchedule.breakfast">
+            <h3 class="card-title text-left pt-2">Breakfast</h3>
             <img src="../assets/pancakes.jpg" alt="Breakfast" class="card-img-top img-fluid">
             <div class="card-body">
-                <div class="card-text breakfast-recipe">Berries Pancake</div>
-                <div class="buttons">
-                    <button class="view-recipe-button">View Recipe</button>
+                <div class="card-text breakfast-recipe text-center">Berries Pancake</div>
+                <div class="buttons row d-flex justify-content-center">
+                    <button class="view-recipe-button col-sm-6 col-md-8 col-lg-3 mt-1">View</button>
                     <!-- TO DO: add logic to redirect to recipe -->
                     <!-- <router-link
             :to="{ name: 'recipeSearch', params: { mealType: 'dinner' } }"
             class="view-recipe-button">
             View Recipe
           </router-link> -->
-                    <button class="replace-button">Replace</button>
-                    <button class="delete-button">Delete</button>
+                    <button class="replace-button col-sm-6 col-md-8 col-lg-3 mt-1">Replace</button>
+                    <button class="delete-button col-sm-6 col-md-8 col-lg-3 mt-1">Delete</button>
                 </div>
             </div>
         </div>
-        <div class="col card lunch" v-if="mealSchedule.lunch">
-            <h3 class="card-title text-left">Lunch</h3>
+        <div class="col-sm-12 col-md-7 col-lg-4 card lunch" v-if="mealSchedule.lunch">
+            <h3 class="card-title text-left pt-2">Lunch</h3>
             <img src="../assets/burrito.jpg" alt="Lunch" class="card-img-top img-fluid">
             <div class="card-body">
-                <div class="card-text lunch-recipe">Grilled Chicken Burrito</div>
-                <div class="buttons">
-                    <button class="view-recipe-button">View Recipe</button>
-                    <button class="replace-button">Replace</button>
-                    <button class="delete-button">Delete</button>
+                <div class="card-text lunch-recipe text-center">Grilled Chicken Burrito</div>
+                <div class="buttons row d-flex justify-content-center">
+                    <button class="view-recipe-button col-sm-6 col-md-7 col-lg-3 mt-1">View</button>
+                    <button class="replace-button col-sm-6 col-md-7 col-lg-3 mt-1">Replace</button>
+                    <button class="delete-button col-sm-6 col-md-7 col-lg-3 mt-1">Delete</button>
                 </div>
             </div>
         </div>
-        <div class="col card dinner" v-if="mealSchedule.dinner">
-            <h3 class="card-title text-left">Dinner</h3>
+        <div class="col-sm-12 col-md-7 col-lg-4 card dinner" v-if="mealSchedule.dinner">
+            <h3 class="card-title text-left pt-2">Dinner</h3>
             <img src="../assets/teriyaki.jpeg" alt="Dinner" class="card-img-top img-fluid">
             <div class="card-body">
-                <div class="card-text dinner-recipe">Teriyaki Chicken Bowl</div>
-                <div class="buttons">
-                    <button class="view-recipe-button">View Recipe</button>
-                    <button class="replace-button">Replace</button>
-                    <button class="delete-button">Delete</button>
+                <div class="card-text dinner-recipe text-center">Teriyaki Chicken Bowl</div>
+                <div class="buttons row d-flex justify-content-center">
+                    <button class="view-recipe-button col-sm-6 col-md-7 col-lg-3 mt-1">View</button>
+                    <button class="replace-button col-sm-6 col-md-7 col-lg-3 mt-1">Replace</button>
+                    <button class="delete-button col-sm-6 col-md-7 col-lg-3 mt-1">Delete</button>
                 </div>
             </div>
         </div>
