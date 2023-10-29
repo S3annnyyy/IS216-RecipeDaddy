@@ -240,10 +240,18 @@
             </div>
         </main>
     </div>
+    <!-- THIS PORTION IS FOR USER AUTHENTICATION CHECK -->
+    <div v-if="showLoginAlert" class="overlay" @click="this.$router.push({path: '/'})"></div>
+    <div v-if="showLoginAlert" class="login-alert">
+        <LoginFailed />      
+        <p>Please log in first to access this feature.</p>
+    </div>
+    <!-- END OF USER AUTHENTICATION CHECK -->
 </template>
 
 <script>
 import axios from 'axios'
+import LoginFailed from "../components/LoginFailed.vue";
 
 export default {
     data() {
@@ -286,9 +294,10 @@ export default {
             // res --> FINAL OUTPUT OBJECT (SEAN)
             // number of res output depends on number of mealCount
             resJunKai: {},
-            resSean: {}
+            resSean: {},
 
-
+            // FOR USER AUTHENTICATION
+            showLoginAlert: false,
         }
     },
     computed: {
@@ -352,8 +361,9 @@ export default {
         planMeal() {
             // check if user is loggedIn by matching token on sessionStorage
             if (!sessionStorage.getItem("AuthToken")) {
-                alert("Please log in before creating a recipe!")
-                this.$router.push({path: '/'})
+                this.showLoginAlert = true
+                // alert("Please log in before creating a recipe!")
+                // this.$router.push({path: '/'})
             } else {
             // clear contents in #content
             this.planning = true;
@@ -783,6 +793,9 @@ export default {
             this.mealPrepLimitIngedient = event.target.checked;
         }
         // end of mealPrepSearch methods 
+    },
+    components: {
+        LoginFailed,
     }
 }
 
@@ -1017,4 +1030,32 @@ export default {
     }
     /* END OF MEALPREPSEARCH STYLES */
 
+    /* USER AUTHENITCATION */
+    .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); 
+    backdrop-filter: blur(5px);
+    z-index: 999; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;   
+}
+
+.login-alert {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    z-index: 1000; 
+    text-align: center;
+}
 </style>

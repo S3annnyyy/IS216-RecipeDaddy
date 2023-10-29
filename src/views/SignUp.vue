@@ -145,7 +145,7 @@ export default {
                     alert(errorMsg.join("\n"))               
                 })
             } else {
-                this.promptToCheck = "Please check of the button"    
+                this.promptToCheck = "Please confirm that you have read and agree to T&Cs"    
             }
         },
     },
