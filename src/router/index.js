@@ -20,14 +20,29 @@ const router = createRouter({
       component: () => import('../views/MealPrep.vue')
     },
     {
+      path: '/mealprep/search/:id',
+      name: 'mealprepsearch',
+      component: () => import('../views/MealPrepSearch.vue')
+    },
+    {
       path: '/recipesearch',
       name: 'recipesearch',
       component: () => import('../views/RecipeSearch.vue')
     },
     {
+      path: '/recipesearch/:id',
+      name: 'recipesearchgenerated',
+      component: () => import('../views/Recipe.vue')
+    },
+    {
+      path: '/preferences',
+      name: 'preferences',
+      component: () => import('../views/Preferences.vue')
+    },
+    {
       path: '/signup',
       name: 'signup',
-      meta: {hideNavbar:true},
+      meta: { hideNavbar: true },
       component: () => import('../views/SignUp.vue')
     },
     {
@@ -40,11 +55,21 @@ const router = createRouter({
       name: 'analytics',
       component: () => import('../views/Analytics.vue')
     },
+    {
+      path: '/mealschedule',
+      name: 'mealschedule',
+      component: () => import('../views/MealSchedule.vue')
+    },
+    {
+      path: '/payment',
+      name: 'payment',
+      component: () => import('../views/Payment.vue'),
+    },
     // error 404
     {
-      path:'/:catchAll(.*)',
+      path: '/:catchAll(.*)',
       name: 'error404',
-      meta: {hideNavbar:true},
+      meta: { hideNavbar: true },
       component: () => import('../views/error404.vue')
     }
   ]
