@@ -11,7 +11,7 @@
                     <AnimatedPlaceholder height="300px" width="460px" borderRadius="30px" border="3px solid #194252" margin="0 0 2rem 0" v-else />
                 </div>
                 <div class="row meal-schedule justify-content-center">                       
-                    <button type="submit" class="addSchedule" @click="addToSchedule()" v-if="placeholder.adhocRecipe.steps">Add to schedule</button>
+                    <button type="submit" class="addSchedule" @click="replaceMeal()" v-if="placeholder.adhocRecipe.steps">Replace Meal</button>
                     <AnimatedPlaceholder height="50px" width="10rem" margin="1rem 0 0 0" borderRadius="50px" padding="0.5rem" v-else/>
                 </div> 
             </div>           
@@ -22,9 +22,9 @@
                 1&nbsp;<span class="material-icons">restaurant</span>{{ stepCount }} steps                
             </div>
             <ul class="recipe-guide" v-if="placeholder.adhocRecipe.steps">
-                <li v-for="step in placeholder.adhocRecipe.steps" :key="step.step" class="step">
-                    <h4>Step: {{ step.step }}</h4>
-                    <p>{{ step.description }}</p>                   
+                <li v-for="(step,index) in placeholder.adhocRecipe.steps" :key="step.step" class="step">
+                    <h4>Step: {{ index + 1}}</h4>
+                    <p>{{ step }}</p>                   
                 </li>
             </ul>
             <AnimatedPlaceholder height="100%" width="100%" margin="0 0 2rem 0" borderRadius="10px" padding="1rem" v-else/>
@@ -78,120 +78,89 @@ export default {
             return "2023-27-10";  // Handle the case where the input date is not in a parseable format
             }
         },  
-        addToSchedule() {
-            console.log(`Submitted! Selected date is ${this.convertDate(this.inputDate)}`);
-            
+        replaceMeal() {
             // send to mealSchedule page as props 
-            this.$router.push({ name: 'mealschedule', query: { data: JSON.stringify(this.data) } });
-            
-            // format data 
-            // concatenate alll the steps with \n
-            let prepStepsConcat = ""
-            for (let step in this.placeholder.adhocRecipe.steps) {
-                prepSteps += `${step.description}\n`
-            }
-            // add all ingredients inside an object
-            let ingredientObject = {};
-            for (let item in this.placeholder.adhocRecipe.ingredients) {
-                ingredientObject[item] = "1EA" 
-            }
-            // missing adding image url #TODO
-            let jsonSubmissionTemplate = {
-                "id": 66, // MISSING ID FUNCTION #TODO
-                "meal_date": this.convertDate(this.inputDate),
-                "meal_type": this.convertToNum(this.timeOfDay), // convert timeofday to numbers
-                "recipe_name": this.placeholder.adhocRecipe.recipeTitle,
-                "have_ingredients": ingredientObject,
-                "no_ingredients": null,
-                "preparation_steps": prepStepsConcat,
-                "canMake": false,
-                "isCompleted": true,
-                "user": 1
-            }
-            // send to backend
-            const URL = "http://127.0.0.1:8000/user-meal-plan"
-            axios.get(URL, {jsonSubmissionTemplate})
-            .then((res) => {            
-                console.log(`Data sent to backend ${res}`)
-            })
-            .catch((err) => {
-                console.log(`API Call Not Successful: ${err}`)
-            })
-            // Add in logic to check backend whether there is any conflict with user's existing schedule?  
-
-            // reset variables to default again
-            this.timeOfDay = "TimeOfDay";
-            this.inputDate = "";            
+            this.$router.push({ name: 'replacement', query: { data: JSON.stringify(this.data) }, params: { id: this.data.id } });  
         },       
     },
-    mounted() {          
-        // console.log(this.data) // data logging
-        this.promptuuid = this.$route.params.id; // get promptuuid   
+    created(){
+        console.log(this.data);
+        this.placeholder.adhocRecipe.recipeTitle = this.data.recipe_name
+        this.placeholder.adhocRecipe.steps = this.data.preparation_steps.split("\n");
+        this.placeholder.adhocRecipe.recipeImg = this.data.image_url
+        this.stepCount = this.placeholder.adhocRecipe.steps.length
 
-        // CALL GPT-305 daVinci endpoint with prompt as body
-        const URL = "http://127.0.0.1:8000/get-ai-prompt"
-        const userPrompt = JSON.parse(this.$route.query.data).prompt
-        
-        const schema = { //Define schema for JSON response
-            "type": "object",
-            "properties": {
-                "imageUrl": {
-                    "type": "string",
-                    "link": "URL link"
-                },
-                "dish": {
-                    "type": "string",
-                    "description": "Descriptive title of the dish"
-                },
-                "ingredients": {
-                    "type": "array",
-                    "items": {"type": "string"}
-                },
-                "instructions": {
-                    "type": "array",
-                    "items": {
-                        "type": "object",
-                        "properties": {
-                            "step": {
-                                "type": "integer",
-                                "description": "Step number, numbering from 1"
-                            },
-                            "description": {
-                                "type": "string",
-                                "description": "Steps to prepare the recipe."
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        console.log(userPrompt)
 
-        axios.post(URL, {userPrompt, schema})
-        .then((res) => {   
-            console.log(typeof res);
-            let aiResponse = JSON.parse(res.data.generated_text)
-            console.log(aiResponse)
-            console.log(typeof aiResponse)
-            
-            // initialize recipe title
-            this.placeholder.adhocRecipe.recipeTitle = aiResponse.dish
 
-            // initialize step count
-            this.stepCount = aiResponse.instructions.length
-
-            // initialize steps
-            this.placeholder.adhocRecipe.steps = aiResponse.instructions
-
-            // initialize recipe image
-            console.log(aiResponse.imageUrl);
-            this.placeholder.adhocRecipe.recipeImg = aiResponse.imageUrl
-        })
-        .catch((err) => {
-            console.log(`API Call Not Successful: ${err}`)
-        })
-     
     },
+    // mounted() {          
+    //     // console.log(this.data) // data logging
+    //     this.promptuuid = this.$route.params.id; // get promptuuid   
+
+    //     // CALL GPT-305 daVinci endpoint with prompt as body
+    //     const URL = "http://127.0.0.1:8000/get-ai-prompt"
+    //     const userPrompt = JSON.parse(this.$route.query.data).prompt
+        
+    //     const schema = { //Define schema for JSON response
+    //         "type": "object",
+    //         "properties": {
+    //             "imageUrl": {
+    //                 "type": "string",
+    //                 "link": "URL link"
+    //             },
+    //             "dish": {
+    //                 "type": "string",
+    //                 "description": "Descriptive title of the dish"
+    //             },
+    //             "ingredients": {
+    //                 "type": "array",
+    //                 "items": {"type": "string"}
+    //             },
+    //             "instructions": {
+    //                 "type": "array",
+    //                 "items": {
+    //                     "type": "object",
+    //                     "properties": {
+    //                         "step": {
+    //                             "type": "integer",
+    //                             "description": "Step number, numbering from 1"
+    //                         },
+    //                         "description": {
+    //                             "type": "string",
+    //                             "description": "Steps to prepare the recipe."
+    //                         }
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //     }
+    //     console.log(userPrompt)
+
+    //     axios.post(URL, {userPrompt, schema})
+    //     .then((res) => {   
+    //         console.log(typeof res);
+    //         let aiResponse = JSON.parse(res.data.generated_text)
+    //         console.log(aiResponse)
+    //         console.log(typeof aiResponse)
+            
+    //         // initialize recipe title
+    //         this.placeholder.adhocRecipe.recipeTitle = aiResponse.dish
+
+    //         // initialize step count
+    //         this.stepCount = aiResponse.instructions.length
+
+    //         // initialize steps
+    //         this.placeholder.adhocRecipe.steps = aiResponse.instructions
+
+    //         // initialize recipe image
+    //         console.log(aiResponse.imageUrl);
+    //         this.placeholder.adhocRecipe.recipeImg = aiResponse.imageUrl
+    //     })
+    //     .catch((err) => {
+    //         console.log(`API Call Not Successful: ${err}`)
+    //     })
+     
+    // },
     components: { AnimatedPlaceholder }
 }
 </script>
