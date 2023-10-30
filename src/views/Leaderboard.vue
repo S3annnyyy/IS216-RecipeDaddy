@@ -265,58 +265,38 @@ export default {
             nameTwo: 'ChefAlberto',
             nameThree: 'KingBob'
         }
+    },
+    mounted() {
+        // Countdown timer
+        function updateCountdown() {
+            const now = new Date();
+            const dayOfWeek = now.getDay(); // 0 (Sunday) to 6 (Saturday)
+
+            // Calculate the time remaining until the next Sunday at 23:59:59
+            const daysUntilSunday = 7 - dayOfWeek;
+            const hoursUntilMidnight = 23 - now.getHours();
+            const minutesUntilMidnight = 59 - now.getMinutes();
+            const secondsUntilMidnight = 59 - now.getSeconds();
+
+            const totalSecondsRemaining = daysUntilSunday * 24 * 60 * 60 +
+                hoursUntilMidnight * 60 * 60 +
+                minutesUntilMidnight * 60 +
+                secondsUntilMidnight;
+
+            const days = Math.floor(totalSecondsRemaining / (24 * 60 * 60));
+            const hours = Math.floor((totalSecondsRemaining % (24 * 60 * 60)) / (60 * 60));
+            const minutes = Math.floor((totalSecondsRemaining % (60 * 60)) / 60);
+            const seconds = totalSecondsRemaining % 60;
+
+            document.getElementById('day').innerHTML = days;
+            document.getElementById('hour').innerHTML = hours;
+            document.getElementById('min').innerHTML = minutes;
+        }
+
+        // Update the countdown immediately and then every second
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
     }
 }
 
-
-// Countdown timer
-    // Create a string that sets countdown date to every sunday of the week
-    var d = new Date();
-    var date = d.getDate();
-    var month = d.getMonth();
-    var year = d.getFullYear();
-    var day = d.getDay();
-
-    var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-
-    if (day != 0) {
-        var x = date + (7 - day);
-    } else {
-        var x = date;
-    }
-    
-
-    var input = months[month] + " " + x + ", " + year + " 23:59:59";
-    
-   // Set the date we're counting down to
-    var countDownDate = new Date(input).getTime();
-
-    // Update the count down every 1 second
-    var x = setInterval(function() {
-
-        // Get today's date and time
-        var now = new Date().getTime();
-
-        // Find the distance between now and the count down date
-        var distance = countDownDate - now;
-
-        // Time calculations for days, hours, minutes and seconds
-        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        // var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-        // Display the result
-        document.getElementById("day").innerHTML = days;
-        document.getElementById("hour").innerHTML = hours;
-        document.getElementById("min").innerHTML = minutes;
-
-        // If the count down is finished, write some text
-        if (distance < 0) {
-            clearInterval(x);
-            document.getElementById("demo").innerHTML = "EXPIRED";
-        }
-    }, 1000);
-
-   
 </script>
