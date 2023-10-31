@@ -153,6 +153,9 @@
         });
         // check if user is loggedIn
         this.checkUserLoggedIn();
+
+        // get user Info
+        this.getUserInfo();
       },
       methods: {
         // THESE FUNCTIONS ARE FOR USER AUTHENITCATION                
@@ -163,6 +166,28 @@
         checkUserLoggedIn() {           
             if (!sessionStorage.getItem("AuthToken")) {this.showLoginAlert = true}               
         },
+        // get specific user's info 
+        getUserInfo() {
+          console.log(sessionStorage);
+          const authToken = sessionStorage.AuthToken;
+          const user = sessionStorage.user;
+          // get data from backend 
+          const baseUrl = "http://127.0.0.1:8000";
+
+          // get logged-in user data 
+          this.$axios.get(`${baseUrl}/user/${user}`, { headers:{
+          Authorization: `Bearer ${authToken}`}
+          })
+          .then(response => {
+              console.log(response.data);
+              this.individualData = response.data;
+          })
+          .catch( error => {
+              console.error(error);
+          });
+
+          
+        }
       },
       components: {
         LoginFailed,

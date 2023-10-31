@@ -397,13 +397,13 @@ export default {
             this.$axios.get(`${baseUrl}/user/${user}`, { headers:{
                 Authorization: `Bearer ${authToken}`}
             })
-                .then(response => {
-                    console.log(response.data);
-                    this.individualData = response.data;
-                })
-                .catch( error => {
-                    console.error(error);
-                });
+            .then(response => {
+                console.log(response.data);
+                this.individualData = response.data;
+            })
+            .catch( error => {
+                console.error(error);
+            });
             
             
         }
