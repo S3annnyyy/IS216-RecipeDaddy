@@ -183,7 +183,7 @@
                     <!-- Hold a varaible, pull from backend -->
                     <h5 class="card-title d-inline">{{ nameOne }}</h5>
                     <!-- add variablie, pull from backend -->
-                    <p class="card-text">Total score: 2149</p>
+                    <p class="card-text">Total score: {{ scoreOne }}</p>
                     <img src="../assets/first.png" class="award">  
                  </div> 
              </div> 
@@ -198,7 +198,7 @@
                     <!-- Hold a varaible, pull from backend -->
                     <h5 class="card-title d-inline">{{ nameTwo }}</h5>
                     <!-- add variable, pull from backend -->
-                    <p class="card-text">Total score: 2203</p> 
+                    <p class="card-text">Total score: {{scoreTwo}}</p> 
                     <img src="../assets/second.png" class="award">  
                  </div> 
              </div> 
@@ -213,7 +213,7 @@
                     <!-- Hold a varaible pull from backend -->
                     <h5 class="card-title d-inline">{{  nameThree  }}</h5>
                     <!-- add variable, pull from backend -->
-                    <p class="card-text">Total score: 2003</p>  
+                    <p class="card-text">Total score: {{scoreThree}}</p>  
                     <img src="../assets/third.png" class="award">  
                  </div> 
              </div> 
@@ -299,10 +299,15 @@ export default {
     data() {
         return {
             // variables 
-            nameOne: 'iLoveCooking124',
-            nameTwo: 'ChefAlberto',
-            nameThree: 'KingBob',
+            nameOne: '',
+            nameTwo: '',
+            nameThree: '',
+            scoreOne: '',
+            scoreTwo: '',
+            scoreThree: '',
             showLoginAlert: false,
+            individualData: null
+
         };
     },
     mounted() {
@@ -336,6 +341,9 @@ export default {
         updateCountdown();
         setInterval(updateCountdown, 1000);
 
+        // get user info 
+        this.getUserInfo();
+
         // check if user is loggedIn
         this.checkUserLoggedIn();
     },
@@ -350,7 +358,49 @@ export default {
         },
         checkUserLoggedIn() {           
             if (!sessionStorage.getItem("AuthToken")) {this.showLoginAlert = true}               
-        }   
+        },
+        getUserInfo() {
+            console.log(sessionStorage);
+            const authToken = sessionStorage.AuthToken;
+            const user = sessionStorage.user;
+            // get data from backend 
+            const baseUrl = "http://127.0.0.1:8000";
+            
+                
+            
+            this.$axios.get(`${baseUrl}/leaderboard`, { headers:{
+                    Authorization: `Bearer ${authToken}`
+                }
+            })
+                .then(response => {
+                    console.log(response.data);
+
+                    const topThree = response.data.slice(0,4);
+                    this.nameOne = topThree[0].username
+                    this.nameTwo = topThree[1].username
+                    this.nameThree = topThree[2].username
+
+                    this.scoreOne = topThree[0].food_saved
+                    this.scoreTwo = topThree[1].food_saved
+                    this.scoreThree = topThree[2].food_saved
+                    
+                })
+                .catch( error => {
+                    console.error(error);
+                });
+            this.$axios.get(`${baseUrl}/user/${user}`, { headers:{
+                Authorization: `Bearer ${authToken}`}
+            })
+                .then(response => {
+                    console.log(response.data);
+                    this.individualData = response.data;
+                })
+                .catch( error => {
+                    console.error(error);
+                });
+            
+            
+        }
     }
 }
 
