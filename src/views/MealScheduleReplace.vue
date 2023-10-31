@@ -25,8 +25,8 @@
                         <input type="date" class="form-control" v-model="inputDate" />
                     </div>
                     <AnimatedPlaceholder height="50px" width="442px" margin="1rem 0" borderRadius="10px" v-else />
-                    <button type="submit" class="addSchedule" @click="addToSchedule()"
-                        v-if="placeholder.adhocRecipe.steps">Add to schedule</button>
+                    <button type="submit" class="addSchedule" @click="replaceMeal()"
+                        v-if="placeholder.adhocRecipe.steps">Replace?</button>
                     <AnimatedPlaceholder height="50px" width="10rem" margin="1rem 0 0 0" borderRadius="50px"
                         padding="0.5rem" v-else />
                 </div>
@@ -58,7 +58,6 @@ export default {
             timeOfDay: "TimeOfDay",
             inputDate: "",
             promptuuid: '',
-            data: JSON.parse(this.$route.query.data),
             stepCount: 0,
             placeholder: {
                 adhocRecipe: {
@@ -67,7 +66,9 @@ export default {
                     "recipeImg": null,
                 }
             },
+            id: this.$route.params.id,
             baseUrl: "http://127.0.0.1:8000",
+            previousData: JSON.parse(this.$route.query.data),
         };
     },
     methods: {
@@ -104,7 +105,7 @@ export default {
             this.token = response.data.access;
             return response.data.access;
         },
-        async addToSchedule() {
+        async replaceMeal() {
             console.log(`Submitted! Selected date is ${this.convertDate(this.inputDate)}`);
             const user = "wowtest";
             const token = await this.getAuthToken("wowtest@gmail.com", "wowtest"); // Replace with your actual email and password
@@ -124,8 +125,6 @@ export default {
             }
             // missing adding image url #TODO
             let jsonSubmissionTemplate = {
-                "meal_date": this.convertDate(this.inputDate),
-                "meal_type": this.convertToNum(this.timeOfDay), // convert timeofday to numbers
                 "recipe_name": this.placeholder.adhocRecipe.recipeTitle,
                 "image_url":this.placeholder.adhocRecipe.recipeImg,
                 "have_ingredients": ingredientObject,
@@ -133,10 +132,9 @@ export default {
                 "preparation_steps": prepStepsConcat,
                 "canMake": false,
                 "isCompleted": false,
-                "user": user
             }
             // send to backend
-            axios.post(`${this.baseUrl}/user-meal-plan`, jsonSubmissionTemplate, config).then((userMealPlanResponse) => {
+            axios.put(`${this.baseUrl}/user-meal-plan?id=${this.id}`, jsonSubmissionTemplate, config).then((userMealPlanResponse) => {
                 console.log('Response:', userMealPlanResponse.data);
             }).catch((err) => {
                 console.log(`API Call for Post Not Successful: ${err}`)
@@ -157,10 +155,20 @@ export default {
     mounted() {
         // console.log(this.data) // data logging
         this.promptuuid = this.$route.params.id; // get promptuuid   
+        console.log(this.previousData);
 
         // CALL GPT-305 daVinci endpoint with prompt as body
         const URL = "http://127.0.0.1:8000/get-ai-prompt"
-        const userPrompt = JSON.parse(this.$route.query.data).prompt
+        const userPrompt = `
+        Create a recipe that is similar to ${this.previousData.recipe_name}, from the same cuisine but not have the same title and image using just the following ingredients: ${Object.keys(this.previousData.have_ingredients)}. DO NOT use any additional ingredients.Return the data as a JSON object
+        You are also a prompt generator.
+        You will create a prompt that could be used for image-generation based on your generated title of the dish description
+        Once I described the image, include the following markdown. shown in the function call schema set_recipe under "imageUrl"
+        ![Image](https://image.pollinations.ai/prompt/{description})
+        where {description} is:
+        {sceneDetailed}%20{adjective}%20{charactersDetailed}%20{visualStyle}%20{genre}%20{artistReference}
+        Make sure the prompts in the URL are encoded. Don't quote the generated markdown or put any code box around it.
+        `;
 
         const schema = { //Define schema for JSON response
             "type": "object",
