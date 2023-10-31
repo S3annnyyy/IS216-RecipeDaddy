@@ -368,7 +368,7 @@ export default {
             showLoginAlert: false,
             baseUrl: "http://127.0.0.1:8000",
             token: null,
-            username: "wowtest",
+            username: sessionStorage.getItem("user"),
         };
     },
     computed: {
@@ -589,7 +589,7 @@ export default {
         // Ensure that the token is available before calling getMealData
         if (token) {
             this.token = token;
-            this.getMealData(this.username, this.currentDate.toISOString().split("T")[0], token);
+            this.getMealData(user, this.currentDate.toISOString().split("T")[0], token);
         } else {
             // Handle the case where the token is not available
             console.error("Authentication token not found in sessionStorage");

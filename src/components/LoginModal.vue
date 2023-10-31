@@ -1,91 +1,88 @@
 <template>
     <div :class="{ scrolled: scrolledPastVideo }">
-        <button @click="toggleModal" class="navbar-login-button">
-            <span class="material-icons-outlined">account_circle</span>
-            Sign in
-        </button>
-        <Teleport to="body">
-            <Transition name="modal">
-                <div class="login-modal-bg" v-if="isModalOpen">
-                    <div class="login-modal" ref="modal">
-                        <span class="material-icons" @click="toggleModal">close</span>
-                        <div class='login-form-wrapper'>
-                            <form class="login-form" @submit.prevent="handleLogin">
-                                <h1 class="login-header">Login</h1>
-                                <div class='divider'></div>
-                                <div class='form-group'>
-                                    <input type="email" placeholder=" " required="required" class='form-control'
-                                        v-model='userEmail' v-focus autocomplete="email" />
-                                    <label class='form-label'>Your Email</label>
-                                </div>
-                                <div class='form-group'>
-                                    <input type="password" placeholder=" " required="required" class='form-control'
-                                        v-model='userPassword' autocomplete="current-password" />
-                                    <label class='form-label'>Your Password</label>
-                                </div>
-                                <div class="button-wrapper">
-                                    <button type='submit' class='login-button' name='login'>
-                                        <span class="login-button-content">
-                                            <svg width="24" height="24" viewBox="0 0 24 24" class="arrow">
-                                                <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2 .01 7z" />
-                                            </svg>
-                                            Login
-                                        </span>
-                                    </button>
-                                    <router-link class="signup-redirect" :to="{ name: 'signup' }">Create
-                                        account</router-link>
-                                </div>
-                            </form>
+    <button @click="toggleModal" class="navbar-login-button">
+        <span class="material-icons-outlined">account_circle</span>
+        Sign in
+    </button>
+    <Teleport to="body">
+        <Transition name="modal">
+        <div class="login-modal-bg" v-if="isModalOpen">
+            <div class="login-modal" ref="modal">
+                <span class="material-icons" @click="toggleModal">close</span>
+                <div class='login-form-wrapper'>
+                    <form class="login-form" @submit.prevent="handleLogin">
+                        <h1 class="login-header">Login</h1>
+                        <div class='divider'></div>
+                        <div class='form-group'>
+                            <input type="email" placeholder=" " required="required" class='form-control' v-model='userEmail' v-focus autocomplete="email"/>
+                            <label class='form-label'>Your Email</label>
                         </div>
-                    </div>
+                        <div class='form-group'>
+                            <input type="password" placeholder=" " required="required" class='form-control' v-model='userPassword' autocomplete="current-password"/>
+                            <label class='form-label'>Your Password</label>
+                        </div>
+                        <div class="button-wrapper">
+                            <button type='submit' class='login-button' name='login'>
+                                <span class="login-button-content">
+                                <svg width="24" height="24" viewBox="0 0 24 24" class="arrow">
+                                <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2 .01 7z"/>
+                                </svg>
+                                Login
+                                </span>
+                            </button>
+                            <router-link class="signup-redirect" :to="{ name: 'signup' }">Create account</router-link>
+                        </div>
+                    </form>
                 </div>
-            </Transition>
-        </Teleport>
-    </div>
+            </div>
+        </div>
+        </Transition>
+    </Teleport>
+</div>
 </template>
 
 <script setup>
-import { onMounted, ref, defineProps } from 'vue'
-import { onClickOutside } from '@vueuse/core'
-import axios from 'axios'
+    import { onMounted, ref, defineProps } from 'vue'
+    import { onClickOutside } from '@vueuse/core'
+    import axios from 'axios'
 
-// saving state of specific user event loginModal > signup > loginModal
-// Implementation allows modal to remain popped up until told to disappear
-const isModalOpen = ref(localStorage.getItem("isModalOpen") === "true")
-const toggleModal = () => {
-    isModalOpen.value = !isModalOpen.value
-    localStorage.setItem("isModalOpen", isModalOpen.value)
-}
+    // saving state of specific user event loginModal > signup > loginModal
+    // Implementation allows modal to remain popped up until told to disappear
+    const isModalOpen = ref(localStorage.getItem("isModalOpen") === "true")
+    const toggleModal = () => {
+        isModalOpen.value = !isModalOpen.value
+        localStorage.setItem("isModalOpen", isModalOpen.value)
+    }
+    
+    const modal = ref(null)
+    onClickOutside(modal, () => (toggleModal()))
 
-const modal = ref(null)
-onClickOutside(modal, () => (toggleModal()))
-
-// custom v-focus param <==> autofocus in html input tag 
-const vFocus = {
-    mounted: (el) => el.focus()
-}
-
-// Props parsed from navbar
-const props = defineProps({
-    scrolledPastVideo: Boolean,
-});
-
-// backend essential data
-const userEmail = ref("")
-const userPassword = ref("")
-const authToken = ref("")
-const URL = "http://127.0.0.1:8000"
-
-function handleLogin() {
-    console.log('Form submitted');
-
-    // retrieve token from backend       
-    const requestData = {
-        email: userEmail.value,
-        password: userPassword.value,
+    // custom v-focus param <==> autofocus in html input tag 
+    const vFocus = {
+        mounted: (el) => el.focus()
     }
 
-    axios.post(`${URL}/api/token`, requestData)
+    // Props parsed from navbar
+    const props = defineProps({
+        scrolledPastVideo: Boolean,
+    });
+
+    // backend essential data
+    const userEmail = ref("")
+    const userPassword = ref("")
+    const authToken = ref("")
+    const URL = "http://127.0.0.1:8000"
+    
+    function handleLogin() {
+        console.log('Form submitted');
+
+        // retrieve token from backend       
+        const requestData = {
+            email: userEmail.value,
+            password: userPassword.value,
+        }
+
+        axios.post(`${URL}/api/token`, requestData)
         .then((res) => {
             authToken.value = res.data.access
             sessionStorage.setItem("AuthToken", authToken.value)
@@ -94,28 +91,30 @@ function handleLogin() {
         })
         .catch((err) => {
             alert("Wrong credentials")
+           
         })
-    // RESET INPUT & page
-    userEmail.value = ""
-    userPassword.value = ""
-    toggleModal()
-}
+        // RESET INPUT & page
+        userEmail.value = ""
+        userPassword.value = ""
+        toggleModal()        
+    }
 
-async function getUsername() {
-    const response = await axios.get(`${URL}/user/wowtest`, {
-        headers: {
-            Authorization: `Bearer  ${authToken.value}`
-        }
-    })
-    console.log(response.data);
-    // extract username 
-    const currentUser = response.data.username
-    console.log(currentUser)
-    // store in sessionstorage
-    sessionStorage.setItem("user", currentUser)
-    window.location.reload();
-}
+    
 
+    async function getUsername() {
+        const response = await axios.get(`${URL}/user?email=${userEmail.value}`, {
+            headers: {
+                Authorization: `Bearer  ${authToken.value}`
+            }
+        })
+        // extract username 
+        const currentUser = response.data.username
+        console.log(currentUser)
+        // store in sessionstorage
+        sessionStorage.setItem("user", currentUser)
+        window.location.reload();
+    }   
+   
 </script>
   
 <style scoped>

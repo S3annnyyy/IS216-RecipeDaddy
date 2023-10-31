@@ -61,6 +61,16 @@ const router = createRouter({
       component: () => import('../views/MealScheduleReplace.vue')
     },
     {
+      path: '/leaderboard',
+      name: 'leaderboard',
+      component: () => import('../views/Leaderboard.vue')
+    },
+    {
+      path: '/analytics',
+      name: 'analytics',
+      component: () => import('../views/Analytics.vue')
+    },
+    {
       path: '/payment',
       name: 'payment',
       component: () => import('../views/Payment.vue'),

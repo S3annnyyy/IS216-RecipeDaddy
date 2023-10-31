@@ -70,6 +70,8 @@
     { textName: 'Home', icon: 'home', link: '/' },
     { textName: 'Recipe Search', icon: 'visibility', link: '/recipesearch' },
     { textName: 'Meal Prep', icon: 'group', link: '/mealprep' },
+    { textName: 'Leaderboard', icon: 'group', link: '/leaderboard' },
+    { textName: 'Analytics', icon: 'group', link: '/analytics' },
     { textName: 'Meal Schedule', icon: 'group', link: '/mealschedule' },
     { textName: 'Contact Us', icon: 'email', link: '/contact' },
     
