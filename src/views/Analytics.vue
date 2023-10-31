@@ -6,13 +6,13 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5); 
+  background: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(5px);
-  z-index: 999; 
+  z-index: 999;
   display: flex;
   justify-content: center;
   align-items: center;
-  cursor: pointer;   
+  cursor: pointer;
 }
 
 .login-alert {
@@ -24,171 +24,365 @@
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  z-index: 1000; 
+  z-index: 1000;
   text-align: center;
+}
+.card {
+  border-radius: 15px;
+}
+
+/* Style the tab */
+.tab {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  font-size: 17px;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  background-color: #ccc;
+}
+
+/* Style the tab content */
+.tabcontent {
+  display: none;
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  border-top: none;
 }
 </style>
 
 <template>
-
   <h3 class="pt-3">Dashboard</h3>
 
   <div class="row mb-4">
-    
-    <div class="col">
-      <!-- Start: Goals --> 
-      <div class="card"> 
-        <div class="card-body"> 
-          <h4 class="card-title" v-if="goals == 0">Set your Goals today!</h4>
-          <h4 class="card-title" v-else>Goal</h4> 
+    <div class="col card-group">
+      <!-- Start: Goals -->
+      <div class="card">
+        <div class="card-body">
+          <div v-if="goalSet == false">
+            <h4 class="card-title">Set your Goals today!</h4>
+            <img src="../assets/goal.png" style="width: 100px; height: auto" />
+            <p class="card-text">
+              Contribute to a more sustainable and eco-friendly lifestyle by setting a goal for
+              yourself! Indicate how many grams of food you want to save by the end of each month!
+            </p>
+            <input type="number" placeholder="Grams of food" style="width: 250px" v-model="goals" />
+            <button class="btn btn-primary" @click="setGoal">Set Goal</button>
+          </div>
 
-          <p class="card-text" v-if="goals != 0">
-            Your goal this month: {{ goals }}g <br>
-            You have saved: 383g <br>
+          <div v-else>
+            <h4 class="card-title">Goal</h4>
+            <p class="card-text">
+              Your goal this month: {{ goals }} <br />
+              You have saved: <br />
 
-            <button class="btn btn-primary">Edit</button>
-          </p>
-
-           
-        </div> 
-      </div> 
-      <!-- End: Goals --> 
+              <button class="btn" @click="editGoal">Edit Goal</button>
+            </p>
+          </div>
+        </div>
+      </div>
+      <!-- End: Goals -->
     </div>
-    
+
+    <div class="col card-group">
+      <!-- BS card: Start -->
+      <div class="card" style="width: 18rem">
+        <div class="card-body">
+          <h5 class="card-title">Card title</h5>
+          <p class="card-text">
+            Some quick example text to make up the bulk of the card's content.
+          </p>
+        </div>
+      </div>
+      <!-- BS card: End -->
+    </div>
+  </div>
+
+  <h4>Your Analytics</h4>
+
+  <div class="row mb-4">
+    <div class="tab">
+      <button class="tablinks" active @click="openGraph($event, 'month')">Month</button>
+      <button class="tablinks" @click="openGraph($event, 'year')">Year</button>
+    </div>
+
+    <div id="month" class="tabcontent">
+      <canvas id="monthChart" style="width: 100%; max-width: 700px"></canvas>
+    </div>
+
+    <div id="year" class="tabcontent">
+      <canvas id="yearChart" style="width: 100%; max-width: 700px"></canvas>
+    </div>
   </div>
 
   <h4>Today's News on the Climate</h4>
 
   <div class="row">
     <div class="col-lg-10 mx-auto">
-      <!-- Start: News carousel --> 
+      <!-- Start: News carousel -->
       <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
-
         <div class="carousel-inner">
-          <div class="carousel-item" v-for="(post, index) in news" :key="index" :class="{ active: index === 0 }">
-
+          <div
+            class="carousel-item"
+            v-for="(post, index) in news"
+            :key="index"
+            :class="{ active: index === 0 }"
+          >
             <a :href="post.url" target="_blank">
-              <img :src="post.thumbnail" class="d-block w-100" alt="...">
+              <img :src="post.thumbnail" class="d-block w-100" alt="..." />
             </a>
-            
+
             <div class="carousel-caption">
               <h5>{{ post.title }}</h5>
               <p>{{ post.abstract }}</p>
             </div>
-
           </div>
         </div>
 
+        <button
+          class="carousel-control-prev"
+          type="button"
+          data-bs-target="#carouselExampleControls"
+          data-bs-slide="prev"
+        >
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
 
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev"> 
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span> 
-          <span class="visually-hidden">Previous</span> 
-        </button> 
-
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">  
-          <span class="carousel-control-next-icon" aria-hidden="true"></span> 
-          <span class="visually-hidden">Next</span> 
-        </button> 
-
-      </div> 
-      <!-- End: News carousel --> 
+        <button
+          class="carousel-control-next"
+          type="button"
+          data-bs-target="#carouselExampleControls"
+          data-bs-slide="next"
+        >
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+      <!-- End: News carousel -->
     </div>
   </div>
-  
-<!-- THIS PORTION IS FOR USER AUTHENTICATION CHECK -->
-<div v-if="showLoginAlert" class="overlay" @click="routeBackToHome"></div>
-<div v-if="showLoginAlert" class="login-alert">
-    <LoginFailed />      
-    <p>Please log in first to access this feature.</p>
-</div>
-<!-- END OF USER AUTHENTICATION CHECK -->
 
+  <!-- THIS PORTION IS FOR USER AUTHENTICATION CHECK -->
+  <div v-if="showLoginAlert" class="overlay" @click="routeBackToHome"></div>
+  <div v-if="showLoginAlert" class="login-alert">
+    <LoginFailed />
+    <p>Please log in first to access this feature.</p>
+  </div>
+  <!-- END OF USER AUTHENTICATION CHECK -->
 </template>
 
 <script>
+import Chart from 'chart.js/auto'
+import LoginFailed from '../components/LoginFailed.vue'
+import axios from 'axios'
 
-    import LoginFailed from "../components/LoginFailed.vue";
-    import axios from 'axios';
+export default {
+  data() {
+    return {
+      news: [],
+      goals: 0,
+      goalSet: false,
+      showLoginAlert: false
+    }
+  },
+  mounted() {
+    const apikey = 'TuFXqFiib4B8EKZzgUbOM6CH9UNIxMYr'
 
-    export default {
-      data () {
-        return {
-          news: [],
-          goals: 2348,
-          showLoginAlert: false,
-        };
-      },
-      mounted () {
-        const apikey = "TuFXqFiib4B8EKZzgUbOM6CH9UNIxMYr";
+    const extractImage = (post) => {
+      const defaultImg = {
+        url: 'http://placehold.it/210x140?text=N/A',
+        caption: post.title
+      }
 
-        const extractImage = (post) => {
-          const defaultImg = {
-            url: "http://placehold.it/210x140?text=N/A",
-            caption: post.title,
-          };
+      if (!post.multimedia) {
+        return defaultImg
+      }
 
-          if (!post.multimedia) {
-            return defaultImg;
+      let imgObj = post.multimedia.find((media) => media.format === 'threeByTwoSmallAt2X')
+
+      return imgObj ? imgObj : defaultImg
+    }
+
+    axios
+      .get(`https://api.nytimes.com/svc/topstories/v2/climate.json?api-key=${apikey}`)
+      .then((response) => {
+        var news = response.data.results
+        let posts = news.map((post) => ({
+          title: post.title,
+          abstract: post.abstract,
+          url: post.url,
+          thumbnail: extractImage(post).url,
+          caption: extractImage(post).caption
+        }))
+
+        this.news = posts
+      })
+    // check if user is loggedIn
+    this.checkUserLoggedIn()
+
+    // get user Info
+    this.getUserInfo()
+  },
+  methods: {
+    // THESE FUNCTIONS ARE FOR USER AUTHENITCATION
+    routeBackToHome() {
+      this.showLoginAlert = false
+      this.$router.push({ path: '/' })
+    },
+    checkUserLoggedIn() {
+      if (!sessionStorage.getItem('AuthToken')) {
+        this.showLoginAlert = true
+      }
+    },
+    // get specific user's info
+    getUserInfo() {
+      console.log(sessionStorage)
+      const authToken = sessionStorage.AuthToken
+      const user = sessionStorage.user
+      // get data from backend
+      const baseUrl = 'http://127.0.0.1:8000'
+
+      // get logged-in user data
+      this.$axios
+        .get(`${baseUrl}/user?username=${user}`, {
+          headers: {
+            Authorization: `Bearer ${authToken}`
           }
+        })
+        .then((response) => {
+          console.log(response.data)
+          this.individualData = response.data
+        })
+        .catch((error) => {
+          console.error(error)
+        })
+    },
+    updateGraph() {
+      const now = new Date()
+      let day = now.getDay()
+      let month = now.getMonth()
+      let date = now.getDate()
 
-          let imgObj = post.multimedia.find(
-            media => media.format === "threeByTwoSmallAt2X"
-          );
+      const months = [
+        'Jan',
+        'Feb',
+        'Mar',
+        'Apr',
+        'May',
+        'Jun',
+        'Jul',
+        'Aug',
+        'Sep',
+        'Oct',
+        'Nov',
+        'Dec'
+      ]
 
-          return imgObj ? imgObj : defaultImg;
-        };
+      // find the date of the last day of each month
+      if (
+        month == 0 ||
+        month == 2 ||
+        month == 4 ||
+        month == 6 ||
+        month == 7 ||
+        month == 9 ||
+        month == 11
+      ) {
+        var lastDay = 31
+      } else if (month == 3 || month == 5 || month == 8 || month == 10) {
+        var lastDay = 30
+      } else {
+        var lastDay = 29
+      }
 
-        axios.get(`https://api.nytimes.com/svc/topstories/v2/climate.json?api-key=${apikey}`)
-        .then(response => {
-          var news = response.data.results;
-          let posts = news.map(post => ({
-                      title: post.title,
-                      abstract: post.abstract,
-                      url: post.url,
-                      thumbnail: extractImage(post).url, 
-                      caption: extractImage(post).caption
-                    }));
+      // get variables that i have to retrieve from backend
+      var total_saved, x, coordinates
+      /*
+            coordinates = {
+              monthX: [],
+              monthY: [],
+              yearX: [],
+              yearY: []
+            }
+          */
 
-          this.news = posts;
-        });
-        // check if user is loggedIn
-        this.checkUserLoggedIn();
+      var monthXValues = coordinates.monthX
+      var monthYValues = coordinates.monthY
+      var yearXValues = coordinates.yearX
+      var yearYValues = coordinates.yearY
 
-        // get user Info
-        this.getUserInfo();
-      },
-      methods: {
-        // THESE FUNCTIONS ARE FOR USER AUTHENITCATION                
-        routeBackToHome() {
-          this.showLoginAlert = false
-          this.$router.push( {path: '/'})
-        },
-        checkUserLoggedIn() {           
-            if (!sessionStorage.getItem("AuthToken")) {this.showLoginAlert = true}               
-        },
-        // get specific user's info 
-        getUserInfo() {
-          console.log(sessionStorage);
-          const authToken = sessionStorage.AuthToken;
-          const user = sessionStorage.user;
-          // get data from backend 
-          const baseUrl = "http://127.0.0.1:8000";
+      var output = total_saved - x // outputs amount saved daily
+      x = total_saved // this needs to be saved in the backend daily
 
-          // get logged-in user data 
-          this.$axios.get(`${baseUrl}/user?username=${user}`, { headers:{
-          Authorization: `Bearer ${authToken}`}
-          })
-          .then(response => {
-              console.log(response.data);
-              this.individualData = response.data;
-          })
-          .catch(error => {
-              console.error(error);
-          });
+      var total_monthly_saved = 0
+      // populate year on the last day of each month
+      if (day == lastDay) {
+        for (let value of monthYValues) {
+          total_monthly_saved += value
         }
-      },
-      components: {
-        LoginFailed,
-      },
-    };
+
+        yearXValues.push(months[month])
+        yearYValues.push(total_monthly_saved)
+      }
+
+      // clear prev month coordinates on the first day of each month
+      else if (day == 1 && month != 0) {
+        if (monthXValues.length != 0 || monthYValues.length != 0) {
+          monthXValues = []
+          monthYValues = []
+        }
+      }
+
+      // clear both month and year on the first day of each year
+      else if (day == 1 && month == 0) {
+        if (
+          monthXValues.length != 0 ||
+          monthYValues.length != 0 ||
+          yearXValues.length != 0 ||
+          yearYValues.length != 0
+        ) {
+          monthXValues = []
+          monthYValues = []
+          yearXValues = []
+          yearYValues = []
+        }
+      }
+
+      // populate month values for the day, checks whether it is the first time user is loading the page that day
+      const currentDate = new Date().toISOString().split('T')[0]
+      const storedDate = localStorage.getItem('lastDate')
+
+      if (currentDate !== storedDate) {
+        localStorage.setItem('lastDate', currentDate)
+        monthXValues.push(date)
+        monthYValues.push(output)
+      } else {
+        monthYValues.pop()
+        monthYValues.push(output)
+      }
+    }
+  },
+  components: {
+    LoginFailed
+  }
+}
 </script>
