@@ -65,6 +65,11 @@ const router = createRouter({
       name: 'payment',
       component: () => import('../views/Payment.vue'),
     },
+    {
+      path: '/contact',
+      name: 'contact',
+      component: () => import('../views/ContactPage.vue')
+    },
     // error 404
     {
       path: '/:catchAll(.*)',
