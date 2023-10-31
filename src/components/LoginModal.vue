@@ -102,7 +102,7 @@
     
 
     async function getUsername() {
-        const response = await axios.get(`${URL}/user/poop`, {
+        const response = await axios.get(`${URL}/user?username=poop`, {
             headers: {
                 Authorization: `Bearer  ${authToken.value}`
             }

@@ -175,18 +175,16 @@
           const baseUrl = "http://127.0.0.1:8000";
 
           // get logged-in user data 
-          this.$axios.get(`${baseUrl}/user/${user}`, { headers:{
+          this.$axios.get(`${baseUrl}/user?username=${user}`, { headers:{
           Authorization: `Bearer ${authToken}`}
           })
           .then(response => {
               console.log(response.data);
               this.individualData = response.data;
           })
-          .catch( error => {
+          .catch(error => {
               console.error(error);
           });
-
-          
         }
       },
       components: {

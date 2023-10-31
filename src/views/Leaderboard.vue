@@ -365,7 +365,7 @@ export default {
         
         // get user Info + All user info for leaderboard 
         getUserInfo() {
-            console.log(sessionStorage);
+            // console.log(sessionStorage);
             const authToken = sessionStorage.AuthToken;
             const user = sessionStorage.user;
             // get data from backend 
@@ -376,25 +376,25 @@ export default {
                     Authorization: `Bearer ${authToken}`
                 }
             })
-                .then(response => {
-                    console.log(response.data);
+            .then(response => {
+                console.log(response.data);
 
-                    const topThree = response.data.slice(0,4);
-                    this.nameOne = topThree[0].username
-                    this.nameTwo = topThree[1].username
-                    this.nameThree = topThree[2].username
+                const topThree = response.data.slice(0,4);
+                this.nameOne = topThree[0].username
+                this.nameTwo = topThree[1].username
+                this.nameThree = topThree[2].username
 
-                    this.scoreOne = topThree[0].food_saved
-                    this.scoreTwo = topThree[1].food_saved
-                    this.scoreThree = topThree[2].food_saved
-                    
-                })
-                .catch( error => {
-                    console.error(error);
-                });
+                this.scoreOne = topThree[0].food_saved
+                this.scoreTwo = topThree[1].food_saved
+                this.scoreThree = topThree[2].food_saved
+                
+            })
+            .catch( error => {
+                console.error(error);
+            });
 
             // get logged-in user data 
-            this.$axios.get(`${baseUrl}/user/${user}`, { headers:{
+            this.$axios.get(`${baseUrl}/user?=username=${user}`, { headers:{
                 Authorization: `Bearer ${authToken}`}
             })
             .then(response => {
