@@ -1,13 +1,20 @@
 <style scoped>
 .box {
-    background-color: #D9D9D9;
+    background-color: #194252;
+    padding: 1rem;
+    color: var(--light);
+    border-radius: 10px;
+    box-shadow: 0 4px 2px -2px var(--text-light-secondary);
+   
 }
 
-.button {
-    background-color: #E6E3E3;
-    border-radius: 10%;
-    margin-bottom: 5px;
-    padding: 5px;
+.shopping-list-button {   
+    background-color: var(--light);
+    border-radius: 10px;
+    padding: 0.5rem 1rem;    
+    border: 1px solid #194252;      
+    box-shadow: 0 6px 2px -2px var(--dark); 
+    width: 100%;
 }
 
 .center {
@@ -83,7 +90,8 @@
 }
 
 .selected-date {
-    background-color: lightblue;
+    background-color: var(--light);
+    color: var(--dark);    
     /* Change this color to your preferred light blue color */
 }
 
@@ -94,7 +102,7 @@
 }
 
 .indivDate {
-    border: 1px solid black;
+    border: 1px solid var(--light);
     border-radius: 10px;
     margin: 5px;
     padding: 5px;
@@ -132,8 +140,8 @@
 
 <template>
     <!-- Meal Schedule header  -->
-    <main class="row mt-3 mx-5">
-        <div class="col-lg-3 col-md-3 col-sm-12">
+    <main class="row mx-lg-5 mx-md-2 mx-sm-2">
+        <div class="col-lg-12 col-md-12 col-sm-12">
             <h1>Meal Schedule</h1>
             <div>
                 <img style="padding-right: 0.5rem; padding-bottom: 0.5rem;" src="../assets/chef-hat.png" alt="">
@@ -146,8 +154,8 @@
 
     
     <!-- Current Week  -->
-    <main class="row mx-5">
-        <div class="col-lg-3 col-md-3 col-sm-12 box" style="padding:1rem">
+    <main class="row mx-lg-5 mx-md-2 mx-sm-2">
+        <div class="col-lg-3 col-md-3 col-sm-12 box text-center">
             <h6>CURRENT WEEK</h6>
             <div>
                 <span class="fa-solid fa-angle-left" @click="decrementWeek"></span>
@@ -156,7 +164,7 @@
                 <div class="row">
 
                     <div class="col">
-                        <button type="button" class="button mt-4" data-bs-toggle="modal"
+                        <button type="button" class="shopping-list-button mt-4" data-bs-toggle="modal" style=""
                             data-bs-target="#overviewRecipe">Shopping List
                         </button>
                         <!-- Modal -->
@@ -228,7 +236,7 @@
     </main>
 
     <!-- Calendar -->
-    <div class="row mx-5 mt-3 box dates">
+    <div class="row mx-lg-5 mx-md-2 mx-sm-2 mt-3 box dates">
         <div @click="setCurrentDate(date)" class="col center indivDate" v-for="(date, index) in weekDates" :key="index"
             :class="{ 'selected-date': isDateSelected(date) }">
             <span v-html="formatDate(date)"></span>
