@@ -6,7 +6,7 @@
             <div class="col-12 text-center">
                 <h1>Meal Planner</h1>
                 <p>Get meal plans specially curated for you!</p>
-                <button @click="planMeal" class="btn btn-secondary">Get Started</button>
+                <button @click="planMeal" class="btn btn-secondary" style="background-color: #194252;">Get Started</button>
             </div>
         </div>
         
@@ -806,8 +806,8 @@ export default {
         },
         async postToBackend(output) {
             try {
-                const email = "wowtest@gmail.com";
-                const password = "wowtest";
+                const email = sessionStorage.getItem("email");
+                const password = sessionStorage.getItem("password");
                 const baseUrl = "http://127.0.0.1:8000";
                 const requestData = {
                     email: email,

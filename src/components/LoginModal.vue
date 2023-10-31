@@ -101,8 +101,7 @@ function handleLogin() {
     toggleModal()
 }
 
-async function getUsername() {
-    console.log(userEmail.value)
+async function getUsername() {    
     const response = await axios.get(`${URL}/user?email=${userEmail.value}`, {
         headers: {
             Authorization: `Bearer  ${authToken.value}`
@@ -114,6 +113,8 @@ async function getUsername() {
     console.log(currentUser)
     // store in sessionstorage
     sessionStorage.setItem("user", currentUser)
+    sessionStorage.setItem("password", userPassword.value)
+    sessionStorage.setItem("email", userEmail.value)
     window.location.reload();
 }
 
