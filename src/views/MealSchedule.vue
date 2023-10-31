@@ -100,6 +100,34 @@
     padding: 5px;
     cursor: pointer
 }
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    z-index: 999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.login-alert {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    text-align: center;
+}
 </style>
 
 <template>
@@ -218,13 +246,13 @@
                 <div class="card-text breakfast-recipe text-center">Berries Pancake</div>
                 <div class="buttons row d-flex justify-content-center">
                     <button class="view-recipe-button col-sm-6 col-md-8 col-lg-3 mt-1">View</button> -->
-                    <!-- TO DO: add logic to redirect to recipe -->
-                    <!-- <router-link
+    <!-- TO DO: add logic to redirect to recipe -->
+    <!-- <router-link
             :to="{ name: 'recipeSearch', params: { mealType: 'dinner' } }"
             class="view-recipe-button">
             View Recipe
           </router-link> -->
-                    <!-- <button class="replace-button col-sm-6 col-md-8 col-lg-3 mt-1">Replace</button>
+    <!-- <button class="replace-button col-sm-6 col-md-8 col-lg-3 mt-1">Replace</button>
                     <button class="delete-button col-sm-6 col-md-8 col-lg-3 mt-1">Delete</button>
                 </div>
             </div>
@@ -266,14 +294,23 @@
             <div class="card-body">
                 <div class="card-text breakfast-recipe text-center">{{ meal.recipe_name }}</div>
                 <div class="buttons row d-flex justify-content-center">
-                    <button class="view-recipe-button col-sm-6 col-md-7 col-lg-3 mt-1"  @click="viewRecipe(meal)">View Recipe</button>
-                    <button class="replace-button col-sm-6 col-md-7 col-lg-3 mt-1" @click="replaceMeal(meal)">Replace</button>
+                    <button class="view-recipe-button col-sm-6 col-md-7 col-lg-3 mt-1" @click="viewRecipe(meal)">View
+                        Recipe</button>
+                    <button class="replace-button col-sm-6 col-md-7 col-lg-3 mt-1"
+                        @click="replaceMeal(meal)">Replace</button>
                     <button class="delete-button col-sm-6 col-md-7 col-lg-3 mt-1" @click="deleteMeal(meal)">Delete</button>
                 </div>
             </div>
         </div>
 
     </main>
+    <!-- THIS PORTION IS FOR USER AUTHENTICATION CHECK -->
+    <div v-if="showLoginAlert" class="overlay" @click="routeBackToHome"></div>
+    <div v-if="showLoginAlert" class="login-alert">
+        <LoginFailed />
+        <p>Please log in first to access this feature.</p>
+    </div>
+    <!-- END OF USER AUTHENTICATION CHECK -->
 </template>
 <script>
 /* questions  = {
@@ -294,6 +331,7 @@
 } */
 import { formatDate } from "@vueuse/core";
 import axios from "axios";
+import LoginFailed from "../components/LoginFailed.vue";
 
 Date.prototype.GetFirstDayOfWeek = function () {
     const firstDayOfWeek = new Date(this);
@@ -327,10 +365,10 @@ export default {
                 receivedData: null,
 
             },
+            showLoginAlert: false,
             baseUrl: "http://127.0.0.1:8000",
             token: null,
             username: "wowtest",
-
         };
     },
     computed: {
@@ -426,33 +464,29 @@ export default {
             });
         },
         async getAuthToken(email, password) {
-            const requestData = {
-                email: email,
-                password: password,
-            };
-            const response = await axios.post(`${this.baseUrl}/api/token`, requestData);
-            this.token = response.data.access;
-            return response.data.access;
+
+
         },
         async getMealData(username, date, token) {
+
             axios
                 .get(`${this.baseUrl}/user-meal-plan?username=${username}&meal_date=${date}`, {
                     headers: {
-                        Authorization: `Bearer ${token}`,
+                        Authorization: `Bearer ${this.token}`,
                     },
                 })
                 .then((mealResponse) => {
                     console.log(mealResponse.data);
                     // Assuming you want to do something with the meal data
                     const mealTypeOrder = {
-                        1:1,
-                        2:2,
-                        3:3,
+                        1: 1,
+                        2: 2,
+                        3: 3,
                     }
                     mealResponse.data.sort((a, b) => {
                         return mealTypeOrder[a.meal_type] - mealTypeOrder[b.meal_type];
                     })
-                    
+
 
                     this.mealSchedule.receivedData = mealResponse.data;
                     for (let meal of this.mealSchedule.receivedData) {
@@ -497,23 +531,23 @@ export default {
         viewRecipe(meal) {
             this.$router.push({
                 name: "mealschedulegenerated",
-                params:{
-                    id:meal.id
-                
+                params: {
+                    id: meal.id
+
                 },
                 query: {
-                    id:meal.id, data: JSON.stringify(meal)
+                    id: meal.id, data: JSON.stringify(meal)
                 }
             });
         },
         replaceMeal(meal) {
             this.$router.push({
-                name:"replacement",
+                name: "replacement",
                 params: {
-                    id:meal.id
+                    id: meal.id
                 },
                 query: {
-                    id:meal.id, data: JSON.stringify(meal)
+                    id: meal.id, data: JSON.stringify(meal)
                 }
 
 
@@ -538,31 +572,34 @@ export default {
             this.mealSchedule.receivedData = this.mealSchedule.receivedData.filter(item => item.id !== mealId);
 
         },
-        async fetchData() {
-            const email = "wowtest@gmail.com";
-            const password = "wowtest";
-            try {
-                const token = await this.getAuthToken(email, password);
-                const user = "wowtest";
-                const mealData = await this.getMealData(user, this.currentDate.toISOString().split("T")[0], token);
-                this.mealSchedule.receivedData = mealData;
-            } catch (error) {
-                console.error("Error fetching data:", error);
-                // Handle the error, e.g., show an error message.
-            }
+        routeBackToHome() {
+            this.showLoginAlert = false
+            this.$router.push({ path: '/' })
         },
+        checkUserLoggedIn() {
+            if (!sessionStorage.getItem("AuthToken")) { this.showLoginAlert = true }
 
-
+        }
     },
     mounted() {
-        this.fetchData();
+        this.checkUserLoggedIn();
+        const user = sessionStorage.getItem("user");
+        const token = sessionStorage.getItem("AuthToken");
 
+        // Ensure that the token is available before calling getMealData
+        if (token) {
+            this.token = token;
+            this.getMealData(this.username, this.currentDate.toISOString().split("T")[0], token);
+        } else {
+            // Handle the case where the token is not available
+            console.error("Authentication token not found in sessionStorage");
+        }
     },
+    components: {
+        LoginFailed,
+    }
 
-};
+}
+
+
 </script>
-
-<!--                 this.$router.push({
-                    path: `recipesearch/${this.uuid}`,
-                    query: {data: JSON.stringify(recipeObject)}
-                }) -->

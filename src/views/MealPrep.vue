@@ -9,7 +9,7 @@
                 <button @click="planMeal" class="btn btn-secondary">Get Started</button>
             </div>
         </div>
-
+        
         <div v-else class="row">
 
             <h1 class="text-center" style="margin-top: 5%;">Questionnaire</h1>
@@ -106,46 +106,39 @@
                                             :for="mealDates[ind + 1] + ' 1'">Breakfast</label><br>
                                     </div>
                                     <div v-else>
-                                        <input @click="addMeal" type="checkbox" class="btn-check"
-                                            :id="mealDates[ind + 1] + ' 1'" autocomplete="off">
-                                        <label class="btn btn-outline-primary spacing sameSize"
-                                            :for="mealDates[ind + 1] + ' 1'">Breakfast</label><br>
+                                        <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[ind + 1] + ' 1'" autocomplete="off">
+                                        <label class="btn btn-outline-primary spacing sameSize" :for="mealDates[ind + 1] + ' 1'">Breakfast</label><br>
                                     </div>
                                     <!-- lunch -->
                                     <div v-if="enteredStartDate == ''">
-                                        <input @click="addMeal" type="checkbox" class="btn-check"
-                                            :id="mealDates[ind + 1] + ' 2'" autocomplete="off" disabled>
-                                        <label class="btn btn-outline-primary spacing sameSize"
-                                            :for="mealDates[ind + 1] + ' 2'">Lunch</label><br>
+                                        <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[ind + 1] + ' 2'" autocomplete="off" disabled>
+                                        <label class="btn btn-outline-primary spacing sameSize" :for="mealDates[ind + 1] + ' 2'">Lunch</label><br>
                                     </div>
                                     <div v-else>
-                                        <input @click="addMeal" type="checkbox" class="btn-check"
-                                            :id="mealDates[ind + 1] + ' 2'" autocomplete="off">
-                                        <label class="btn btn-outline-primary spacing sameSize"
-                                            :for="mealDates[ind + 1] + ' 2'">Lunch</label><br>
+                                        <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[ind + 1] + ' 2'" autocomplete="off">
+                                        <label class="btn btn-outline-primary spacing sameSize" :for="mealDates[ind + 1] + ' 2'">Lunch</label><br>
                                     </div>
                                     <!-- dinner -->
                                     <div v-if="enteredStartDate == ''">
-                                        <input @click="addMeal" type="checkbox" class="btn-check"
-                                            :id="mealDates[ind + 1] + ' 3'" autocomplete="off" disabled>
-                                        <label class="btn btn-outline-primary spacing sameSize"
-                                            :for="mealDates[ind + 1] + ' 3'">Dinner</label><br>
+                                        <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[ind + 1] + ' 3'" autocomplete="off" disabled>
+                                        <label class="btn btn-outline-primary spacing sameSize" :for="mealDates[ind + 1] + ' 3'">Dinner</label><br>
                                     </div>
                                     <div v-else>
-                                        <input @click="addMeal" type="checkbox" class="btn-check"
-                                            :id="mealDates[ind + 1] + ' 3'" autocomplete="off">
-                                        <label class="btn btn-outline-primary spacing sameSize"
-                                            :for="mealDates[ind + 1] + ' 3'">Dinner</label><br>
+                                        <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[ind + 1] + ' 3'" autocomplete="off">
+                                        <label class="btn btn-outline-primary spacing sameSize" :for="mealDates[ind + 1] + ' 3'">Dinner</label><br>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+
                     <!-- submit button -->
                     <div v-if="mealValidation" @click="submitClick" class="d-flex justify-content-center col-4 mt-3 mb-3">
                         <button class="btn btn-primary" type="button">Continue!</button>
                     </div>
+                    
                 </div>
+
             </form>
         </div>
     </div>
@@ -161,91 +154,88 @@
                         v-model="avoidInput" @keydown.enter="handleEnter">
                     <button class="btn submit-button" type="submit" @click="submitClick2" aria-expanded="false">
                         <span class="submit-button-content">
-                            <svg width="32" height="32" viewBox="0 0 24 24" class="arrow">
-                                <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2 .01 7z" />
-                            </svg>
-                        </span>
+                        <svg width="32" height="32" viewBox="0 0 24 24" class="arrow"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2 .01 7z"/></svg>                        
+                        </span>                    
                     </button>
                     <button type="button" class="btn submit-button2" @click="submitClick2">Create Recipe</button>
                 </div>
                 <div class="list-wrapper">
                     <ul class="list-container-toAvoid">
-                        <li v-for="(item, index) in avoidList" :key="index" class="ingredients-toAvoid">
-                            {{ item }}<span class="material-icons-outlined" @click="removeItemAvoid(item)">close</span>
-                        </li>
-                    </ul>
+                    <li v-for="(item, index) in avoidList" :key="index" class="ingredients-toAvoid">
+                        {{ item }}<span class="material-icons-outlined" @click="removeItemAvoid(item)">close</span>                    
+                    </li>
+                </ul>
                 </div>
-            </div>
+            </div>        
         </main>
     </div>
 
     <!-- Page Three: Ingredients to cook with -->
 
     <div v-if="pageThreeValidation">
-        <main class="row justify-content-center align-items-center" style="height: 92vh;">
-            <div class="col-xl-6 col-l-6 col-md-6 col-sm-12 mealPrepIngredient-list-LHS">
-                <div class="container-fluid mealPrepIngredient-list-box position-relative">
-                    <div class="row title">
-                        <div class="col-12">
-                            <h3>Ingredient List:</h3>
-                        </div>
+        <main class="row justify-content-center align-items-center" style="height: 92vh;">        
+        <div class="col-xl-6 col-l-6 col-md-6 col-sm-12 mealPrepIngredient-list-LHS">
+            <div class="container-fluid mealPrepIngredient-list-box position-relative">
+                <div class="row title">
+                    <div class="col-12">
+                        <h3>Ingredient List:</h3>
                     </div>
-                    <div class="row ingredients-list-wrapper">
-                        <div class="col-10">
-                            <ol class="list-container">
-                                <li v-for="(item, index) in mealPrepIngredientList" :key="index" class="ingredients ">
-                                    <div class="mealPrepItem-content">
-                                        <span>{{ index + 1 }}. {{ item }}</span>
-                                        <span class="material-icons-outlined"
-                                            @click="mealPrepRemoveItem(index)">close</span>
-                                    </div>
-                                </li>
+                </div>
+                <div class="row ingredients-list-wrapper">
+                    <div class="col-10">
+                        <ol class="list-container">
+                            <li v-for="(item, index) in mealPrepIngredientList" :key="index" class="ingredients ">
+                                <div class="mealPrepItem-content">
+                                    <span>{{ index + 1 }}. {{ item }}</span>
+                                    <span class="material-icons-outlined" @click="mealPrepRemoveItem(index)">close</span>
+                                </div>                  
+                            </li>
+                        </ol>  
+                    </div>                  
+                </div>                
+                <button class=" position-absolute bottom-0 end-0 m-4 mealPrepSubmit-meal-plan-btn" @click="mealPrepGenerateMealPlan">Generate meal plan</button>                
+            </div>
+        </div>
+        
+               
+        <div class="col-xl-6 col-l-6 col-md-6 col-sm-12 search-bar-RHS">
+            <div class="container-fluid">
+                <div class="row justify-content-center">
+                    <div class="col-xxl-10 col-xl-10 col-l-12 col-md-12 col-sm-12 text-center">
+                        <div class="input-group input-group-md mealPrepSearch-bar-content">
+                            <input type="text" class="form-control mealPrepIngredient" placeholder="Enter ingredient, unit & amount and press enter!" @keydown.enter="mealPrepHandleSubmit" v-model="mealPrepSearchInput">
+                            
+                            <input type="number" class="form-control amount" placeholder="Amount" v-model="mealPrepSelectedAmount" v-on:change="mealPrepHandleAmount">
+
+                            <button class="btn dropdown-toggle unit" type="button" data-bs-toggle="dropdown" aria-expanded="false">{{ mealPrepSelectedUnit }}</button>   
+                            <ol class="dropdown-menu">
+                                <li v-for="unit in mealPrepInputUnits" :key="unit" class="dropdown-item" @click="mealPrepHandleUnit(unit)">{{ unit }}</li>
                             </ol>
-                        </div>
+                        </div>                       
                     </div>
-                    <button class=" position-absolute bottom-0 end-0 m-4 mealPrepSubmit-meal-plan-btn"
-                        @click="mealPrepGenerateMealPlan">Generate meal plan</button>
+                    <div class="form-check col-xxl-10 col-xl-10 col-l-12 col-md-12 col-sm-12" style="padding-left: 2.7rem; padding-top: 0.5rem;">
+                        <input @change="limitIngredient" class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                        <label class="form-check-label" for="flexCheckDefault" style="font-size: small;">
+                            Only specified ingredients
+                        </label>
+                    </div>    
                 </div>
-            </div>
-
-
-            <div class="col-xl-6 col-l-6 col-md-6 col-sm-12 search-bar-RHS">
-                <div class="container-fluid">
-                    <div class="row justify-content-center">
-                        <div class="col-xxl-10 col-xl-10 col-l-12 col-md-12 col-sm-12 text-center">
-                            <div class="input-group input-group-md mealPrepSearch-bar-content">
-                                <input type="text" class="form-control mealPrepIngredient"
-                                    placeholder="Enter ingredient, unit & amount and press enter!"
-                                    @keydown.enter="mealPrepHandleSubmit" v-model="mealPrepSearchInput">
-
-                                <input type="number" class="form-control amount" placeholder="Amount"
-                                    v-model="mealPrepSelectedAmount" v-on:change="mealPrepHandleAmount">
-
-                                <button class="btn dropdown-toggle unit" type="button" data-bs-toggle="dropdown"
-                                    aria-expanded="false">{{ mealPrepSelectedUnit }}</button>
-                                <ol class="dropdown-menu">
-                                    <li v-for="unit in mealPrepInputUnits" :key="unit" class="dropdown-item"
-                                        @click="mealPrepHandleUnit(unit)">{{ unit }}</li>
-                                </ol>
-                            </div>
-                        </div>
-                        <div class="form-check col-xxl-10 col-xl-10 col-l-12 col-md-12 col-sm-12"
-                            style="padding-left: 2.7rem; padding-top: 0.5rem;">
-                            <input @change="limitIngredient" class="form-check-input" type="checkbox" value=""
-                                id="flexCheckDefault">
-                            <label class="form-check-label" for="flexCheckDefault" style="font-size: small;">
-                                Only specified ingredients
-                            </label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </main>
+            </div>           
+        </div>
+    </main>
     </div>
-</template>
+    <!-- THIS PORTION IS FOR USER AUTHENTICATION CHECK -->
+    <div v-if="showLoginAlert" class="overlay" @click="this.$router.push({path: '/'})"></div>
+    <div v-if="showLoginAlert" class="login-alert">
+        <LoginFailed />      
+        <p>Please log in first to access this feature.</p>
+    </div>
+    <!-- END OF USER AUTHENTICATION CHECK -->   
+    </template>
 
 <script>
 import axios from 'axios'
+import LoginFailed from "../components/LoginFailed.vue";
 
 export default {
     data() {
@@ -288,9 +278,10 @@ export default {
             // res --> FINAL OUTPUT OBJECT (SEAN)
             // number of res output depends on number of mealCount
             resJunKai: {},
-            resSean: {}
+            resSean: {},
 
-
+            // FOR USER AUTHENTICATION
+            showLoginAlert: false,
         }
     },
     computed: {
@@ -354,8 +345,15 @@ export default {
     },
     methods: {
         planMeal() {
+            // check if user is loggedIn by matching token on sessionStorage
+            if (!sessionStorage.getItem("AuthToken")) {
+                this.showLoginAlert = true
+                // alert("Please log in before creating a recipe!")
+                // this.$router.push({path: '/'})
+            } else {
             // clear contents in #content
             this.planning = true;
+            }
         },
         addDay() {
             this.dayArr = [];
@@ -834,6 +832,9 @@ export default {
         },
 
         // end of mealPrepSearch methods 
+    },
+    components: {
+        LoginFailed,
     }
 }
 
@@ -1084,5 +1085,32 @@ export default {
 
   }
 
-  /* END OF MEALPREPSEARCH STYLES */
+    /* USER AUTHENITCATION */
+    .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); 
+    backdrop-filter: blur(5px);
+    z-index: 999; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;   
+}
+
+.login-alert {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    z-index: 1000; 
+    text-align: center;
+}
 </style>

@@ -1,9 +1,9 @@
 <template>
-    <div class="text">
-      <h1 class="prefix">Lets save the earth, one</h1>
+    <div class="container-fluid text">
+      <h1 class="prefix">Lets save the earth, one</h1><br/>
       <h1>
         <span class="word" :class="currentWordClass" @animationend="resetAnimation">{{ words[currentWordIndex] }}</span>
-      </h1>
+      </h1><br/>
       <h1 class="suffix">at a time.</h1>
     </div>
   </template>
@@ -43,8 +43,8 @@
     display: inline-block;
     margin: 0;
     overflow: hidden;
-    font-size: 2rem; /* Adjust font size to align with other words */
-    line-height: 10rem; /* Adjust line height for vertical alignment */
+    font-size: 3rem; 
+    line-height: 10rem; 
   }
   
   .word {
@@ -77,6 +77,16 @@
     }
     to {
       transform: translateY(100%);
+    }
+  } 
+
+  @media (max-width: 550px) {
+    h1 {
+      font-size: 2rem;
+      line-height: 5rem;
+    }
+    .word {
+      font-size: 6rem;
     }
   }
   </style>
