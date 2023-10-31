@@ -1,5 +1,32 @@
 <style scoped>
+/* checking if user is logged in */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); 
+  backdrop-filter: blur(5px);
+  z-index: 999; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;   
+}
 
+.login-alert {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  z-index: 1000; 
+  text-align: center;
+}
 </style>
 
 <template>
@@ -68,20 +95,27 @@
     </div>
   </div>
   
+<!-- THIS PORTION IS FOR USER AUTHENTICATION CHECK -->
+<div v-if="showLoginAlert" class="overlay" @click="routeBackToHome"></div>
+<div v-if="showLoginAlert" class="login-alert">
+    <LoginFailed />      
+    <p>Please log in first to access this feature.</p>
+</div>
+<!-- END OF USER AUTHENTICATION CHECK -->
 
- 
-   
 </template>
 
 <script>
 
+    import LoginFailed from "../components/LoginFailed.vue";
     import axios from 'axios';
 
     export default {
       data () {
         return {
           news: [],
-          goals: 2348
+          goals: 2348,
+          showLoginAlert: false,
         };
       },
       mounted () {
@@ -117,9 +151,21 @@
 
           this.news = posts;
         });
+        // check if user is loggedIn
+        this.checkUserLoggedIn();
       },
       methods: {
-        
-      }
+        // THESE FUNCTIONS ARE FOR USER AUTHENITCATION                
+        routeBackToHome() {
+          this.showLoginAlert = false
+          this.$router.push( {path: '/'})
+        },
+        checkUserLoggedIn() {           
+            if (!sessionStorage.getItem("AuthToken")) {this.showLoginAlert = true}               
+        },
+      },
+      components: {
+        LoginFailed,
+      },
     };
 </script>

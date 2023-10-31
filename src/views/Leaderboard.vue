@@ -106,6 +106,7 @@
                     <img src="../assets/food.png" width="54px" height="auto">
                     <p class="card-text mt-4" style="color: #545454;">
                         You saved
+                        <!-- add user specific grams here through extracted data  -->
                         <span style="font-size: 20px; font-weight: bold; color: black;">57g</span>
                         of food today!
                     </p>
@@ -224,6 +225,8 @@
 
 
     <h4>National Ranking</h4>
+
+    <!-- Prob have to make an array of all users, and v-for throgh it for this table -->
 
     <table class="table">
         <thead>
@@ -359,6 +362,8 @@ export default {
         checkUserLoggedIn() {           
             if (!sessionStorage.getItem("AuthToken")) {this.showLoginAlert = true}               
         },
+        
+        // get user Info + All user info for leaderboard 
         getUserInfo() {
             console.log(sessionStorage);
             const authToken = sessionStorage.AuthToken;
@@ -366,8 +371,7 @@ export default {
             // get data from backend 
             const baseUrl = "http://127.0.0.1:8000";
             
-                
-            
+            // get leaderboard data 
             this.$axios.get(`${baseUrl}/leaderboard`, { headers:{
                     Authorization: `Bearer ${authToken}`
                 }
@@ -388,6 +392,8 @@ export default {
                 .catch( error => {
                     console.error(error);
                 });
+
+            // get logged-in user data 
             this.$axios.get(`${baseUrl}/user/${user}`, { headers:{
                 Authorization: `Bearer ${authToken}`}
             })
