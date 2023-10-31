@@ -96,13 +96,14 @@ function handleLogin() {
             alert("Wrong credentials")
         })
     // RESET INPUT & page
-    userEmail.value = ""
-    userPassword.value = ""
+    // userEmail.value = ""
+    // userPassword.value = ""
     toggleModal()
 }
 
 async function getUsername() {
-    const response = await axios.get(`${URL}/user/wowtest`, {
+    console.log(userEmail.value)
+    const response = await axios.get(`${URL}/user?email=${userEmail.value}`, {
         headers: {
             Authorization: `Bearer  ${authToken.value}`
         }
