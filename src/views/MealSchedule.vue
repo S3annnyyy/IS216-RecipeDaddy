@@ -17,6 +17,10 @@
     width: 100%;
 }
 
+/* shopping list styles */
+.modal-title, .card {
+    color: var(--dark);
+}
 .center {
     text-align: center;
     padding: 1%;
@@ -164,7 +168,7 @@
                 <div class="row">
 
                     <div class="col">
-                        <button type="button" class="shopping-list-button mt-4" data-bs-toggle="modal" style=""
+                        <button type="button" class="shopping-list-button mt-4" data-bs-toggle="modal"
                             data-bs-target="#overviewRecipe">Shopping List
                         </button>
                         <!-- Modal -->
@@ -176,7 +180,7 @@
                                         <h5 class="modal-title" id="exampleModalLabel">Your Shopping List (Selected Week)
                                         </h5>
                                         <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
+                                            <span class="material-icons-outlined">close</span>        
                                         </button>
                                     </div>
                                     <div class="modal-body">
