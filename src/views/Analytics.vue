@@ -241,8 +241,21 @@ export default {
 
     // get user Info
     this.getUserInfo()
+
+    // create graph 
+    this.createGraph()
+
+
   },
   methods: {
+    setGoal() {
+        if (this.goals != 0) {
+          this.goalSet = true;
+        }
+      },
+    editGoal() {
+      this.goalSet = false;
+    },
     // THESE FUNCTIONS ARE FOR USER AUTHENITCATION
     routeBackToHome() {
       this.showLoginAlert = false
@@ -379,7 +392,71 @@ export default {
         monthYValues.pop()
         monthYValues.push(output)
       }
-    }
+    },
+    openGraph(evt, graph) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+
+        for (i = 0; i < tabcontent.length; i++) {
+          tabcontent[i].style.display = "none";
+        }
+
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+          tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+
+        document.getElementById(graph).style.display = "block";
+        evt.currentTarget.className += " active";
+      },
+      createGraph() {
+        // month graph
+        var x1Values = ["Italy", "France", "Spain", "USA", "Argentina"];
+        var y1Values = [55, 49, 44, 24, 15];
+        var barColors = ["red", "green","blue","orange","brown"];
+
+        new Chart("monthChart", {
+          type: "bar",
+          data: {
+            labels: x1Values,
+            datasets: [{
+              backgroundColor: barColors,
+              data: y1Values
+            }]
+          },
+          options: {
+            legend: {display: false},
+            title: {
+              display: true,
+              text: "World Wine Production 2018"
+            }
+          }
+        });
+
+        // year graph
+        var x2Values = ["Italy", "France", "Spain", "USA", "Argentina"];
+        var y2Values = [55, 49, 44, 24, 50];
+        var barColors = ["red", "green","blue","orange","brown"];
+
+        new Chart("yearChart", {
+          type: "bar",
+          data: {
+            labels: x2Values,
+            datasets: [{
+              backgroundColor: barColors,
+              data: y2Values
+            }]
+          },
+          options: {
+            legend: {display: false},
+            title: {
+              display: true,
+              text: "World Wine Production 2018"
+            }
+          }
+        });
+      }
+      
   },
   components: {
     LoginFailed
