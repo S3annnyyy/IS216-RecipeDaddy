@@ -53,7 +53,14 @@ onMounted(() => {
 });
 
 const props = defineProps(); // Define props
+
+// DATA FOR ABOUT PAGE
+const profileData = [
+  {name: "sean", "githubUrl": "", "linkedinUrl": "", portraitLink: "../assets/portraits/sean.jpg"}
+]
 </script>
+
+
 <template>
   <main class="about-page">
     <!-- THE PROBLEM section -->
@@ -169,13 +176,33 @@ const props = defineProps(); // Define props
         <div class="row pb-5">
           <div class="col-md-12">
             <h1 class="text-center p-5" style="font-size: 75px;">Our Team</h1>
-
-            <!-- Card container with three columns -->
+            
+            <!-- v-for cardData -->
             <div class="row team-cards">
-              <!-- BS card: Start -->
-              <div class="col-md-4 d-flex justify-content-center">
+              <div class="col-md-4 d-flex justify-content-center mb-2" v-for="profile in profileData" :key="profile.name">
                 <div class="card" style="width: 18rem;">
-                  <img src="../assets/placeholderProfilePic/morty.jpg" class="card-img-top" alt="sean">
+                  <img :src="profile.portraitLink" class="card-img-top" :alt="profile.name">
+                  <div class="card-body">
+                    <h5 class="card-title">{{ profile.name }}</h5>
+                    <p class="card-text">Cool cool cool cool.</p>
+                  </div>
+                  <div class="card-body">
+                    <!-- GitHub logo link -->
+                    <a :href="profile.githubUrl" class="card-link" target="_blank" v-if="profile.githubUrl">
+                      <i class="fab fa-github"></i> GitHub
+                    </a>
+                    <!-- LinkedIn logo link -->
+                    <a :href="profile.linkedinUrl" class="card-link" target="_blank" v-if="profile.linkedinUrl">
+                      <i class="fab fa-linkedin"></i> LinkedIn
+                    </a>
+                  </div>
+                </div>
+              </div>
+        
+              <!-- BS card: Start -->
+              <div class="col-md-4 d-flex justify-content-center mb-2">
+                <div class="card" style="width: 18rem;">
+                  <img src="../assets/portraits/sean.jpg" class="card-img-top" alt="sean">
                   <div class="card-body">
                     <h5 class="card-title">Sean Yap</h5>
                     <p class="card-text">Cool cool cool cool.</p>
@@ -220,7 +247,7 @@ const props = defineProps(); // Define props
               <!-- BS card: Start -->
               <div class="col-md-4 d-flex justify-content-center">
                 <div class="card" style="width: 18rem;">
-                  <img src="../assets/placeholderProfilePic/pickle.png" class="card-img-top" alt="syahmim">
+                  <img src="../assets/portraits/syahmim.jpg" class="card-img-top" alt="syahmim">
                   <div class="card-body">
                     <h5 class="card-title">Syahmim</h5>
                     <p class="card-text">Cool cool cool cool.</p>
@@ -244,7 +271,7 @@ const props = defineProps(); // Define props
             <div class="row team-cards">
               <div class="col-md-4 d-flex justify-content-center">
                 <div class="card" style="width: 18rem;">
-                  <img src="../assets/placeholderProfilePic/unnamed.jpg" class="card-img-top" alt="sean">
+                  <img src="../assets/portraits/gabriel.jpg" class="card-img-top" alt="Gabriel">
                   <div class="card-body">
                     <h5 class="card-title">Gabriel Loh</h5>
                     <p class="card-text">Cool cool cool cool.</p>
