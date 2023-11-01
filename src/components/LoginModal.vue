@@ -93,28 +93,29 @@
             alert("Wrong credentials")
            
         })
-        // RESET INPUT & page
-        userEmail.value = ""
-        userPassword.value = ""
-        toggleModal()        
-    }
+    // RESET INPUT & page
+    // userEmail.value = ""
+    // userPassword.value = ""
+    toggleModal()
+}
 
-    
+async function getUsername() {    
+    const response = await axios.get(`${URL}/user?email=${userEmail.value}`, {
+        headers: {
+            Authorization: `Bearer  ${authToken.value}`
+        }
+    })
+    console.log(response.data);
+    // extract username 
+    const currentUser = response.data.username
+    console.log(currentUser)
+    // store in sessionstorage
+    sessionStorage.setItem("user", currentUser)
+    sessionStorage.setItem("password", userPassword.value)
+    sessionStorage.setItem("email", userEmail.value)
+    window.location.reload();
+}
 
-    async function getUsername() {
-        const response = await axios.get(`${URL}/user?email=${userEmail.value}`, {
-            headers: {
-                Authorization: `Bearer  ${authToken.value}`
-            }
-        })
-        // extract username 
-        const currentUser = response.data.username
-        console.log(currentUser)
-        // store in sessionstorage
-        sessionStorage.setItem("user", currentUser)
-        window.location.reload();
-    }   
-   
 </script>
   
 <style scoped>

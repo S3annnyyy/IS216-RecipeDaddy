@@ -6,7 +6,7 @@
             <div class="col-12 text-center">
                 <h1>Meal Planner</h1>
                 <p>Get meal plans specially curated for you!</p>
-                <button @click="planMeal" class="btn btn-secondary">Get Started</button>
+                <button @click="planMeal" class="btn btn-secondary" style="background-color: #194252;">Get Started</button>
             </div>
         </div>
         
@@ -231,11 +231,24 @@
         <p>Please log in first to access this feature.</p>
     </div>
     <!-- END OF USER AUTHENTICATION CHECK -->   
+
+    <!-- THIS PORTION IS FOR LOADING ANIMATION FOR MEAL CREATION-->
+    <div v-if="showLoading" class="loading-overlay">
+        <div class="loading-alert">
+            <LoadingSVG />
+            <p>Creating meals...</p>      
+            <p style="font-style: italic;">"The key to everything is patience. You get the chicken by hatching the egg, not by smashing it open."</p>
+            <p>- Arnold H. Glasow</p>
+        </div>
+    </div>  
+    <!-- END OF LOADING ANIMATION FOR MEAL CREATION  -->
+
     </template>
 
 <script>
 import axios from 'axios'
 import LoginFailed from "../components/LoginFailed.vue";
+import LoadingSVG from "../components/LoadingSVG.vue";
 
 export default {
     data() {
@@ -282,6 +295,8 @@ export default {
 
             // FOR USER AUTHENTICATION
             showLoginAlert: false,
+            // FOR LOADING ANIMATION
+            showLoading: false
         }
     },
     computed: {
@@ -556,6 +571,8 @@ export default {
             if (this.mealPrepIngredientList.length === 0) {
                 alert("List cannot be empty")
             } else {
+                // show loading animation
+                this.showLoading = true
                 // return number of people 
                 console.log("Number of people: " + this.people);
                 // return dates and meals 
@@ -726,6 +743,8 @@ export default {
 
                         var output = []
                         console.log(aiResponse.dates)
+                        // once get output set loading to false
+                        this.showLoading = false
 
                     for (let dateObj of aiResponse.dates)  {                                 
                     // access object of dates and meals
@@ -787,8 +806,8 @@ export default {
         },
         async postToBackend(output) {
             try {
-                const email = "wowtest@gmail.com";
-                const password = "wowtest";
+                const email = sessionStorage.getItem("email");
+                const password = sessionStorage.getItem("password");
                 const baseUrl = "http://127.0.0.1:8000";
                 const requestData = {
                     email: email,
@@ -834,7 +853,7 @@ export default {
         // end of mealPrepSearch methods 
     },
     components: {
-        LoginFailed,
+        LoginFailed, LoadingSVG,
     }
 }
 
@@ -1086,7 +1105,7 @@ export default {
   }
 
     /* USER AUTHENITCATION */
-    .overlay {
+    .overlay, .loading-overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -1094,14 +1113,14 @@ export default {
     height: 100%;
     background: rgba(0, 0, 0, 0.5); 
     backdrop-filter: blur(5px);
-    z-index: 999; 
+    z-index: 100; 
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;   
 }
 
-.login-alert {
+.login-alert, .loading-alert {
     position: fixed;
     top: 50%;
     left: 50%;
