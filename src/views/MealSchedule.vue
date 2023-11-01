@@ -1,15 +1,26 @@
 <style scoped>
 .box {
-    background-color: #D9D9D9;
+    background-color: #194252;
+    padding: 1rem;
+    color: var(--light);
+    border-radius: 10px;
+    box-shadow: 0 4px 2px -2px var(--text-light-secondary);
+   
 }
 
-.button {
-    background-color: #E6E3E3;
-    border-radius: 10%;
-    margin-bottom: 5px;
-    padding: 5px;
+.shopping-list-button {   
+    background-color: var(--light);
+    border-radius: 10px;
+    padding: 0.5rem 1rem;    
+    border: 1px solid #194252;      
+    box-shadow: 0 6px 2px -2px var(--dark); 
+    width: 100%;
 }
 
+/* shopping list styles */
+.modal-title, .card {
+    color: var(--dark);
+}
 .center {
     text-align: center;
     padding: 1%;
@@ -83,7 +94,8 @@
 }
 
 .selected-date {
-    background-color: lightblue;
+    background-color: var(--light);
+    color: var(--dark);    
     /* Change this color to your preferred light blue color */
 }
 
@@ -94,7 +106,7 @@
 }
 
 .indivDate {
-    border: 1px solid black;
+    border: 1px solid var(--light);
     border-radius: 10px;
     margin: 5px;
     padding: 5px;
@@ -107,13 +119,13 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5); 
+    background: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(5px);
-    z-index: 999; 
+    z-index: 999;
     display: flex;
     justify-content: center;
     align-items: center;
-    cursor: pointer;   
+    cursor: pointer;
 }
 
 .login-alert {
@@ -125,29 +137,29 @@
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    z-index: 1000; 
+    z-index: 1000;
     text-align: center;
 }
 </style>
 
 <template>
     <!-- Meal Schedule header  -->
-    <main class="row mt-3 mx-5">
-        <div class="col-lg-3 col-md-3 col-sm-12">
+    <main class="row mx-lg-5 mx-md-2 mx-sm-2">
+        <div class="col-lg-12 col-md-12 col-sm-12">
             <h1>Meal Schedule</h1>
             <div>
                 <img style="padding-right: 0.5rem; padding-bottom: 0.5rem;" src="../assets/chef-hat.png" alt="">
-                <span >{{ currentWeekStartText }} - {{ currentWeekEndText }}</span>
+                <span>{{ currentWeekStartText }} - {{ currentWeekEndText }}</span>
             </div>
         </div>
         <div class="col">
         </div>
     </main>
 
-    
+
     <!-- Current Week  -->
-    <main class="row mx-5">
-        <div class="col-lg-3 col-md-3 col-sm-12 box" style="padding:1rem">
+    <main class="row mx-lg-5 mx-md-2 mx-sm-2">
+        <div class="col-lg-3 col-md-3 col-sm-12 box text-center">
             <h6>CURRENT WEEK</h6>
             <div>
                 <span class="fa-solid fa-angle-left" @click="decrementWeek"></span>
@@ -156,7 +168,7 @@
                 <div class="row">
 
                     <div class="col">
-                        <button type="button" class="button mt-4" data-bs-toggle="modal"
+                        <button type="button" class="shopping-list-button mt-4" data-bs-toggle="modal"
                             data-bs-target="#overviewRecipe">Shopping List
                         </button>
                         <!-- Modal -->
@@ -168,7 +180,7 @@
                                         <h5 class="modal-title" id="exampleModalLabel">Your Shopping List (Selected Week)
                                         </h5>
                                         <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
+                                            <span class="material-icons-outlined">close</span>        
                                         </button>
                                     </div>
                                     <div class="modal-body">
@@ -189,7 +201,7 @@
                                                     <div class="card-body">
                                                         <div class="form-check">
                                                             <input class="form-check-input" type="checkbox" value=""
-                                                                id="flexCheckDefault"> 
+                                                                id="flexCheckDefault">
                                                             <label class="form-check-label" for="flexCheckDefault">
                                                                 100g of chicken
                                                             </label>
@@ -211,7 +223,8 @@
                                         <button type="button" class="btn btn-secondary"
                                             data-bs-dismiss="modal">Close</button>
                                         <!-- ... -->
-                                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" @click="redirectToPaymentPage">
+                                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal"
+                                            @click="redirectToPaymentPage()">
                                             <span class="text-white text-decoration-none">Go to
                                                 payment</span>
                                         </button>
@@ -228,7 +241,7 @@
     </main>
 
     <!-- Calendar -->
-    <div class="row mx-5 mt-3 box dates">
+    <div class="row mx-lg-5 mx-md-2 mx-sm-2 mt-3 box dates">
         <div @click="setCurrentDate(date)" class="col center indivDate" v-for="(date, index) in weekDates" :key="index"
             :class="{ 'selected-date': isDateSelected(date) }">
             <span v-html="formatDate(date)"></span>
@@ -237,21 +250,21 @@
 
 
     <!-- Meals -->
-    <main class="row w-85 py-1 mb-3 d-flex justify-content-center" id="food-section">
-        <div class="col-sm-12 col-md-7 col-lg-4 card breakfast" v-if="mealSchedule.breakfast">
+    <!-- <main class="row w-85 py-1 mb-3 d-flex justify-content-center" id="food-section">
+        <div class="col-sm-12 col-md-7 col-lg-4 card" v-if="mealSchedule.breakfast">
             <h3 class="card-title text-left pt-2">Breakfast</h3>
             <img src="../assets/pancakes.jpg" alt="Breakfast" class="card-img-top img-fluid">
             <div class="card-body">
                 <div class="card-text breakfast-recipe text-center">Berries Pancake</div>
                 <div class="buttons row d-flex justify-content-center">
-                    <button class="view-recipe-button col-sm-6 col-md-8 col-lg-3 mt-1">View</button>
-                    <!-- TO DO: add logic to redirect to recipe -->
-                    <!-- <router-link
+                    <button class="view-recipe-button col-sm-6 col-md-8 col-lg-3 mt-1">View</button> -->
+    <!-- TO DO: add logic to redirect to recipe -->
+    <!-- <router-link
             :to="{ name: 'recipeSearch', params: { mealType: 'dinner' } }"
             class="view-recipe-button">
             View Recipe
           </router-link> -->
-                    <button class="replace-button col-sm-6 col-md-8 col-lg-3 mt-1">Replace</button>
+    <!-- <button class="replace-button col-sm-6 col-md-8 col-lg-3 mt-1">Replace</button>
                     <button class="delete-button col-sm-6 col-md-8 col-lg-3 mt-1">Delete</button>
                 </div>
             </div>
@@ -272,19 +285,41 @@
             <h3 class="card-title text-left pt-2">Dinner</h3>
             <img src="../assets/teriyaki.jpeg" alt="Dinner" class="card-img-top img-fluid">
             <div class="card-body">
-                <div class="card-text dinner-recipe text-center">Teriyaki Chicken Bowl</div>
-                <div class="buttons row d-flex justify-content-center">
-                    <button class="view-recipe-button col-sm-6 col-md-7 col-lg-3 mt-1">View</button>
-                    <button class="replace-button col-sm-6 col-md-7 col-lg-3 mt-1">Replace</button>
-                    <button class="delete-button col-sm-6 col-md-7 col-lg-3 mt-1">Delete</button>
+                <div class="card-text dinner-recipe">Teriyaki Chicken Bowl</div>
+                <div class="buttons">
+                    <button class="view-recipe-button">View Recipe</button>
+                    <button class="replace-button">Replace</button>
+                    <button class="delete-button">Delete</button>
                 </div>
             </div>
         </div>
+    </main> -->
+    <main class="row w-85 py-1 mb-3 d-flex justify-content-center" id="food-section">
+        <h4 v-if="mealSchedule.receivedData == null || mealSchedule.receivedData.length == 0">
+            Generate a meal and add it to your schedule!
+        </h4>
+
+        <div v-else-if="mealSchedule.receivedData.length > 0" :class="getColumnClass(mealSchedule.receivedData.length)"
+            class="col-sm-12 col-md-7 col-lg-4 card" v-for="(meal, index) in mealSchedule.receivedData" :key="index">
+            <h3 class="card-title text-left pt-2">{{ formatMealType(meal.meal_type) }}</h3>
+            <img :src="extractLinkFromParentheses(meal.image_url)" alt="Meal" class="card-img-top img-fluid" />
+            <div class="card-body">
+                <div class="card-text breakfast-recipe text-center">{{ meal.recipe_name }}</div>
+                <div class="buttons row d-flex justify-content-center">
+                    <button class="view-recipe-button col-sm-6 col-md-7 col-lg-3 mt-1" @click="viewRecipe(meal)">View
+                        Recipe</button>
+                    <button class="replace-button col-sm-6 col-md-7 col-lg-3 mt-1"
+                        @click="replaceMeal(meal)">Replace</button>
+                    <button class="delete-button col-sm-6 col-md-7 col-lg-3 mt-1" @click="deleteMeal(meal)">Delete</button>
+                </div>
+            </div>
+        </div>
+
     </main>
     <!-- THIS PORTION IS FOR USER AUTHENTICATION CHECK -->
     <div v-if="showLoginAlert" class="overlay" @click="routeBackToHome"></div>
     <div v-if="showLoginAlert" class="login-alert">
-        <LoginFailed />      
+        <LoginFailed />
         <p>Please log in first to access this feature.</p>
     </div>
     <!-- END OF USER AUTHENTICATION CHECK -->
@@ -336,13 +371,16 @@ export default {
             currentDate: new Date(),
             dates: [],
             mealSchedule: {
-                breakfast: true,
-                lunch: true,
-                dinner: true,
+                breakfast: false,
+                lunch: false,
+                dinner: false,
                 receivedData: null,
 
             },
             showLoginAlert: false,
+            baseUrl: "http://127.0.0.1:8000",
+            token: null,
+            username: "wowtest",
         };
     },
     computed: {
@@ -365,6 +403,17 @@ export default {
         },
         currentWeekEndText() {
             return this.currentDate.GetLastDayOfWeek().toDateString();
+        },
+        getColumnClass() {
+            return (itemCount) => {
+                if (itemCount === 1) {
+                    return 'col col-md-6 offset-md-3';
+                } else if (itemCount === 2) {
+                    return 'col col-md-6';
+                } else if (itemCount >= 3) {
+                    return 'col col-md-4';
+                }
+            };
         },
     },
     methods: {
@@ -411,7 +460,7 @@ export default {
         },
         setCurrentDate(date) {
             this.currentDate = date;
-            this.getMealData();
+            this.getMealData(this.username, this.currentDate.toISOString().split("T")[0], this.token);
         },
         closeOverviewModal() {
             // Use Bootstrap's modal method to close the modal
@@ -426,66 +475,143 @@ export default {
                 }
             });
         },
-        async getMealData() {
-            const email = "wowtest@gmail.com";
-            const user = "wowtest";
-            const password = "wowtest";
-            const baseUrl = "http://127.0.0.1:8000";
-            let token; // Define the token variable in a wider scope
+        async getAuthToken(email, password) {
 
-            // Step 1: Get the token
-            const requestData = {
-                email: email,
-                password: password,
-            };
-            const curDate = this.currentDate.toISOString().split('T')[0];
 
-            this.$axios
-                .post(`${baseUrl}/api/token`, requestData)
-                .then((response) => {
-                    // Successful request
-                    token = response.data.access; // Assign the token
-                    console.log('Token:', token);
+        },
+        async getMealData(username, date, token) {
 
-                    // Step 2: Get meal schedule using the token
-                    this.$axios
-                        .get(`${baseUrl}/user-meal-plan?username=${user}&meal_date=${curDate}`, {
-                            headers: {
-                                Authorization: `Bearer ${token}`,
-                            },
-                        })
-                        .then((mealResponse) => {
-                            console.log(mealResponse.data);
-                            // Assuming you want to do something with the meal data
-                            // this.mealSchedule.receivedData = mealResponse.data;
-                        })
-                        .catch((mealError) => {
-                            console.error('Error fetching meal schedule:', mealError);
-                        });
+            axios
+                .get(`${this.baseUrl}/user-meal-plan?username=${username}&meal_date=${date}`, {
+                    headers: {
+                        Authorization: `Bearer ${this.token}`,
+                    },
                 })
-                .catch((error) => {
-                    // Request for token failed
-                    console.error('Error fetching token:', error);
+                .then((mealResponse) => {
+                    console.log(mealResponse.data);
+                    // Assuming you want to do something with the meal data
+                    const mealTypeOrder = {
+                        1: 1,
+                        2: 2,
+                        3: 3,
+                    }
+                    mealResponse.data.sort((a, b) => {
+                        return mealTypeOrder[a.meal_type] - mealTypeOrder[b.meal_type];
+                    })
+
+
+                    this.mealSchedule.receivedData = mealResponse.data;
+                    for (let meal of this.mealSchedule.receivedData) {
+                        if (meal.meal_type == 1) {
+                            this.mealSchedule.breakfast = true;
+                        } else if (meal.meal_type == 2) {
+                            this.mealSchedule.lunch = true;
+                        } else if (meal.meal_type == 3) {
+                            this.mealSchedule.dinner = true;
+                        }
+                    }
+                })
+                .catch((mealError) => {
+                    console.error('Error fetching meal schedule:', mealError);
                 });
         },
-        // THESE FUNCTIONS ARE FOR USER AUTHENITCATION                
+        formatMealType(num) {
+            if (num == "1") {
+                return "Breakfast"
+            } else if (num == "2") {
+                return "Lunch"
+            } else if (num == "3") {
+                return "Dinner"
+            }
+        },
+        extractLinkFromParentheses(input) {
+            // Define a regular expression to match the link inside parentheses
+            const regex = /\((.*?)\)/;
+
+            // Use the regular expression to extract the link
+            const match = regex.exec(input);
+
+            // Check if a match is found
+            if (match && match.length > 1) {
+                // The link will be in match[1]
+                return match[1];
+            } else {
+                // No match found
+                return input;
+            }
+        },
+        viewRecipe(meal) {
+            this.$router.push({
+                name: "mealschedulegenerated",
+                params: {
+                    id: meal.id
+
+                },
+                query: {
+                    id: meal.id, data: JSON.stringify(meal)
+                }
+            });
+        },
+        replaceMeal(meal) {
+            this.$router.push({
+                name: "replacement",
+                params: {
+                    id: meal.id
+                },
+                query: {
+                    id: meal.id, data: JSON.stringify(meal)
+                }
+
+
+            });
+        },
+        deleteMeal(meal) {
+            const mealId = meal.id;
+            axios
+                .delete(`${this.baseUrl}/user-meal-plan?id=${mealId}`, {
+                    headers: {
+                        Authorization: `Bearer ${this.token}`
+                    }
+                })
+                .then(response => {
+                    console.log(`Meal plan with ID ${mealId} deleted.`);
+                    // Optionally, you can handle any further actions, such as updating the UI.
+                })
+                .catch(error => {
+                    console.error(`Error deleting meal plan: ${error}`);
+                    // Handle the error as needed, e.g., show an error message.
+                });
+            this.mealSchedule.receivedData = this.mealSchedule.receivedData.filter(item => item.id !== mealId);
+
+        },
         routeBackToHome() {
             this.showLoginAlert = false
-            this.$router.push( {path: '/'})
+            this.$router.push({ path: '/' })
         },
-        checkUserLoggedIn() {           
-            if (!sessionStorage.getItem("AuthToken")) {this.showLoginAlert = true}               
-        }         
+        checkUserLoggedIn() {
+            if (!sessionStorage.getItem("AuthToken")) { this.showLoginAlert = true }
+
+        }
     },
     mounted() {
-        // check if user is loggedIn
         this.checkUserLoggedIn();
-        this.getMealData();
+        const user = sessionStorage.getItem("user");
+        const token = sessionStorage.getItem("AuthToken");
 
+        // Ensure that the token is available before calling getMealData
+        if (token) {
+            this.token = token;
+            this.getMealData(this.username, this.currentDate.toISOString().split("T")[0], token);
+        } else {
+            // Handle the case where the token is not available
+            console.error("Authentication token not found in sessionStorage");
+        }
     },
     components: {
         LoginFailed,
     }
 
-};
+}
+
+
 </script>

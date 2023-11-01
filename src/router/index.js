@@ -51,9 +51,24 @@ const router = createRouter({
       component: () => import('../views/MealSchedule.vue')
     },
     {
+      path: '/mealschedule/:id',
+      name: 'mealschedulegenerated',
+      component: () => import('../views/MealScheduleGenerated.vue')
+    },
+    {
+      path:'/mealschedule/replacement/:id',
+      name: 'replacement',
+      component: () => import('../views/MealScheduleReplace.vue')
+    },
+    {
       path: '/payment',
       name: 'payment',
       component: () => import('../views/Payment.vue'),
+    },
+    {
+      path: '/contact',
+      name: 'contact',
+      component: () => import('../views/ContactPage.vue')
     },
     // error 404
     {

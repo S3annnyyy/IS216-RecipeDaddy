@@ -76,6 +76,6 @@ repeatCount="indefinite"/>
 
 <script>
 export default {
-name: 'LoginFailed',
+name: 'LoadingSVG',
 }
 </script>
