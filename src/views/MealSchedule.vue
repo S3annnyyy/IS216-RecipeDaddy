@@ -173,35 +173,36 @@
                                     </div>
                                     <div class="modal-body">
                                         <div class="accordion" id="accordionExample">
-                                            <div class="card" v-for="(date, index) in dates" :key="index">
+                                            <div class="card" v-for="(date, index) in formattedDates" :key="index">
                                                 <div :id="`heading${index}`" class="card-header">
                                                     <h2 class="mb-0 text-center">
                                                         <button class="btn btn-link text-decoration-none" type="button"
                                                             data-bs-toggle="collapse" :data-bs-target="`#collapse${index}`"
                                                             aria-expanded="true" :aria-controls="`collapse${index}`">
-                                                            <span v-html="formatCordionDate(date)"></span>
+                                                            <span v-html="date"></span>
                                                         </button>
                                                     </h2>
                                                 </div>
 
-                                                <div :id="`collapse${index}`" class="collapse show"
+                                                <div :id="`collapse${index}`" class="collapse"
                                                     :aria-labelledby="`heading${index}`" data-parent="#accordionExample">
                                                     <div class="card-body">
-                                                        <div class="form-check">
-                                                            <input class="form-check-input" type="checkbox" value=""
-                                                                id="flexCheckDefault">
-                                                            <label class="form-check-label" for="flexCheckDefault">
-                                                                100g of chicken
-                                                            </label>
+                                                        <div v-if="shoppingListMap[date]">
+                                                            <div v-for="(no_ingredient, itemIndex) in shoppingListMap[date]"
+                                                                :key="itemIndex">
+                                                                <div class="form-check">
+                                                                    <input class="form-check-input" type="checkbox"
+                                                                        :id="`check${itemIndex}`" @click="addToCart(no_ingredient)">
+                                                                    <label class="form-check-label"
+                                                                        :for="`check${itemIndex}`">
+                                                                        {{ no_ingredient }}
+                                                                    </label>
+                                                                </div>
+                                                            </div>
                                                         </div>
-                                                        <div class="form-check">
-                                                            <input class="form-check-input" type="checkbox" value=""
-                                                                id="flexCheckChecked" checked>
-                                                            <label class="form-check-label" for="flexCheckChecked">
-                                                                1 cup of rice
-                                                            </label>
+                                                        <div v-else>
+                                                            No shopping items for this date.
                                                         </div>
-
                                                     </div>
                                                 </div>
                                             </div>
@@ -213,15 +214,15 @@
                                         <!-- ... -->
                                         <button type="button" class="btn btn-primary" data-bs-dismiss="modal"
                                             @click="redirectToPaymentPage()">
-                                            <span class="text-white text-decoration-none">Go to
-                                                payment</span>
+                                            <span class="text-white text-decoration-none">Go to payment</span>
                                         </button>
                                         <!-- ... -->
-
                                     </div>
                                 </div>
                             </div>
                         </div>
+
+                        <!-- end modal -->
                     </div>
                 </div>
             </div>
@@ -236,52 +237,7 @@
         </div>
     </div>
 
-
-    <!-- Meals -->
-    <!-- <main class="row w-85 py-1 mb-3 d-flex justify-content-center" id="food-section">
-        <div class="col-sm-12 col-md-7 col-lg-4 card" v-if="mealSchedule.breakfast">
-            <h3 class="card-title text-left pt-2">Breakfast</h3>
-            <img src="../assets/pancakes.jpg" alt="Breakfast" class="card-img-top img-fluid">
-            <div class="card-body">
-                <div class="card-text breakfast-recipe text-center">Berries Pancake</div>
-                <div class="buttons row d-flex justify-content-center">
-                    <button class="view-recipe-button col-sm-6 col-md-8 col-lg-3 mt-1">View</button> -->
-    <!-- TO DO: add logic to redirect to recipe -->
-    <!-- <router-link
-            :to="{ name: 'recipeSearch', params: { mealType: 'dinner' } }"
-            class="view-recipe-button">
-            View Recipe
-          </router-link> -->
-    <!-- <button class="replace-button col-sm-6 col-md-8 col-lg-3 mt-1">Replace</button>
-                    <button class="delete-button col-sm-6 col-md-8 col-lg-3 mt-1">Delete</button>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-12 col-md-7 col-lg-4 card lunch" v-if="mealSchedule.lunch">
-            <h3 class="card-title text-left pt-2">Lunch</h3>
-            <img src="../assets/burrito.jpg" alt="Lunch" class="card-img-top img-fluid">
-            <div class="card-body">
-                <div class="card-text lunch-recipe text-center">Grilled Chicken Burrito</div>
-                <div class="buttons row d-flex justify-content-center">
-                    <button class="view-recipe-button col-sm-6 col-md-7 col-lg-3 mt-1">View</button>
-                    <button class="replace-button col-sm-6 col-md-7 col-lg-3 mt-1">Replace</button>
-                    <button class="delete-button col-sm-6 col-md-7 col-lg-3 mt-1">Delete</button>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-12 col-md-7 col-lg-4 card dinner" v-if="mealSchedule.dinner">
-            <h3 class="card-title text-left pt-2">Dinner</h3>
-            <img src="../assets/teriyaki.jpeg" alt="Dinner" class="card-img-top img-fluid">
-            <div class="card-body">
-                <div class="card-text dinner-recipe">Teriyaki Chicken Bowl</div>
-                <div class="buttons">
-                    <button class="view-recipe-button">View Recipe</button>
-                    <button class="replace-button">Replace</button>
-                    <button class="delete-button">Delete</button>
-                </div>
-            </div>
-        </div>
-    </main> -->
+    <!-- Food Section -->
     <main class="row w-85 py-1 mb-3 d-flex justify-content-center" id="food-section">
         <h4 v-if="mealSchedule.receivedData == null || mealSchedule.receivedData.length == 0">
             Generate a meal and add it to your schedule!
@@ -332,6 +288,7 @@
 import { formatDate } from "@vueuse/core";
 import axios from "axios";
 import LoginFailed from "../components/LoginFailed.vue";
+import { handleError } from "vue";
 
 Date.prototype.GetFirstDayOfWeek = function () {
     const firstDayOfWeek = new Date(this);
@@ -369,9 +326,23 @@ export default {
             baseUrl: "http://127.0.0.1:8000",
             token: null,
             username: sessionStorage.getItem("user"),
+            shoppingListMap: {},
+            shoppingCart: [],
         };
     },
+    watch: {
+        dates: {
+            handler() {
+                this.getShoppingList();
+            },
+            deep: true
+        }
+    },
     computed: {
+        formattedDates() {
+            return this.dates.map(date => date.toISOString().split("T")[0]);
+        }
+        ,
         weekDates() {
             this.dates = [];
             const currentWeekStart = this.currentDate.GetFirstDayOfWeek();
@@ -405,6 +376,16 @@ export default {
         },
     },
     methods: {
+        addToCart(item) {
+            const index = this.shoppingCart.indexOf(item);
+            if (index === -1) {
+                // Item is not in the cart, so add it
+                this.shoppingCart.push(item);
+            } else {
+                // Item is already in the cart, so remove it
+                this.shoppingCart.splice(index, 1);
+            }
+        },
         incrementDate() {
             const newDate = new Date(this.currentDate);
             newDate.setDate(this.currentDate.getDate() + 1);
@@ -440,11 +421,13 @@ export default {
             const newDate = new Date(this.currentDate);
             newDate.setDate(this.currentDate.getDate() + 7);
             this.currentDate = newDate;
+            this.getShoppingList();
         },
         decrementWeek() {
             const newDate = new Date(this.currentDate);
             newDate.setDate(this.currentDate.getDate() - 7);
             this.currentDate = newDate;
+            this.getShoppingList();
         },
         setCurrentDate(date) {
             this.currentDate = date;
@@ -459,13 +442,9 @@ export default {
             this.$router.push({
                 name: "payment",
                 query: {
-                    data: JSON.stringify(this.mealSchedule)
+                    data: JSON.stringify(this.shoppingCart)
                 }
             });
-        },
-        async getAuthToken(email, password) {
-
-
         },
         async getMealData(username, date, token) {
 
@@ -486,18 +465,11 @@ export default {
                     mealResponse.data.sort((a, b) => {
                         return mealTypeOrder[a.meal_type] - mealTypeOrder[b.meal_type];
                     })
-
+                    mealResponse.data = mealResponse.data.filter((item) => {
+                        return item.isCompleted == false;
+                    });
 
                     this.mealSchedule.receivedData = mealResponse.data;
-                    for (let meal of this.mealSchedule.receivedData) {
-                        if (meal.meal_type == 1) {
-                            this.mealSchedule.breakfast = true;
-                        } else if (meal.meal_type == 2) {
-                            this.mealSchedule.lunch = true;
-                        } else if (meal.meal_type == 3) {
-                            this.mealSchedule.dinner = true;
-                        }
-                    }
                 })
                 .catch((mealError) => {
                     console.error('Error fetching meal schedule:', mealError);
@@ -572,6 +544,53 @@ export default {
             this.mealSchedule.receivedData = this.mealSchedule.receivedData.filter(item => item.id !== mealId);
 
         },
+        async getShoppingList() {
+            // Create a temporary array to store ISO date strings
+            const isoDates = this.dates.map((date) => date.toISOString().split("T")[0]);
+
+            // Initialize an array to store shopping items
+            const shoppingItems = [];
+
+            // Use Promise.all to make multiple API requests concurrently
+            Promise.all(
+                isoDates.map((isoDate) =>
+                    axios
+                        .get(`${this.baseUrl}/user-meal-plan?username=${this.username}&meal_date=${isoDate}`, {
+                            headers: {
+                                Authorization: `Bearer ${this.token}`,
+                            },
+                        })
+                        .then((mealResponse) => {
+                            const shop = mealResponse.data.filter((item) => {
+                                return item.isCompleted === false && item.no_ingredients != null;
+                            });
+                            shoppingItems.push(...shop);
+                        })
+                        .catch((mealError) => {
+                            console.error(`Error fetching meal schedule for date ${isoDate}:`, mealError);
+                        })
+                )
+            )
+                .then(() => {
+                    // At this point, shoppingItems contains all the shopping items for the selected week
+                    console.log(shoppingItems);
+                    shoppingItems.forEach((item) => {
+                        const date = item.meal_date;
+                        const no_ingredients = item.no_ingredients;
+                        if (!this.shoppingListMap[date]) {
+                            this.shoppingListMap[date] = [];
+                        }
+                        for (let no_ingredient in no_ingredients) {
+                            this.shoppingListMap[date].push(no_ingredient + ": " + no_ingredients[no_ingredient]);
+                        }
+                    })
+
+                    // You can process shoppingItems as needed
+                })
+                .catch((error) => {
+                    console.error('Error fetching shopping list:', error);
+                });
+        },
         routeBackToHome() {
             this.showLoginAlert = false
             this.$router.push({ path: '/' })
@@ -590,6 +609,7 @@ export default {
         if (token) {
             this.token = token;
             this.getMealData(user, this.currentDate.toISOString().split("T")[0], token);
+            this.getShoppingList();
         } else {
             // Handle the case where the token is not available
             console.error("Authentication token not found in sessionStorage");

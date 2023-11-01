@@ -12,6 +12,7 @@
                 </div>
                 <div class="row meal-schedule justify-content-center">                       
                     <button type="submit" class="addSchedule" @click="replaceMeal()" v-if="placeholder.adhocRecipe.steps">Replace Meal</button>
+                    <button type="submit" class="addSchedule" @click="completeMeal()" v-if="placeholder.adhocRecipe.steps">Complete Meal</button>
                     <AnimatedPlaceholder height="50px" width="10rem" margin="1rem 0 0 0" borderRadius="50px" padding="0.5rem" v-else/>
                 </div> 
             </div>           
@@ -35,6 +36,7 @@
 <script>
 import axios from 'axios'
 import AnimatedPlaceholder from '../components/AnimatedPlaceholder.vue'
+import LoginFailed from '../components/LoginFailed.vue'
 
 export default {
     data() {
@@ -81,7 +83,32 @@ export default {
         replaceMeal() {
             // send to mealSchedule page as props 
             this.$router.push({ name: 'replacement', query: { data: JSON.stringify(this.data) }, params: { id: this.data.id } });  
-        },       
+        },
+        completeMeal(){
+            axios.put(`http://127.0.0.1:8000/user-meal-plan?id=${this.data.id}`, {
+                "isCompleted":true
+            },{
+                headers:{
+                    Authorization: `Bearer ${this.token}`
+                }
+            })
+                .then(response => {
+                    console.log(response.data);
+                })
+                .catch( error => {
+                    console.error(error);
+                });
+            this.$router.push({ name: 'leaderboard' });
+
+        },
+        routeBackToHome() {
+            this.showLoginAlert = false
+            this.$router.push({ path: '/' })
+        },
+        checkUserLoggedIn() {
+            if (!sessionStorage.getItem("AuthToken")) { this.showLoginAlert = true }
+
+        }
     },
     created(){
         console.log(this.data);
@@ -93,6 +120,18 @@ export default {
 
 
     },
+    mounted(){
+        this.checkUserLoggedIn();
+        const user = sessionStorage.getItem("user");
+        const token = sessionStorage.getItem("AuthToken");
+        if (token){
+            this.token = token;
+        }
+
+    },
+    components: { AnimatedPlaceholder, LoginFailed }
+
+    
     // mounted() {          
     //     // console.log(this.data) // data logging
     //     this.promptuuid = this.$route.params.id; // get promptuuid   
@@ -161,7 +200,6 @@ export default {
     //     })
      
     // },
-    components: { AnimatedPlaceholder }
 }
 </script>
 

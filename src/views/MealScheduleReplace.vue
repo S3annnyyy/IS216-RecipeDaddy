@@ -14,17 +14,6 @@
                         margin="0 0 2rem 0" v-else />
                 </div>
                 <div class="row meal-schedule justify-content-center">
-                    <div class="input-group datepicker" v-if="placeholder.adhocRecipe.steps">
-                        <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">{{
-                            timeOfDay }}</button>
-                        <ul class="dropdown-menu">
-                            <li class="dropdown-item" @click="handleInput('Breakfast')">Breakfast</li>
-                            <li class="dropdown-item" @click="handleInput('Lunch')">Lunch</li>
-                            <li class="dropdown-item" @click="handleInput('Dinner')">Dinner</li>
-                        </ul>
-                        <input type="date" class="form-control" v-model="inputDate" />
-                    </div>
-                    <AnimatedPlaceholder height="50px" width="442px" margin="1rem 0" borderRadius="10px" v-else />
                     <button type="submit" class="addSchedule" @click="replaceMeal()"
                         v-if="placeholder.adhocRecipe.steps">Replace?</button>
                     <AnimatedPlaceholder height="50px" width="10rem" margin="1rem 0 0 0" borderRadius="50px"
@@ -69,6 +58,7 @@ export default {
             id: this.$route.params.id,
             baseUrl: "http://127.0.0.1:8000",
             previousData: JSON.parse(this.$route.query.data),
+            
         };
     },
     methods: {
