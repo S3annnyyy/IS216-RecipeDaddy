@@ -1,39 +1,3 @@
-<script setup>
-    import { onMounted, ref, defineProps } from 'vue'
-    import { onClickOutside } from '@vueuse/core'
-
-    // saving state of specific user event loginModal > signup > loginModal
-    // Implementation allows modal to remain popped up until told to disappear\
-    // ***Placeholder for backend also once logged in set to false and change to alternate alias
-    const isModalOpen = ref(localStorage.getItem("isModalOpen") === "true")
-    const toggleModal = () => {
-        isModalOpen.value = !isModalOpen.value
-        localStorage.setItem("isModalOpen", isModalOpen.value)
-    }
-    
-    const modal = ref(null)
-    onClickOutside(modal, () => (toggleModal()))
-
-    // custom v-focus param <==> autofocus in html input tag 
-    const vFocus = {
-        mounted: (el) => el.focus()
-    }
-
-    // placeholder while backend is being implemented
-    const email = ref("")
-    const password = ref("")
-    
-    function handleLogin() {
-        console.log('Form submitted');
-    }
-
-    // Props parsed from navbar
-    const props = defineProps({
-        scrolledPastVideo: Boolean,
-    });
-
-</script>
-
 <template>
     <div :class="{ scrolled: scrolledPastVideo }">
     <button @click="toggleModal" class="navbar-login-button">
@@ -50,11 +14,11 @@
                         <h1 class="login-header">Login</h1>
                         <div class='divider'></div>
                         <div class='form-group'>
-                            <input type="email" placeholder=" " required="required" class='form-control' v-model='email' v-focus/>
+                            <input type="email" placeholder=" " required="required" class='form-control' v-model='userEmail' v-focus autocomplete="email"/>
                             <label class='form-label'>Your Email</label>
                         </div>
                         <div class='form-group'>
-                            <input type="password" placeholder=" " required="required" class='form-control' v-model='password'/>
+                            <input type="password" placeholder=" " required="required" class='form-control' v-model='userPassword' autocomplete="current-password"/>
                             <label class='form-label'>Your Password</label>
                         </div>
                         <div class="button-wrapper">
@@ -75,7 +39,83 @@
         </Transition>
     </Teleport>
 </div>
-  </template>
+</template>
+
+<script setup>
+    import { onMounted, ref, defineProps } from 'vue'
+    import { onClickOutside } from '@vueuse/core'
+    import axios from 'axios'
+
+    // saving state of specific user event loginModal > signup > loginModal
+    // Implementation allows modal to remain popped up until told to disappear
+    const isModalOpen = ref(localStorage.getItem("isModalOpen") === "true")
+    const toggleModal = () => {
+        isModalOpen.value = !isModalOpen.value
+        localStorage.setItem("isModalOpen", isModalOpen.value)
+    }
+    
+    const modal = ref(null)
+    onClickOutside(modal, () => (toggleModal()))
+
+    // custom v-focus param <==> autofocus in html input tag 
+    const vFocus = {
+        mounted: (el) => el.focus()
+    }
+
+    // Props parsed from navbar
+    const props = defineProps({
+        scrolledPastVideo: Boolean,
+    });
+
+    // backend essential data
+    const userEmail = ref("")
+    const userPassword = ref("")
+    const authToken = ref("")
+    const URL = "http://127.0.0.1:8000"
+    
+    function handleLogin() {
+        console.log('Form submitted');
+
+        // retrieve token from backend       
+        const requestData = {
+            email: userEmail.value,
+            password: userPassword.value,
+        }
+
+        axios.post(`${URL}/api/token`, requestData)
+        .then((res) => {
+            authToken.value = res.data.access
+            sessionStorage.setItem("AuthToken", authToken.value)
+            console.log(authToken.value)
+            getUsername()
+        })
+        .catch((err) => {
+            alert("Wrong credentials")
+           
+        })
+        // RESET INPUT & page
+        userEmail.value = ""
+        userPassword.value = ""
+        toggleModal()        
+    }
+
+    
+
+    async function getUsername() {
+        const response = await axios.get(`${URL}/user/test`, {
+            headers: {
+                Authorization: `Bearer  ${authToken.value}`
+            }
+        })
+        // extract username 
+        const currentUser = response.data.username
+        console.log(currentUser)
+        // store in sessionstorage
+        sessionStorage.setItem("user", currentUser)
+        window.location.reload();
+    }   
+   
+</script>
   
 <style scoped>
     .navbar-login-button {

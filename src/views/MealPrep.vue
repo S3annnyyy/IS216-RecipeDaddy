@@ -206,13 +206,19 @@
         </div>
     </main>
     </div>
-
-
-    
-
+    <!-- THIS PORTION IS FOR USER AUTHENTICATION CHECK -->
+    <div v-if="showLoginAlert" class="overlay" @click="this.$router.push({path: '/'})"></div>
+    <div v-if="showLoginAlert" class="login-alert">
+        <LoginFailed />      
+        <p>Please log in first to access this feature.</p>
+    </div>
+    <!-- END OF USER AUTHENTICATION CHECK -->   
 </template>
 
 <script>
+import axios from 'axios'
+import LoginFailed from "../components/LoginFailed.vue";
+
 export default {
     data() {
         return {
@@ -220,8 +226,8 @@ export default {
             preferences: true,
             planning: false,
             people: 0,  // EXTRACT PEOPLE COUNT FOR SEAN 
-            days:0,
-            enteredStartDate:'',
+            days: 0,
+            enteredStartDate: '',
             dayArr: [],
             mealDates: [],
             outputObject: {}, // EXTRACT DATE AND MEALS FOR SEAN
@@ -229,7 +235,7 @@ export default {
             mealValidation: false,
             pageOneValidation: true,
             pageTwoValidation: false,
-            pageThreeValidation: false, 
+            pageThreeValidation: false,
 
             // ingredientsToAvoid searchbar (same as recipeSearch)
             avoidInput: '',
@@ -238,14 +244,14 @@ export default {
             selectedCuisine: 'Cuisine Type',
             inputFormat: ["Text", "OCR"],
             inputCuisine: ["Chinese", "Japanese", "Indian", "Peranakan", "Western"],
-            uuid: crypto.randomUUID(), 
+            uuid: crypto.randomUUID(),
 
 
             // mealPrepSearch data
             mealPrepSearchInput: '',
             mealPrepSelectedUnit: 'Unit',
-            mealPrepSelectedAmount: 0, 
-            mealPrepIngredientList: [],          
+            mealPrepSelectedAmount: 0,
+            mealPrepIngredientList: [],
             mealPrepInputUnits: ["ml", "litre", "g", "kg", "item-quantity"],
             uuid: crypto.randomUUID(),
             mealPrepLimitIngedient: false,
@@ -254,9 +260,10 @@ export default {
             // res --> FINAL OUTPUT OBJECT (SEAN)
             // number of res output depends on number of mealCount
             resJunKai: {},
-            resSean: {}
+            resSean: {},
 
-            
+            // FOR USER AUTHENTICATION
+            showLoginAlert: false,
         }
     },
     computed: {
@@ -287,7 +294,7 @@ export default {
                 // if it is, increment month, set date to 1 
                 // if it's also the last day of the year, increment year
                 // if no, increment date 
-                if(currentDay === lastDayOfMonth) {
+                if (currentDay === lastDayOfMonth) {
                     // increment month and reset day to 1
                     currentMonth++;
                     currentDay = 1;
@@ -310,7 +317,7 @@ export default {
             this.mealDates = dateArr;
             // add cooking dates into outputObject
             this.outputObject = {};
-            for(i = 0; i < this.days; i++) {
+            for (i = 0; i < this.days; i++) {
                 var dateStr = dateArr[i].toString();
                 this.outputObject[dateStr] = [];
             }
@@ -318,12 +325,19 @@ export default {
     },
     methods: {
         planMeal() {
+            // check if user is loggedIn by matching token on sessionStorage
+            if (!sessionStorage.getItem("AuthToken")) {
+                this.showLoginAlert = true
+                // alert("Please log in before creating a recipe!")
+                // this.$router.push({path: '/'})
+            } else {
             // clear contents in #content
             this.planning = true;
+            }
         },
         addDay() {
             this.dayArr = [];
-            for(var i = 2; i <= this.days; i++) {
+            for (var i = 2; i <= this.days; i++) {
                 this.dayArr.push(i);
             }
 
@@ -332,8 +346,8 @@ export default {
 
             // set mealCountArr to empty when changing days 
             this.mealCountArr = [];
-        }, 
-        addMeal(event){
+        },
+        addMeal(event) {
             // get meal info, mealdate, mealnumber, mealstatus 
             var mealInfo = event.target.getAttribute('id').split(' ');
             var mealDate = mealInfo[0];
@@ -344,7 +358,7 @@ export default {
             // select mealdate in outputObject, and append mealnum into outputObject[mealDate] 
             // else, get rid of mealnum from specified key in outputObject[mealDate] 
 
-            if(mealStatus) {
+            if (mealStatus) {
                 this.outputObject[mealDate].push(mealNum);
             }
             else {
@@ -359,9 +373,9 @@ export default {
             // change the way submit button appears 
             // each date must have at lease one selected meal for submit button to appear 
 
-   
+
             this.mealCountArr = [];
-            for (let date in this.outputObject){
+            for (let date in this.outputObject) {
                 // console.log(date);
                 // console.log(this.outputObject[date]);
 
@@ -376,7 +390,7 @@ export default {
             this.mealValidation = true;
             for (var i = 0; i < this.mealCountArr.length; i++) {
                 // if (this.mealCountArr[i])'
-                if (this.mealCountArr[i] == 0){
+                if (this.mealCountArr[i] == 0) {
                     this.mealValidation = false;
                 }
             }
@@ -398,10 +412,10 @@ export default {
             console.log(`Filled with ${this.avoidList.length} item(s)`)
             // populate input as boxes
             // this.populateInput()
-        },        
+        },
         removeItemAvoid(item) {
-            console.log(`rm btn clicked for ${item} list item`)     
-            
+            console.log(`rm btn clicked for ${item} list item`)
+
             // remove item for avoidList
             let item_index = this.avoidList.indexOf(item)
             this.avoidList.splice(item_index, 1)
@@ -418,16 +432,16 @@ export default {
             return result
         },
         validateInputAvoid() {
-            let errors = [ ]
-            if (this.avoidList.length === 0) {errors.push("You can't create a recipe with 0 ingredients you dumb fuck")}
-            if (this.selectedInputType === "Input Type") {errors.push("Please select one method of input")}
-            if (this.selectedCuisine === "Cuisine Type") {errors.push("Please select one cuisine type")}
+            let errors = []
+            if (this.avoidList.length === 0) { errors.push("You can't create a recipe with 0 ingredients you dumb fuck") }
+            if (this.selectedInputType === "Input Type") { errors.push("Please select one method of input") }
+            if (this.selectedCuisine === "Cuisine Type") { errors.push("Please select one cuisine type") }
             if (errors.length === 0) {
                 return ["", true]
             } else {
                 return [errors, false]
             }
-            
+
         },
 
         submitClick2() {
@@ -448,19 +462,19 @@ export default {
                 this.mealPrepIngredientList.push(`${this.mealPrepSelectedAmount} ${this.mealPrepSelectedUnit} of ${this.mealPrepSearchInput}`)
                 console.log(`Added ${this.mealPrepSearchInput} into ingredient list`, this.mealPrepIngredientList)
                 // reset input
-                this.mealPrepSearchInput =''
+                this.mealPrepSearchInput = ''
             } else {
                 // populate errors on alert
                 let errors = this.mealPrepValidateInput()[0]
                 let errorMsg = errors.join("")
                 alert(errorMsg)
-            }           
+            }
         },
         mealPrepValidateInput() {
             let errors = []
-            if (this.mealPrepSelectedAmount === 0) {errors.push("Please input an appropriate amount\n")}
-            if (this.mealPrepSelectedUnit === "Unit") {errors.push("Please add in an appropriate unit\n")}
-            if (this.mealPrepSearchInput === "") {errors.push("Input cannot be empty\n")}
+            if (this.mealPrepSelectedAmount === 0) { errors.push("Please input an appropriate amount\n") }
+            if (this.mealPrepSelectedUnit === "Unit") { errors.push("Please add in an appropriate unit\n") }
+            if (this.mealPrepSearchInput === "") { errors.push("Input cannot be empty\n") }
 
             if (errors.length > 0) {
                 return [errors, false]
@@ -479,7 +493,44 @@ export default {
             // params is item_index, rm from list
             this.mealPrepIngredientList.splice(item_index, 1)
         },
-        mealPrepGenerateMealPlan()  {
+        // THESE ARE HELPER FUNCTIONS FOR  mealPrepGenerateMealPlan()
+        objtoString(instructions) {
+            let final = ""
+            console.log(instructions)
+            for (const step of instructions) {
+                final += `${step.description}\n`
+            }
+            return final
+        },
+        nameToNum(name) {
+            if (name == "Breakfast") {return 1}
+            else if (name == "Lunch") {return 2}
+            else {return 3}
+        },
+        formatIngredientList(itemObject) {
+        const formattedItemObject = Object.fromEntries(itemObject
+            .filter(item => item.amount !== "")  // Remove items with empty amount
+            .map(item => [item.ingredient_name, item.amount]) // map to name: amount
+        );
+        if (Object.keys(formattedItemObject).length === 0) {return null} else {return formattedItemObject}
+        },
+        convertDate(inputDate) {
+            // THIS FUNCTION CONVERTS ANY DATE STRING TO YYYY-MM-DD format 
+            var parsedDate = new Date(inputDate); // try convert date
+
+            if (!isNaN(parsedDate.getTime())) { // validation
+                // Extract the year, month, and day components
+                var year = parsedDate.getFullYear();
+                var month = String(parsedDate.getMonth() + 1).padStart(2, '0'); 
+                var day = String(parsedDate.getDate()).padStart(2, '0');
+
+                return  year + '-' + month + '-' + day;
+            } else {
+            return "2023-27-10";  // Handle the case where the input date is not in a parseable format
+            }
+        },  
+        ////// END OF HELPER FUNCTIONS ////////
+        async mealPrepGenerateMealPlan()  {
             // validate Input if empty
             if (this.mealPrepIngredientList.length === 0) {
                 alert("List cannot be empty")
@@ -505,25 +556,213 @@ export default {
 
                 // generate output for sean 
                 // this.resSean will change everytime user presses generate recipe, you will have to do data manipulation here 
-                this.resSean["people"] = this.people;
-                this.resSean["dates and meals"] = this.outputObject;
-                this.resSean["avoidList"] = this.avoidList;
-                this.resSean["ingreients"] = this.mealPrepIngredientList;
-                this.resSean["cook_with_specified"] = this.mealPrepLimitIngedient;
-            
+                this.resSean["people"] = this.people;                                //
+                this.resSean["dates_and_meals"] = this.outputObject;                 //
+                this.resSean["avoidList"] = this.avoidList;                          //
+                this.resSean["ingredients"] = this.mealPrepIngredientList;           //
+                this.resSean["cook_with_specified"] = this.mealPrepLimitIngedient;   //        
 
                 console.log(this.resSean);
 
-            
-            }           
+                // format prompt
+                const ingredientsToAvoid = this.resSean.avoidList.join(", ")
+                const ingredientsToUse = this.resSean.ingredients.join(", ")
+                const specifiedOnly = (this.resSean.cook_with_specified) ? 
+                    "You are to cook with only the ingredients listed, do not use any additional in the recipes" 
+                    : 
+                    "You are to diversify and create different variety of recipes using additional ingredients to generate the recipes"               
+                let schedule = ""   
+                Object.entries(this.resSean.dates_and_meals).forEach(([key, value]) => {
+                    let tOD =""
+                    for (let num of value) {
+                        num = parseInt(num)
+                        if (num == 1) {tOD += "Breakfast, "}
+                        if (num == 2) {tOD += "Lunch, "}
+                        if (num == 3) {tOD += "Dinner, "}
+                    }
+                    schedule += `${key}: ${tOD}, `                   
+                });    
+               
+                const userPrompt = `
+                    I want you to act as a creative meal preparation chef. Create ${mealCount} meal recipes using just the following ingredients: ${ingredientsToUse} for ${this.resSean.people} people.
+                    Avoid using the following ingredients: ${ingredientsToAvoid}.
+                    ${specifiedOnly}.
+                    Come up with recipes for these dates: ${schedule}
+                    Outline the steps to create each recipe as well. 
+                    Make sure you fully utilise the ingredients mentioned.
+                    Return the data as a JSON object as specified in the schema. 
+                    You are also a prompt generator. 
+                    You will create a prompt that could be used for image-generation based on your generated title of the dish description  
+                    Once I described the image, include the following markdown. shown in the function call schema set_recipe under "imageUrl"
+                    ![Image](https://image.pollinations.ai/prompt/{description})
+                    where {description} is:
+                    {sceneDetailed}%20{adjective}%20{charactersDetailed}%20{visualStyle}%20{genre}%20{artistReference}
+                    Make sure the prompts in the URL are encoded. Don't quote the generated markdown or put any code box around it.
+                    Generate the image links, do not use placeholders. Do not send me any additional response other than the output.
+                    Remember that the "no_ingredients" field should only contain the ingredients that are not found in the input, rather than the ones to avoid.` 
+                console.log(userPrompt)
+
+                // format schema
+                const schema = {
+                type: "object",
+                properties: {
+                    dates: {
+                    type: "array",
+                    items: {
+                        type: "object",
+                        properties: {
+                        date: {
+                            type: "string",
+                            description: "Date in the format YYYY-MM-DD"
+                        },
+                        meals: {
+                            type: "array",
+                            items: {
+                            type: "object",
+                            properties: {
+                                mealtime: {
+                                type: "string",
+                                description: "Mealtime (e.g., Breakfast, Lunch, Dinner)"
+                                },
+                                recipe: {
+                                type: "object",
+                                properties: {
+                                    imageUrl: {
+                                    type: "string",
+                                    description: "URL link for the dish image"
+                                    },
+                                    dish: {
+                                    type: "string",
+                                    description: "Descriptive title of the dish"
+                                    },
+                                    "have_ingredients": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                        "ingredient_name": {
+                                            "type": "string",
+                                            "description": "Name of the ingredient found inside the given input and present in the recipe."
+                                        },
+                                        "amount": {
+                                            "type": "string",
+                                            "description": "Ingredient amount with unit found inside given input and present in the recipe."
+                                        }
+                                        }
+                                    }
+                                    },
+                                    "no_ingredients": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                        "ingredient_name": {
+                                            "type": "string",
+                                            "description": "Name of the ingredient not found inside the given input but present in the recipe."
+                                        },
+                                        "amount": {
+                                            "type": "string",
+                                            "description": "Ingredient amount with unit not found inside given input and present in the recipe."
+                                        }
+                                        }
+                                    }
+                                    },
+                                    instructions: {
+                                    type: "array",
+                                    items: {
+                                        type: "object",
+                                        properties: {
+                                        step: {
+                                            type: "integer",
+                                            description: "Step number, numbering from 1"
+                                        },
+                                        description: {
+                                            type: "string",
+                                            description: "Steps to prepare the recipe."
+                                        }
+                                        }
+                                    }
+                                    }
+                                }
+                                }
+                            }
+                            }
+                        }
+                        }
+                    }
+                    }
+                }
+                };
+                
+                // CALL GPT-305 daVinci endpoint with prompt as body
+                const URL = "http://127.0.0.1:8000/get-ai-prompt"
+                await axios.post(URL, {userPrompt, schema})
+                .then((res) => {                           
+                    var aiResponse = JSON.parse(res.data.generated_text)
+                    console.log(aiResponse, typeof aiResponse)
+                                        
+                    var output = []
+                    console.log(aiResponse.dates)
+
+                    for (let dateObj of aiResponse.dates)  {                                 
+                    // access object of dates and meals
+                    console.log(dateObj)
+                    var scheduleDate = this.convertDate(dateObj.date)
+                                    
+                        // loop through mealprep meals
+                        for (let individualMeal of dateObj.meals) {
+                            // change Breakfast/Lunch/Dinner to numbers
+                            const mealTimeNum = this.nameToNum(individualMeal.mealtime)  
+                            console.log(individualMeal)                  
+
+                            // access generated recipe
+                            let generatedRecipe = individualMeal.recipe
+                            
+                            const imgUrl = generatedRecipe.imageUrl // string
+                            const h_ingre = this.formatIngredientList(generatedRecipe.have_ingredients) // objects
+                            const n_ingre = this.formatIngredientList(generatedRecipe.no_ingredients) // objects
+                            const recipeTitle = generatedRecipe.dish // string                
+                            const steps = generatedRecipe.instructions // DO NOT TOUCH
+                            const fSteps = this.objtoString(steps) // string
+                            console.log(imgUrl, recipeTitle, fSteps, h_ingre, n_ingre)
+                            
+                            // CREATE INSTANCE
+                            var instance = {
+                            "user": 1, // TODO
+                            "meal_date": scheduleDate,
+                            "meal_type": mealTimeNum,
+                            "recipe_name": recipeTitle,
+                            "have_ingredients": h_ingre,
+                            "no_ingredients": n_ingre,
+                            "preparation_steps": fSteps,
+                            "canMake": false,
+                            "isCompleted": false,
+                            "image_url": imgUrl
+                            }       
+
+                            // ADD TO INSTANCE
+                            output.push(instance)
+                        }
+                    }
+                    console.log(output) 
+
+                    // GABRIEL WORK ON IT HERE  
+
+                })
+                .catch((err) => {
+                    console.log(`API Call Not Successful: ${err}`)
+                })
+            }
         },
-        
+
         limitIngredient(event) {
             this.mealPrepLimitIngedient = event.target.checked;
         }
-        
         // end of mealPrepSearch methods 
-     }
+    },
+    components: {
+        LoginFailed,
+    }
 }
 
 </script>
@@ -542,106 +781,115 @@ export default {
         height:28px;
     }
 
-    /* ingredientsToAvoid styles */
-    .submit-button2 {
-        display: none;
-    }
-    .list-container-toAvoid {
-        display: flex;
-        flex-direction: row;       
-        overflow-x: auto;  
-    }
+  /* ingredientsToAvoid styles */
+  .submit-button2 {
+      display: none;
+  }
 
-    .ingredients-toAvoid {
-        display: flex;
-        align-items: center;
-        flex-direction: row;
+  .list-container-toAvoid {
+      display: flex;
+      flex-direction: row;
+      overflow-x: auto;
+  }
 
-        margin: 1rem;
-        padding: 0.7rem;
-        border-radius: 5px;
-        list-style: none;
-        background-color: #194252;        
-        color: var(--light);     
-        box-shadow: 0 4px 2px -2px var(--text-light-secondary);
-    }
+  .ingredients-toAvoid {
+      display: flex;
+      align-items: center;
+      flex-direction: row;
 
-    .material-icons-outlined {
-        cursor: pointer;
-    }
+      margin: 1rem;
+      padding: 0.7rem;
+      border-radius: 5px;
+      list-style: none;
+      background-color: #194252;
+      color: var(--light);
+      box-shadow: 0 4px 2px -2px var(--text-light-secondary);
+  }
 
-    .list-wrapper {
-        /* This prevents search bar from being pushed upwards when boxes are being populated  */
-        height: 4rem;
-    }   
-    .submit-button {
-        border-radius: 50px;        
-        border-left: none;            
-        transition: background-color 0.3s;   
-    }
+  .material-icons-outlined {
+      cursor: pointer;
+  }
 
-    .submit-button:hover {      
-       .submit-button-content {
-        filter: invert(84%) sepia(9%) saturate(7000%) hue-rotate(166deg) brightness(108%) contrast(96%);
-       }
-    }  
+  .list-wrapper {
+      /* This prevents search bar from being pushed upwards when boxes are being populated  */
+      height: 4rem;
+  }
 
-    .form-control {
-        background-color: transparent;        
-        border-radius: 50px;
-    }    
-    .search-bar {
-        border-radius: 50px;
-        box-shadow: 0 4px 2px -2px var(--text-light-secondary);
-        border: 1px solid #6c757d;
-    }
-    .dropdown-item {
-        cursor: pointer;
-    }
-    
-    /* mobile responsive for seach bar  */
-    @media (max-width: 700px) {
-        .search-bar {
-            border-radius: 10px;
-            display: flex;
-            flex-direction: column;
+  .submit-button {
+      border-radius: 50px;
+      border-left: none;
+      transition: background-color 0.3s;
+  }
 
-            .form-control {
-                width: 100%;
-                border: 0;
-            }
-            .form-control::placeholder {
-                font-size: 16px;
-                text-align: center;
-            }
-            .dropdown-toggle {
-                border-radius: 10px;
-            }
-            .dropdown-menu {
-                width: 100%;
-                background-color: #194252;                
-                text-align: center;                
-                .dropdown-item {
-                    color: var(--light);
-                }
-            }
+  .submit-button:hover {
+      .submit-button-content {
+          filter: invert(84%) sepia(9%) saturate(7000%) hue-rotate(166deg) brightness(108%) contrast(96%);
+      }
+  }
 
-            .submit-button {
-                display: none;
-            }
+  .form-control {
+      background-color: transparent;
+      border-radius: 50px;
+  }
 
-            .submit-button2 {
-                display: block;             
-                background-color: #194252;     
-                color: var(--light);
-                border-top-left-radius: 0 !important;
-                border-bottom-left-radius: 10px !important;
-                border-top-right-radius: 0 !important;
-                
-            }
-        }
-    }
-    /* END OF INGREDIENTS TO AOVID STLES */
+  .search-bar {
+      border-radius: 50px;
+      box-shadow: 0 4px 2px -2px var(--text-light-secondary);
+      border: 1px solid #6c757d;
+  }
+
+  .dropdown-item {
+      cursor: pointer;
+  }
+
+  /* mobile responsive for seach bar  */
+  @media (max-width: 700px) {
+      .search-bar {
+          border-radius: 10px;
+          display: flex;
+          flex-direction: column;
+
+          .form-control {
+              width: 100%;
+              border: 0;
+          }
+
+          .form-control::placeholder {
+              font-size: 16px;
+              text-align: center;
+          }
+
+          .dropdown-toggle {
+              border-radius: 10px;
+          }
+
+          .dropdown-menu {
+              width: 100%;
+              background-color: #194252;
+              text-align: center;
+
+              .dropdown-item {
+                  color: var(--light);
+              }
+          }
+
+          .submit-button {
+              display: none;
+          }
+
+          .submit-button2 {
+              display: block;
+              background-color: #194252;
+              color: var(--light);
+              border-top-left-radius: 0 !important;
+              border-bottom-left-radius: 10px !important;
+              border-top-right-radius: 0 !important;
+
+          }
+      }
+  }
+
+  /* END OF INGREDIENTS TO AOVID STLES */
 
 
 
@@ -748,4 +996,32 @@ export default {
     }
     /* END OF MEALPREPSEARCH STYLES */
 
+    /* USER AUTHENITCATION */
+    .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); 
+    backdrop-filter: blur(5px);
+    z-index: 999; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;   
+}
+
+.login-alert {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    z-index: 1000; 
+    text-align: center;
+}
 </style>

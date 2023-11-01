@@ -1,6 +1,10 @@
 <template>
     <main class="row justify-content-center align-items-center " style="height: 92vh;">
+        <Blob class="blob-background"/>
         <div class="col-xl-8 col-lg-8 col-md-8 col-sm-10">
+            <div class="search-text">
+                <h3>Generate recipe with your leftovers</h3>
+            </div>
             <div class="input-group input-group-lg search-bar">
                 <button class="btn dropdown-toggle input" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="min-width: 8vw;">{{ selectedInputType }}</button>
                 <ul class="dropdown-menu">                             
@@ -30,6 +34,8 @@
 </template>
 
 <script>
+import Blob from "../components/Blob.vue"
+
 export default {
     data() {
         return {
@@ -70,7 +76,14 @@ export default {
         },
         populatePrompt(item_list, cuisineType) {
             let ingredients = item_list.join(", ")
-            let result = `Create me a ${cuisineType} cuisine recipe using just the following ingredients: ${ingredients}. DO NOT use any additional ingredients`
+            let result = `Create a ${cuisineType} cuisine recipe using just the following ingredients: ${ingredients}. DO NOT use any additional ingredients.Return the data as a JSON object
+            You are also a prompt generator. 
+            You will create a prompt that could be used for image-generation based on your generated title of the dish description  
+            Once I described the image, include the following markdown. shown in the function call schema set_recipe under "imageUrl"
+            ![Image](https://image.pollinations.ai/prompt/{description})
+            where {description} is:
+            {sceneDetailed}%20{adjective}%20{charactersDetailed}%20{visualStyle}%20{genre}%20{artistReference}
+            Make sure the prompts in the URL are encoded. Don't quote the generated markdown or put any code box around it.`            
             return result
         },
         validateInput() {
@@ -86,31 +99,51 @@ export default {
             
         },
         parseDataToRecipePage() {
-            // validate inputs
-            if (this.validateInput()[1]) {
-                let LLM_PROMPT = this.populatePrompt(this.ingredientList, this.selectedCuisine);
-                let recipeObject = {
-                    unique_id: this.uuid, 
-                    cuisine: this.selectedCuisine, 
-                    format: this.selectedInputType, 
-                    prompt: LLM_PROMPT
-                }
-                
-                this.$router.push({
-                    path: `recipesearch/${this.uuid}`,
-                    query: {data: JSON.stringify(recipeObject)}
-                })
+            // check if user is loggedIn by matching token on sessionStorage
+            if (!sessionStorage.getItem("AuthToken")) {
+                alert("Please log in before creating a recipe!")
+                this.$router.push({path: '/'})
             } else {
-                let errors = this.validateInput()[0].join(",\n")
-                alert(errors)
+                // validate inputs
+                if (this.validateInput()[1]) {
+                    let LLM_PROMPT = this.populatePrompt(this.ingredientList, this.selectedCuisine);
+                    let recipeObject = {
+                        unique_id: this.uuid, 
+                        cuisine: this.selectedCuisine, 
+                        format: this.selectedInputType, 
+                        prompt: LLM_PROMPT
+                    }
+                    
+                    this.$router.push({
+                        path: `recipesearch/${this.uuid}`,
+                        query: {data: JSON.stringify(recipeObject)}
+                    })
+                } else {
+                    let errors = this.validateInput()[0].join(",\n")
+                    alert(errors)
+                }
             }
             
         }
-    } 
+    },
+    components: {
+        Blob
+    }
+
 };
 </script>
 
 <style scoped>   
+    .blob-background {
+        margin-top: 5rem;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 80%;
+        z-index: -1; 
+        /* opacity: 0.3;  */
+    }
     .submit-button2 {
         display: none;
     }
@@ -153,11 +186,25 @@ export default {
     .form-control {
         background-color: transparent;        
         border-radius: 50px;
+    }
+    .search-text {
+        position: absolute;
+        top: 40%;
+        left: 50%; 
+        transform: translateX(-50%);
+        z-index: 1; 
+        text-align: center;
+    }
+
+    .search-text {       
+        color: var(--light); 
+        /* margin-top: -3.8rem; */
     }    
     .search-bar {
         border-radius: 50px;
         box-shadow: 0 4px 2px -2px var(--text-light-secondary);
         border: 1px solid #6c757d;
+        background-color: var(--light);
     }
     .dropdown-item {
         cursor: pointer;

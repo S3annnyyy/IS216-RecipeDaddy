@@ -9,12 +9,12 @@
                 v-for="(el, i) in contents"
                 :key="i"
                 :to="{ path: el.link }"
-                class="button">
+                class="nav-button">
                 <span class="text" :class="{ scrolled: scrolledPastVideo }">{{ el.textName }}</span>
             </router-link>
   
             <div class="profile"  :class="{ scrolled: scrolledPastVideo }" v-if="isLoggedIn">
-                <span class="material-icons">account_circle</span>
+                <span>Hello&nbsp;{{ loggedUserName }}!</span>
             </div>
             <div class="profile" v-else>
                 <LoginModal :class="{ scrolled: scrolledPastVideo }"/>
@@ -31,6 +31,13 @@
             <div class="close-btn" @click="toggleMenu">
                 <span class="material-icons">close</span>
             </div>
+            <div class="profile" v-if="isLoggedIn">
+                <span>Hello&nbsp;{{ loggedUserName }}!</span>                
+            </div>
+            <div class="profile" v-else>
+                <LoginModal/>
+            </div>
+            <hr style="width: 80%;">
             <router-link
                 v-for="(el, i) in contents"
                 :key="i"
@@ -38,14 +45,7 @@
                 class="mobile-button"
                 @click="toggleMenu">
                 <span class="text">{{ el.textName }}</span>
-            </router-link>
-
-            <div class="profile" v-if="isLoggedIn">
-                <span class="material-icons">account_circle</span>
-            </div>
-            <div class="profile" v-else>
-                <LoginModal/>
-            </div>
+            </router-link>            
         </div>
     </div>
   </template>
@@ -55,11 +55,22 @@
     import { useRoute } from 'vue-router'
     import LoginModal from './LoginModal.vue';
 
-    const isLoggedIn = ref(false); // placeholder for backend 
+    // retrieve token from session if any and get username 
+    const isLoggedIn = ref(sessionStorage.getItem("AuthToken")); 
+    function getUserName() {
+        if (sessionStorage.getItem("user")) {
+            return sessionStorage.getItem("user")
+        } else {return ""}
+    }
+    const loggedUserName = getUserName()
+    console.log(loggedUserName)
+
+    console.log(loggedUserName)
     const contents = [
     { textName: 'Home', icon: 'home', link: '/' },
     { textName: 'Recipe Search', icon: 'visibility', link: '/recipesearch' },
     { textName: 'Meal Prep', icon: 'group', link: '/mealprep' },
+    { textName: 'Meal Schedule', icon: 'group', link: '/mealschedule' },
     { textName: 'Contact Us', icon: 'email', link: '/contact' },
     
     ]; // routing contents + icons for navigation bar
@@ -133,14 +144,14 @@
         align-items: center;
     }
 
-    .button {
+    .nav-button {
         text-decoration: none;
         margin: 0 15px;
         display: flex;
         align-items: center;
-    }
+    }    
 
-    .button .material-icons {
+    .nav-button .material-icons {
         margin-right: 5px;
     }   
 
@@ -151,7 +162,29 @@
 
     .text.scrolled, .profile.scrolled {
         color: var(--dark);
-    }
+    }  
+    
+    /* .nav-button:hover .text {
+    position: relative;
+  }
+
+  .nav-button .text:after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background: #EE1D52;
+    bottom: 0;
+    left: 0;
+    transform: scaleX(0);
+    transform-origin: bottom right;
+    transition: transform 0.2s ease-in-out; 
+  }
+
+  .nav-button:hover .text:after {
+    transform: scaleX(1); 
+    transform-origin: bottom left;
+  } */
 
     .navbar.scrolled {
         background-color: var(--light);
@@ -161,7 +194,15 @@
     .profile {
         display: flex;
         align-items: center;
-        margin-left: 15px;
+        margin-left: 15px;        
+    }
+
+    .profile > span {
+        color: white;
+    }
+
+    .profile.scrolled > span {
+        color: var(--dark);
     }
     
 
@@ -219,7 +260,7 @@
     }
 
     /* Mobile responsiveness */
-    @media (max-width: 900px) {
+    @media (max-width: 1000px) {
         .navbar {
             padding: 1rem calc(0.5rem + 32px);
             color: var(--light);
