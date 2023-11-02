@@ -14,7 +14,7 @@
 }
 
 .countdown-header {
-    font-size: 18px;
+    font-size: 20px;
     font-weight: bold;
     word-wrap: normal;
 }
@@ -121,7 +121,7 @@ td {
                 <div class="card" style="background-color: #ffffe4;">
                     <div class="card-body">
 
-                        <div class="row">
+                        <div class="row mt-4">
                             <div class="col-lg-4 col-md-4 col-sm-4 countdown-header">
                                 Remaining time to completion 🔥
                             </div>
@@ -156,13 +156,6 @@ td {
                             <div class="col-lg-2 col-md-2 col-sm-2">
                                 <img src="../assets/winner.png" width="60px" height="auto">
                             </div>
-                        </div>
-
-
-                        <div class="row" style="border-top: 0.5px solid #545454;">
-                            <span class="px-2 pt-1" style="font-size: 15px; color: #545454;">
-                                Rewards are given to only the top 3 users each week.
-                            </span>
                         </div>
                     </div>
                 </div>
@@ -308,7 +301,8 @@ export default {
             scoreTwo: 0.00,
             scoreThree: 0.00,
             showLoginAlert: false,
-            individualData: null
+            individualData: null,
+            fakePeople: []
 
         };
     },
@@ -367,7 +361,7 @@ export default {
                     }
                 })
                 .catch(error => {
-                    console.error(error);
+                    console.log(error);
                 });
 
             // get logged-in user data 
