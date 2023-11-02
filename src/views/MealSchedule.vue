@@ -261,7 +261,7 @@
 
     <!-- Food Section -->
     <main class="row py-1 mb-3 d-flex justify-content-center" id="food-section">
-    <h4 v-if="mealSchedule.receivedData == null || mealSchedule.receivedData.length == 0">
+    <h4 v-if="mealSchedule.receivedData == null || mealSchedule.receivedData.length == 0" class="text-center">
         Generate a meal and add it to your schedule!
     </h4>
 
