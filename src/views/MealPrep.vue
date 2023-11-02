@@ -24,7 +24,7 @@
                     </div>
                     <div v-show="people > 0" class="col-lg-3 col-md-4 col-sm-7">
                         <label>How many days?</label>
-                        <select class="form-select form-select-md" v-model="days" @change="addDay" id="days" required>
+                        <select class="form-select form-select-md form-control" v-model="days" @change="addDay" id="days" required>
                             <option selected>Please select days</option>
                             <option value="1">1</option>
                             <option value="2">2</option>
