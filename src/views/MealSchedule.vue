@@ -35,9 +35,10 @@
 /* Additional styles for the food section */
 #food-section {
     margin-top: 20px;
-    width: 85%;
+    /* width: 85%; */
     margin-left: auto;
     margin-right: auto;
+   
 }
 
 .food-item {
@@ -45,6 +46,12 @@
     margin: 20px;
     padding: 10px;
     border-radius: 5px;
+}
+
+.meal-card {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 2px -2px var(--text-light-secondary);
 }
 
 .food-item img {
@@ -59,25 +66,28 @@
 
 .replace-button {
     background-color: #E6E3E3;
-    border-radius: 25px;
+    border-radius: 20px;
     border: none;
-    padding: 5px 10px;
+    padding: 5px 5px;
     margin-right: 5px;
+    box-shadow: 0 4px 2px -2px var(--text-light-secondary);
 }
 
 .view-recipe-button {
     background-color: #E6E3E3;
-    border-radius: 25px;
+    border-radius: 20px;
     border: none;
-    padding: 5px 10px;
+    padding: 5px 5px;
     margin-right: 5px;
+    box-shadow: 0 4px 2px -2px var(--text-light-secondary);
 }
 
 .delete-button {
     background-color: #E6E3E3;
-    border-radius: 25px;
+    border-radius: 20px;
     border: none;
-    padding: 5px 10px;
+    padding: 5px 5px;
+    box-shadow: 0 4px 2px -2px var(--text-light-secondary);
 }
 
 .breakfast-recipe {
@@ -250,28 +260,28 @@
     </div>
 
     <!-- Food Section -->
-    <main class="row w-85 py-1 mb-3 d-flex justify-content-center" id="food-section">
-        <h4 v-if="mealSchedule.receivedData == null || mealSchedule.receivedData.length == 0">
-            Generate a meal and add it to your schedule!
-        </h4>
+    <main class="row py-1 mb-3 d-flex justify-content-center" id="food-section">
+    <h4 v-if="mealSchedule.receivedData == null || mealSchedule.receivedData.length == 0">
+        Generate a meal and add it to your schedule!
+    </h4>
 
-        <div v-else-if="mealSchedule.receivedData.length > 0" :class="getColumnClass(mealSchedule.receivedData.length)"
-            class="col-sm-12 col-md-7 col-lg-4 card" v-for="(meal, index) in mealSchedule.receivedData" :key="index">
-            <h3 class="card-title text-left pt-2">{{ formatMealType(meal.meal_type) }}</h3>
-            <img :src="extractLinkFromParentheses(meal.image_url)" alt="Meal" class="card-img-top img-fluid" />
-            <div class="card-body">
-                <div class="card-text breakfast-recipe text-center">{{ meal.recipe_name }}</div>
-                <div class="buttons row d-flex justify-content-center">
-                    <button class="view-recipe-button col-sm-6 col-md-7 col-lg-3 mt-1" @click="viewRecipe(meal)">View
-                        Recipe</button>
-                    <button class="replace-button col-sm-6 col-md-7 col-lg-3 mt-1"
-                        @click="replaceMeal(meal)">Replace</button>
-                    <button class="delete-button col-sm-6 col-md-7 col-lg-3 mt-1" @click="deleteMeal(meal)">Delete</button>
-                </div>
+    <div v-else-if="mealSchedule.receivedData.length > 0"
+        class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-3 mx-3 border meal-card" v-for="(meal, index) in mealSchedule.receivedData" :key="index">
+        <h3 class="card-title text-left pt-2">{{ formatMealType(meal.meal_type) }}</h3>
+        <img :src="extractLinkFromParentheses(meal.image_url)" alt="Meal" class="card-img-top img-fluid" style="object-fit: contain;" />
+        <div class="card-body" style="width:100%;">
+            <div class="card-text breakfast-recipe text-center">{{ meal.recipe_name }}</div>
+            <div class="buttons row d-flex justify-content-center">
+                <button class="view-recipe-button col-sm-6 col-md-7 col-lg-3 mt-1" @click="viewRecipe(meal)">View
+                    Recipe</button>
+                <button class="replace-button col-sm-6 col-md-7 col-lg-3 mt-1"
+                    @click="replaceMeal(meal)">Replace</button>
+                <button class="delete-button col-sm-6 col-md-7 col-lg-3 mt-1" @click="deleteMeal(meal)">Delete</button>
             </div>
         </div>
+    </div>
+</main>
 
-    </main>
     <!-- THIS PORTION IS FOR USER AUTHENTICATION CHECK -->
     <div v-if="showLoginAlert" class="overlay" @click="routeBackToHome"></div>
     <div v-if="showLoginAlert" class="login-alert">
