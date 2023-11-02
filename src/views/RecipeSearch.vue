@@ -21,10 +21,10 @@
                         </span>                    
                 </button>
                 <button type="button" class="btn submit-button2"  @click="parseDataToRecipePage()">Create Recipe</button>
-            </div>
+            </div>               
             <div class="list-wrapper">
                 <ul class="list-container">
-                <li v-for="(item, index) in ingredientList" :key="index" class="ingredients ">
+                <li v-for="(item, index) in ingredientList" :key="index" class="ingredients">
                     {{ item }}<span class="material-icons-outlined" @click="removeItem(item)">close</span>                    
                 </li>
             </ul>
@@ -45,7 +45,7 @@ export default {
             selectedCuisine: 'Cuisine Type',
             inputFormat: ["Text", "OCR"],
             inputCuisine: ["Chinese", "Japanese", "Indian", "Peranakan", "Western"],
-            uuid: crypto.randomUUID() 
+            uuid: crypto.randomUUID(),           
         };
     },
     methods: {
@@ -86,7 +86,7 @@ export default {
             You are also a prompt generator. 
             You will create a prompt that could be used for image-generation based on your generated title of the dish description  
             Once I described the image, include the following markdown. shown in the function call schema set_recipe under "imageUrl"
-            ![Image](https://image.pollinations.ai/prompt/{description})
+            https://image.pollinations.ai/prompt/{description}
             where {description} is:
             {sceneDetailed}%20{adjective}%20{charactersDetailed}%20{visualStyle}%20{genre}%20{artistReference}
             Make sure the prompts in the URL are encoded. Don't quote the generated markdown or put any code box around it.`            
@@ -94,7 +94,7 @@ export default {
         },
         validateInput() {
             let errors = [ ]
-            if (this.ingredientList.length === 0) {errors.push("You can't create a recipe with 0 ingredients you dumb fuck")}
+            if (this.ingredientList.length === 0) {errors.push("You can't create a recipe with 0 ingredients")}
             if (this.selectedInputType === "Input Type") {errors.push("Please select one method of input")}
             if (this.selectedCuisine === "Cuisine Type") {errors.push("Please select one cuisine type")}
             if (errors.length === 0) {

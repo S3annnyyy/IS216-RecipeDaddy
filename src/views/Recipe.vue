@@ -50,7 +50,7 @@ export default {
     data() {
         return {
             timeOfDay: "TimeOfDay",
-            inputDate: "",
+            inputDate: this.todayDatePlaceholder(),
             promptuuid: '',
             data: JSON.parse(this.$route.query.data),
             stepCount: 0,
@@ -60,7 +60,7 @@ export default {
                     "steps": null,
                     "recipeImg": null,
                 }
-            }
+            },           
         };
     },
     methods: {
@@ -142,7 +142,15 @@ export default {
             // reset variables to default again
             this.timeOfDay = "TimeOfDay";
             this.inputDate = "";            
-        },       
+        },
+        todayDatePlaceholder() {
+            // Get the current date in the format 'YYYY-MM-DD'
+            const currentDate = new Date();
+            const year = currentDate.getFullYear();
+            const month = String(currentDate.getMonth() + 1).padStart(2, '0'); 
+            const day = String(currentDate.getDate()).padStart(2, '0');            
+            return `${year}-${month}-${day}`;
+        }       
     },
     mounted() {          
         // console.log(this.data) // data logging
@@ -209,6 +217,9 @@ export default {
             console.log(`API Call Not Successful: ${err}`)
         })
      
+    },
+    computed: {
+        
     },
     components: { AnimatedPlaceholder }
 }
