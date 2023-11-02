@@ -64,12 +64,7 @@ const router = createRouter({
       path: '/leaderboard',
       name: 'leaderboard',
       component: () => import('../views/Leaderboard.vue')
-    },
-    {
-      path: '/analytics',
-      name: 'analytics',
-      component: () => import('../views/Analytics.vue')
-    },
+    },    
     {
       path: '/payment',
       name: 'payment',
