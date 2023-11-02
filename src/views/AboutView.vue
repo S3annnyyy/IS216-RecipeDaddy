@@ -54,6 +54,19 @@ onMounted(() => {
 
 const props = defineProps(); // Define props
 
+import SeanPortrait from "../assets/portraits/sean.jpg"
+import SyahmimPortrait from "../assets/portraits/syahmim.jpg"
+import GabrielPortrait from "../assets/portraits/gabriel.jpg"
+import JunKaiPortrait from "../assets/portraits/junkai.jpg"
+
+var people = [
+  {name: "Sean Yap", imageSrc: SeanPortrait, about: "Year 2 Information Systems student", desc: '"You this read wrong."', githubLink: "https://github.com/S3annnyyy",linkedinLink: "https://www.linkedin.com/in/seanyckang/"},
+  {name: "Neo Hui Xuan", imageSrc: "", about: "Year 2 Information Systems student", desc: '"I like to use vim"', githubLink: "https://github.com/huiixuan", linkedinLink: "https://www.linkedin.com/in/neo-hui-xuan-22928226b/"},     
+  {name: "Syahmim Chukhan", imageSrc: SyahmimPortrait, about: "Year 2 Software Engineering student", desc: '"I am the carry"', githubLink: "https://github.com/syahmimscs", linkedinLink: "https://www.linkedin.com/in/syahmim-chukhan/"}, 
+  {name: "Gabriel Loh", imageSrc: GabrielPortrait, about: "Year 2 Software Engineering student", desc: '"Tough times breed tough men"', githubLink: "https://github.com/weeiner", linkedinLink: "https://www.linkedin.com/in/gabriel-loh-75053722a/"}, 
+  {name: "Lim Jun Kai", imageSrc: JunKaiPortrait, about: "Year 2 Software Engineering student", desc: '"I hate frontend"', githubLink: "https://github.com/ljlimjk10", linkedinLink: "https://www.linkedin.com/in/lim-jun-kai-4a9633214/"}, 
+]
+
 </script>
 
 
@@ -168,119 +181,33 @@ const props = defineProps(); // Define props
 
     <!-- MEET THE TEAM section -->
     <section class="section pb-5" id="meet-the-team" :class="target" ref="targetEl4">
-      <div class="container pb-5">
-        <div class="row pb-5">
-          <div class="col-md-12">
+      <div class="container-fluid pb-5">
+        <div class="row pb-5 justify-content-center">
+          <div class="col-md-9 col-lg-9 justify-content-center">
             <h1 class="text-center p-5" style="font-size: 75px;">Our Team</h1>            
             <div class="row team-cards">            
-                      <!-- BS card: Start -->
-              <div class="col-md-4 d-flex justify-content-center mb-2">
-                <div class="card" style="width: 18rem;">
-                  <img src="../assets/portraits/sean.jpg" class="card-img-top" alt="sean">
-                  <div class="card-body">
-                    <h5 class="card-title">Sean Yap</h5>
-                    <p class="card-text">Cool cool cool cool.</p>
+            <!-- BS card: Start -->              
+              <div class="col-lg-4 col-md-4 d-flex justify-content-center mb-4" v-for="person in people">
+                <div class="card shadow" style="width: 18rem;">
+                  <img :src="person.imageSrc" class="card-img-top" alt="sean" style="padding: 1rem;">
+                  <div class="card-body text-center">
+                    <h5 class="card-title">{{ person.name }}</h5>
+                    <p class="card-text">{{ person.about }}</p>
+                    <p class="card-text">{{ person.desc }}</p>
                   </div>
-                  <div class="card-body">
+                  <div class="card-body text-center" style="text-decoration: none;">
                     <!-- GitHub logo link -->
-                    <a href="https://github.com/your-github-profile" class="card-link" target="_blank">
+                    <a :href="person.githubLink" class="card-link" target="_blank">
                       <i class="fab fa-github"></i> GitHub
                     </a>
                     <!-- LinkedIn logo link -->
-                    <a href="https://www.linkedin.com/in/your-linkedin-profile" class="card-link" target="_blank">
+                    <a :href="person.linkedinLink" class="card-link" target="_blank">
                       <i class="fab fa-linkedin"></i> LinkedIn
                     </a>
                   </div>
                 </div>
-              </div>
-              <!-- BS card: End -->
-
-              <!-- Repeat the card for two more team members -->
-              <!-- BS card: Start -->
-              <div class="col-md-4 d-flex justify-content-center">
-                <div class="card" style="width: 18rem;">
-                  <img src="../assets/placeholderProfilePic/screamingSun.jpg" class="card-img-top" alt="huixuan">
-                  <div class="card-body">
-                    <h5 class="card-title">Hui Xuan</h5>
-                    <p class="card-text">Cool cool cool cool.</p>
-                  </div>
-                  <div class="card-body">
-                    <!-- GitHub logo link -->
-                    <a href="https://github.com/your-github-profile" class="card-link" target="_blank">
-                      <i class="fab fa-github"></i> GitHub
-                    </a>
-                    <!-- LinkedIn logo link -->
-                    <a href="https://www.linkedin.com/in/your-linkedin-profile" class="card-link" target="_blank">
-                      <i class="fab fa-linkedin"></i> LinkedIn
-                    </a>
-                  </div>
-                </div>
-              </div>
-              <!-- BS card: End -->
-
-              <!-- BS card: Start -->
-              <div class="col-md-4 d-flex justify-content-center">
-                <div class="card" style="width: 18rem;">
-                  <img src="../assets/portraits/syahmim.jpg" class="card-img-top" alt="syahmim">
-                  <div class="card-body">
-                    <h5 class="card-title">Syahmim</h5>
-                    <p class="card-text">Cool cool cool cool.</p>
-                  </div>
-                  <div class="card-body">
-                    <!-- GitHub logo link -->
-                    <a href="https://github.com/your-github-profile" class="card-link" target="_blank">
-                      <i class="fab fa-github"></i> GitHub
-                    </a>
-                    <!-- LinkedIn logo link -->
-                    <a href="https://www.linkedin.com/in/your-linkedin-profile" class="card-link" target="_blank">
-                      <i class="fab fa-linkedin"></i> LinkedIn
-                    </a>
-                  </div>
-                </div>
-              </div>
-              <!-- BS card: End -->
-            </div>
-
-            <!-- Additional two team members -->
-            <div class="row team-cards">
-              <div class="col-md-4 d-flex justify-content-center">
-                <div class="card" style="width: 18rem;">
-                  <img src="../assets/portraits/gabriel.jpg" class="card-img-top" alt="Gabriel">
-                  <div class="card-body">
-                    <h5 class="card-title">Gabriel Loh</h5>
-                    <p class="card-text">Cool cool cool cool.</p>
-                  </div>
-                  <div class="card-body">
-                    <!-- GitHub logo link -->
-                    <a href="https://github.com/your-github-profile" class="card-link" target="_blank">
-                      <i class="fab fa-github"></i> GitHub
-                    </a>
-                    <!-- LinkedIn logo link -->
-                    <a href="https://www.linkedin.com/in/your-linkedin-profile" class="card-link" target="_blank">
-                      <i class="fab fa-linkedin"></i> LinkedIn
-                    </a>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-4 d-flex justify-content-center">
-                <div class="card" style="width: 18rem;">
-                  <img src="../assets/placeholderProfilePic/Snowball.jpg" class="card-img-top" alt="sean">
-                  <div class="card-body">
-                    <h5 class="card-title">Lim Jun Kai</h5>
-                    <p class="card-text">Cool cool cool cool.</p>
-                  </div>
-                  <div class="card-body">
-                    <!-- GitHub logo link -->
-                    <a href="https://github.com/your-github-profile" class="card-link" target="_blank">
-                      <i class="fab fa-github"></i> GitHub
-                    </a>
-                    <!-- LinkedIn logo link -->
-                    <a href="https://www.linkedin.com/in/your-linkedin-profile" class="card-link" target="_blank">
-                      <i class="fab fa-linkedin"></i> LinkedIn
-                    </a>
-                  </div>
-                </div>
-              </div>
+              </div>              
+              <!-- BS card: End -->          
             </div>
             <!-- Card container ends -->
           </div>
