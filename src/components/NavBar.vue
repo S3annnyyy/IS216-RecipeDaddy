@@ -159,11 +159,18 @@
         color: var(--light);
         transition: color 0.3s ease; 
     }
+    .router-link-exact-active {
+            .text {
+                color: var(--navbar-text-active);
+                border-bottom: solid 2.5px var(--navbar-text-active)
+            }
+        }
 
     .text.scrolled, .profile.scrolled {
         color: var(--dark);
     }  
     
+    /* THESE STYLES ARE FOR NAVBAR UNDERLINE INDICATOR */
     /* .nav-button:hover .text {
     position: relative;
   }
@@ -185,6 +192,7 @@
     transform: scaleX(1); 
     transform-origin: bottom left;
   } */
+  /* END OF STYLING FOR NAVBAR INDICATOR */
 
     .navbar.scrolled {
         background-color: var(--light);
