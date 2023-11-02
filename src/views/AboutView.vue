@@ -60,11 +60,11 @@ import GabrielPortrait from "../assets/portraits/gabriel.jpg"
 import JunKaiPortrait from "../assets/portraits/junkai.jpg"
 
 var people = [
-  {name: "Sean Yap", imageSrc: SeanPortrait, about: "Risk Analyst Intern @TikTok", desc: '"You this read wrong."', githubLink: "https://github.com/S3annnyyy",linkedinLink: "https://www.linkedin.com/in/seanyckang/"},
-  {name: "Neo Hui Xuan", imageSrc: "", about: "Year 2 Information Systems student", desc: '"I like to use vim"', githubLink: "https://github.com/huiixuan", linkedinLink: "https://www.linkedin.com/in/neo-hui-xuan-22928226b/"},     
-  {name: "Syahmim Chukhan", imageSrc: SyahmimPortrait, about: "Software Engineer Intern @Lumens", desc: '"I am the carry"', githubLink: "https://github.com/syahmimscs", linkedinLink: "https://www.linkedin.com/in/syahmim-chukhan/"}, 
-  {name: "Gabriel Loh", imageSrc: GabrielPortrait, about: "Software Engineer Intern @Lumens", desc: '"Tough times breed tough men"', githubLink: "https://github.com/weeiner", linkedinLink: "https://www.linkedin.com/in/gabriel-loh-75053722a/"}, 
-  {name: "Lim Jun Kai", imageSrc: JunKaiPortrait, about: "Software Engineer Intern @GovTech", desc: '"I hate frontend"', githubLink: "https://github.com/ljlimjk10", linkedinLink: "https://www.linkedin.com/in/lim-jun-kai-4a9633214/"}, 
+  {name: "Sean Yap", imageSrc: SeanPortrait, about: "Y2 Information Systems Major", desc: '"You this read wrong."', githubLink: "https://github.com/S3annnyyy",linkedinLink: "https://www.linkedin.com/in/seanyckang/"},
+  {name: "Neo Hui Xuan", imageSrc: "", about: "Y2 Information Systems Major", desc: '"I like to use vim"', githubLink: "https://github.com/huiixuan", linkedinLink: "https://www.linkedin.com/in/neo-hui-xuan-22928226b/"},     
+  {name: "Syahmim Chukhan", imageSrc: SyahmimPortrait, about: "Y2 Software Engineering Major", desc: '"I am the carry"', githubLink: "https://github.com/syahmimscs", linkedinLink: "https://www.linkedin.com/in/syahmim-chukhan/"}, 
+  {name: "Gabriel Loh", imageSrc: GabrielPortrait, about: "Y2 Software Engineering Major", desc: '"Tough times breed tough men"', githubLink: "https://github.com/weeiner", linkedinLink: "https://www.linkedin.com/in/gabriel-loh-75053722a/"}, 
+  {name: "Lim Jun Kai", imageSrc: JunKaiPortrait, about: "Part time Criminal, Full time student", desc: '"I hate frontend"', githubLink: "https://github.com/ljlimjk10", linkedinLink: "https://www.linkedin.com/in/lim-jun-kai-4a9633214/"}, 
 ]
 
 </script>
