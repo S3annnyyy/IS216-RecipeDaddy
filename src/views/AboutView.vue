@@ -58,13 +58,16 @@ import SeanPortrait from "../assets/portraits/sean.jpg"
 import SyahmimPortrait from "../assets/portraits/syahmim.jpg"
 import GabrielPortrait from "../assets/portraits/gabriel.jpg"
 import JunKaiPortrait from "../assets/portraits/junkai.jpg"
+import HuixuanPortrait from "../assets/portraits/huixuan.jpg"
+import TheGodFather from "../assets/portraits/chatgpt.png"
 
 var people = [
   {name: "Sean Yap", imageSrc: SeanPortrait, about: "Y2 Information Systems Major", desc: '"You this read wrong."', githubLink: "https://github.com/S3annnyyy",linkedinLink: "https://www.linkedin.com/in/seanyckang/"},
-  {name: "Neo Hui Xuan", imageSrc: "", about: "Y2 Information Systems Major", desc: '"I like to use vim"', githubLink: "https://github.com/huiixuan", linkedinLink: "https://www.linkedin.com/in/neo-hui-xuan-22928226b/"},     
+  {name: "Neo Hui Xuan", imageSrc: HuixuanPortrait, about: "Y2 Information Systems Major", desc: '"I like to use vim"', githubLink: "https://github.com/huiixuan", linkedinLink: "https://www.linkedin.com/in/neo-hui-xuan-22928226b/"},     
   {name: "Syahmim Chukhan", imageSrc: SyahmimPortrait, about: "Y2 Software Engineering Major", desc: '"I am the carry"', githubLink: "https://github.com/syahmimscs", linkedinLink: "https://www.linkedin.com/in/syahmim-chukhan/"}, 
   {name: "Gabriel Loh", imageSrc: GabrielPortrait, about: "Y2 Software Engineering Major", desc: '"Tough times breed tough men"', githubLink: "https://github.com/weeiner", linkedinLink: "https://www.linkedin.com/in/gabriel-loh-75053722a/"}, 
   {name: "Lim Jun Kai", imageSrc: JunKaiPortrait, about: "Part time Criminal, Full time student", desc: '"I hate frontend"', githubLink: "https://github.com/ljlimjk10", linkedinLink: "https://www.linkedin.com/in/lim-jun-kai-4a9633214/"}, 
+  {name: "ChatGPT", imageSrc: TheGodFather, about: "Overworked LLM robot", desc: '"I was the real carry"', githubLink: "https://github.com/openai", linkedinLink: "https://www.linkedin.com/company/openai/"}, 
 ]
 
 </script>
