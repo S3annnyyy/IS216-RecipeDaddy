@@ -468,7 +468,7 @@ export default {
         },
         validateInputAvoid() {
             let errors = []
-            if (this.avoidList.length === 0) { errors.push("You can't create a recipe with 0 ingredients you dumb fuck") }
+            if (this.avoidList.length === 0) { errors.push("You can't create a recipe with 0 ingredients!") }
             if (this.selectedInputType === "Input Type") { errors.push("Please select one method of input") }
             if (this.selectedCuisine === "Cuisine Type") { errors.push("Please select one cuisine type") }
             if (errors.length === 0) {
@@ -488,21 +488,30 @@ export default {
 
 
         // mealPrepSearch methods 
-
-
+        validateAmount() {
+            if (this.mealPrepSelectedAmount >= 10000 && (this.mealPrepSelectedUnit == "ml" || this.mealPrepSelectedUnit == "g" || this.mealPrepSelectedUnit == "item-quantity")) {return false}
+            else if (this.mealPrepSelectedAmount >= 100 && (this.mealPrepSelectedUnit == "litre" || this.mealPrepSelectedUnit == "kg" || this.mealPrepSelectedUnit == "item-quantity")) {return false}
+            else {return true}
+        },
         mealPrepHandleSubmit() {
-            // validate input for amount and units
-            if (this.mealPrepValidateInput()[1]) {
-                // push to ingredient list as a string                
-                this.mealPrepIngredientList.push(`${this.mealPrepSelectedAmount} ${this.mealPrepSelectedUnit} of ${this.mealPrepSearchInput}`)
-                console.log(`Added ${this.mealPrepSearchInput} into ingredient list`, this.mealPrepIngredientList)
-                // reset input
-                this.mealPrepSearchInput = ''
+            // validate 
+            if (!this.validateAmount()) {
+                alert("Amount you have input far exceeds the maximum amount the human stomach can intake!")
+                this.mealPrepSelectedAmount = 0
             } else {
-                // populate errors on alert
-                let errors = this.mealPrepValidateInput()[0]
-                let errorMsg = errors.join("")
-                alert(errorMsg)
+                // validate input for amount and units
+                if (this.mealPrepValidateInput()[1]) {
+                    // push to ingredient list as a string                
+                    this.mealPrepIngredientList.push(`${this.mealPrepSelectedAmount} ${this.mealPrepSelectedUnit} of ${this.mealPrepSearchInput}`)
+                    console.log(`Added ${this.mealPrepSearchInput} into ingredient list`, this.mealPrepIngredientList)
+                    // reset input
+                    this.mealPrepSearchInput = ''
+                } else {
+                    // populate errors on alert
+                    let errors = this.mealPrepValidateInput()[0]
+                    let errorMsg = errors.join("")
+                    alert(errorMsg)
+                }
             }
         },
         mealPrepValidateInput() {
