@@ -779,7 +779,7 @@ export default {
 
                                 // CREATE INSTANCE
                                 var instance = {
-                                    "user": "wowtest", // TODO
+                                    "user": sessionStorage.getItem("user"),
                                     "meal_date": scheduleDate,
                                     "meal_type": mealTimeNum,
                                     "recipe_name": recipeTitle,

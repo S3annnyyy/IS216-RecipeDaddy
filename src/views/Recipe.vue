@@ -107,7 +107,7 @@ export default {
             }
             // missing adding image url #TODO
             let jsonSubmissionTemplate = {
-                "id": 66, // MISSING ID FUNCTION #TODO
+                // "id": 66, // MISSING ID FUNCTION #TODO
                 "meal_date": this.convertDate(this.inputDate),
                 "meal_type": this.convertToNum(this.timeOfDay), // convert timeofday to numbers
                 "recipe_name": this.placeholder.adhocRecipe.recipeTitle,
@@ -116,7 +116,7 @@ export default {
                 "preparation_steps": prepStepsConcat,
                 "canMake": false,
                 "isCompleted": true,
-                "user": 1
+                "user": sessionStorage.getItem("user")
             }
             // send to backend
             const URL = "http://127.0.0.1:8000/user-meal-plan"

@@ -98,7 +98,7 @@ export default {
                 .catch( error => {
                     console.error(error);
                 });
-            this.$router.push({ name: 'leaderboard' });
+            this.$router.push({ name: 'mealschedule' });
 
         },
         routeBackToHome() {
