@@ -434,12 +434,15 @@ export default {
             newDate.setDate(this.currentDate.getDate() + 7);
             this.currentDate = newDate;
             this.getShoppingList();
+            this.getMealData(this.username, this.currentDate.toISOString().split("T")[0], this.token);
         },
         decrementWeek() {
             const newDate = new Date(this.currentDate);
             newDate.setDate(this.currentDate.getDate() - 7);
             this.currentDate = newDate;
             this.getShoppingList();
+            this.getMealData(this.username, this.currentDate.toISOString().split("T")[0], this.token);
+
         },
         setCurrentDate(date) {
             this.currentDate = date;
