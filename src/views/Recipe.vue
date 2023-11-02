@@ -21,7 +21,7 @@
                         <input type="date" class="form-control" v-model="inputDate"/>                
                     </div>
                     <AnimatedPlaceholder height="50px" width="442px" margin="1rem 0" borderRadius="10px" v-else/>
-                    <button type="submit" class="addSchedule" @click="addToSchedule()" v-if="placeholder.adhocRecipe.steps">Add to schedule</button>
+                    <button type="submit" class="addSchedule" @click="addToSchedule" v-if="placeholder.adhocRecipe.steps">Add to schedule</button>
                     <AnimatedPlaceholder height="50px" width="10rem" margin="1rem 0 0 0" borderRadius="50px" padding="0.5rem" v-else/>
                 </div> 
             </div>           
@@ -88,7 +88,7 @@ export default {
             return "2023-27-10";  // Handle the case where the input date is not in a parseable format
             }
         },  
-        addToSchedule() {
+        async addToSchedule() {
             console.log(`Submitted! Selected date is ${this.convertDate(this.inputDate)}`);
             
             // send to mealSchedule page as props 
@@ -97,14 +97,18 @@ export default {
             // format data 
             // concatenate alll the steps with \n
             let prepStepsConcat = ""
-            for (let step in this.placeholder.adhocRecipe.steps) {
-                prepSteps += `${step.description}\n`
+            for (let step of this.placeholder.adhocRecipe.steps) {
+                prepStepsConcat += `${step.description}\n`
             }
             // add all ingredients inside an object
             let ingredientObject = {};
             for (let item in this.placeholder.adhocRecipe.ingredients) {
                 ingredientObject[item] = "1EA" 
             }
+            const imgUrl = this.placeholder.adhocRecipe.recipeImg
+            console.log(imgUrl)
+            console.log(this.convertToNum(this.timeOfDay))
+            console.log(this.convertDate(this.inputDate))
             // missing adding image url #TODO
             let jsonSubmissionTemplate = {
                 // "id": 66, // MISSING ID FUNCTION #TODO
@@ -115,12 +119,18 @@ export default {
                 "no_ingredients": null,
                 "preparation_steps": prepStepsConcat,
                 "canMake": false,
-                "isCompleted": true,
-                "user": sessionStorage.getItem("user")
+                "isCompleted": false,
+                "user": sessionStorage.getItem("user"),
+                "image_url": imgUrl
             }
             // send to backend
             const URL = "http://127.0.0.1:8000/user-meal-plan"
-            axios.get(URL, {jsonSubmissionTemplate})
+            const token = sessionStorage.getItem("AuthToken")
+            console.log(token)
+            const config = {
+                headers: { Authorization: `Bearer ${token}` },
+            };
+            await axios.post(URL, jsonSubmissionTemplate, config)              
             .then((res) => {            
                 console.log(`Data sent to backend ${res}`)
             })
