@@ -304,9 +304,9 @@ export default {
             nameOne: '',
             nameTwo: '',
             nameThree: '',
-            scoreOne: '',
-            scoreTwo: '',
-            scoreThree: '',
+            scoreOne: 0.00,
+            scoreTwo: 0.00,
+            scoreThree: 0.00,
             showLoginAlert: false,
             individualData: null
 
@@ -352,16 +352,19 @@ export default {
             })
                 .then(response => {
                     console.log(response.data);
+                    for (let i = 0; i < 3; i++) {
+                        if (i == 0) {
+                            this.nameOne = response.data[0].username
+                            this.scoreOne = response.data[0].food_saved
+                        } else if (i == 1) {
+                            this.nameTwo = response.data[1].username
+                            this.scoreTwo = response.data[1].food_saved
+                        } else {
+                            this.nameThree = response.data[2].username
+                            this.scoreThree = response.data[2].food_saved
+                        }
 
-                    const topThree = response.data.slice(0, 4);
-                    this.nameOne = topThree[0].username
-                    this.nameTwo = topThree[1].username
-                    this.nameThree = topThree[2].username
-
-                    this.scoreOne = topThree[0].food_saved
-                    this.scoreTwo = topThree[1].food_saved
-                    this.scoreThree = topThree[2].food_saved
-
+                    }
                 })
                 .catch(error => {
                     console.error(error);
