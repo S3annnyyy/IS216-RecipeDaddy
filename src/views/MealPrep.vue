@@ -47,32 +47,45 @@
                                     <br>
                                     <!-- breakfast -->
                                     <div v-if="enteredStartDate == ''">
-                                        <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[0] + ' 1'" autocomplete="off" disabled>
+                                        <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[0] + ' 1'" autocomplete="off" ref="breakfastCheckbox" disabled>
                                         <label class="btn btn-outline-primary spacing sameSize" :for="mealDates[0] + ' 1'">Breakfast</label><br>
                                     </div>
                                     <div v-else>
-                                        <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[0] + ' 1'" autocomplete="off">
+                                        <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[0] + ' 1'" autocomplete="off" ref="breakfastCheckbox">
                                         <label class="btn btn-outline-primary spacing sameSize" :for="mealDates[0] + ' 1'">Breakfast</label><br>
                                     </div>
 
                                     <!-- lunch -->
                                     <div v-if="enteredStartDate == ''">
-                                        <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[0] + ' 2'" autocomplete="off" disabled>
+                                        <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[0] + ' 2'" autocomplete="off" ref="lunchCheckbox" disabled>
                                         <label class="btn btn-outline-primary spacing sameSize" :for="mealDates[0] + ' 2'">Lunch</label><br>
                                     </div>
                                     <div v-else>
-                                        <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[0] + ' 2'" autocomplete="off">
+                                        <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[0] + ' 2'" autocomplete="off" ref="lunchCheckbox">
                                         <label class="btn btn-outline-primary spacing sameSize" :for="mealDates[0] + ' 2'">Lunch</label><br>
                                     </div>
                                     <!-- dinner -->
                                     <div v-if="enteredStartDate == ''">
-                                        <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[0] + ' 3'" autocomplete="off" disabled>
+                                        <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[0] + ' 3'" autocomplete="off" ref="dinnerCheckbox" disabled>
                                         <label class="btn btn-outline-primary spacing sameSize" :for="mealDates[0] + ' 3'">Dinner</label><br>
                                     </div>
                                     <div v-else>
-                                        <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[0] + ' 3'" autocomplete="off">
+                                        <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[0] + ' 3'" autocomplete="off" ref="dinnerCheckbox">
                                         <label class="btn btn-outline-primary spacing sameSize" :for="mealDates[0] + ' 3'">Dinner</label><br>
                                     </div>
+                                    <!-- select all -->
+                                    <div v-if="enteredStartDate == ''" class="form-check d-flex justify-content-center">
+                                        <input @change="limitIngredient" class="form-check-input" type="checkbox" value="" id="flexCheckDefault" disabled>
+                                        <label class="form-check-label" style="margin-left: 1rem;" for="flexCheckDefault">
+                                            Select All
+                                        </label>
+                                    </div>
+                                    <div v-else class="form-check d-flex justify-content-center">
+                                        <input @change="selectAll(-1)" class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                        <label class="form-check-label" style="margin-left: 1rem;" for="flexCheckDefault">
+                                            Select All
+                                        </label>
+                                    </div>    
                                 </div>
                             </div>
                         </div>
@@ -110,6 +123,19 @@
                                         <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[ind + 1] + ' 3'" autocomplete="off">
                                         <label class="btn btn-outline-primary spacing sameSize" :for="mealDates[ind + 1] + ' 3'">Dinner</label><br>
                                     </div>
+                                    <!-- select all -->
+                                    <div v-if="enteredStartDate == ''" class="form-check d-flex justify-content-center">
+                                        <input @change="limitIngredient" class="form-check-input" type="checkbox" value="" id="flexCheckDefault" disabled>
+                                        <label class="form-check-label" style="margin-left: 1rem;" for="flexCheckDefault">
+                                            Select All
+                                        </label>
+                                    </div>
+                                    <div v-else class="form-check d-flex justify-content-center">
+                                        <input @change="selectAll(ind)" class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                        <label class="form-check-label" style="margin-left: 1rem;" for="flexCheckDefault">
+                                            Select All
+                                        </label>
+                                    </div>    
                                 </div>
                             </div>
                         </div>
@@ -757,7 +783,35 @@ export default {
 
         limitIngredient(event) {
             this.mealPrepLimitIngedient = event.target.checked;
+        },
+        selectAll(index) {
+
+            // Find the index of the currently selected date
+            if (index == -1) {
+                var dateIndex = index + 1;
+            }
+            else {
+                dateIndex = index + 1;
+            }
+            
+            // console.log(this.mealDates);
+            console.log(dateIndex);
+
+            if (dateIndex !== -1) {
+                // Index found, proceed to select the meal buttons for that date
+                const breakfastCheckboxId = this.mealDates[dateIndex] + ' 1';
+                const lunchCheckboxId = this.mealDates[dateIndex] + ' 2';
+                const dinnerCheckboxId = this.mealDates[dateIndex] + ' 3';
+
+                console.log(breakfastCheckboxId, lunchCheckboxId, dinnerCheckboxId);
+
+                // Use the checkbox IDs to select the meal buttons
+                document.getElementById(breakfastCheckboxId).checked = true;
+                document.getElementById(lunchCheckboxId).checked = true;
+                document.getElementById(dinnerCheckboxId).checked = true;
+            }
         }
+
         // end of mealPrepSearch methods 
     },
     components: {
