@@ -47,30 +47,30 @@
                                     <br>
                                     <!-- breakfast -->
                                     <div v-if="enteredStartDate == ''">
-                                        <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[0] + ' 1'" autocomplete="off" ref="breakfastCheckbox" disabled>
+                                        <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[0] + ' 1'" autocomplete="off" disabled>
                                         <label class="btn btn-outline-primary spacing sameSize" :for="mealDates[0] + ' 1'">Breakfast</label><br>
                                     </div>
                                     <div v-else>
-                                        <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[0] + ' 1'" autocomplete="off" ref="breakfastCheckbox">
+                                        <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[0] + ' 1'" autocomplete="off">
                                         <label class="btn btn-outline-primary spacing sameSize" :for="mealDates[0] + ' 1'">Breakfast</label><br>
                                     </div>
 
                                     <!-- lunch -->
                                     <div v-if="enteredStartDate == ''">
-                                        <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[0] + ' 2'" autocomplete="off" ref="lunchCheckbox" disabled>
+                                        <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[0] + ' 2'" autocomplete="off" disabled>
                                         <label class="btn btn-outline-primary spacing sameSize" :for="mealDates[0] + ' 2'">Lunch</label><br>
                                     </div>
                                     <div v-else>
-                                        <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[0] + ' 2'" autocomplete="off" ref="lunchCheckbox">
+                                        <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[0] + ' 2'" autocomplete="off">
                                         <label class="btn btn-outline-primary spacing sameSize" :for="mealDates[0] + ' 2'">Lunch</label><br>
                                     </div>
                                     <!-- dinner -->
                                     <div v-if="enteredStartDate == ''">
-                                        <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[0] + ' 3'" autocomplete="off" ref="dinnerCheckbox" disabled>
+                                        <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[0] + ' 3'" autocomplete="off" disabled>
                                         <label class="btn btn-outline-primary spacing sameSize" :for="mealDates[0] + ' 3'">Dinner</label><br>
                                     </div>
                                     <div v-else>
-                                        <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[0] + ' 3'" autocomplete="off" ref="dinnerCheckbox">
+                                        <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[0] + ' 3'" autocomplete="off">
                                         <label class="btn btn-outline-primary spacing sameSize" :for="mealDates[0] + ' 3'">Dinner</label><br>
                                     </div>
                                     <!-- select all -->
@@ -249,7 +249,7 @@ export default {
     data() {
         return {
             // change to true to redirect to MealPrep page 
-            preferences: true,
+            perences: true,
             planning: false,
             people: 0,  // EXTRACT PEOPLE COUNT FOR SEAN 
             days: 0,
@@ -785,32 +785,30 @@ export default {
             this.mealPrepLimitIngedient = event.target.checked;
         },
         selectAll(index) {
-
             // Find the index of the currently selected date
             if (index == -1) {
                 var dateIndex = index + 1;
-            }
-            else {
+            } else {
                 dateIndex = index + 1;
             }
-            
-            // console.log(this.mealDates);
-            console.log(dateIndex);
 
             if (dateIndex !== -1) {
-                // Index found, proceed to select the meal buttons for that date
+                // Index found, proceed to select or deselect the meal buttons for that date
                 const breakfastCheckboxId = this.mealDates[dateIndex] + ' 1';
                 const lunchCheckboxId = this.mealDates[dateIndex] + ' 2';
                 const dinnerCheckboxId = this.mealDates[dateIndex] + ' 3';
 
-                console.log(breakfastCheckboxId, lunchCheckboxId, dinnerCheckboxId);
+                // Use the checkbox IDs to toggle the checked state of the meal buttons
+                const selectAllCheckbox = document.getElementById(breakfastCheckboxId);
+                const isSelectAllChecked = selectAllCheckbox.checked;
 
-                // Use the checkbox IDs to select the meal buttons
-                document.getElementById(breakfastCheckboxId).checked = true;
-                document.getElementById(lunchCheckboxId).checked = true;
-                document.getElementById(dinnerCheckboxId).checked = true;
+                // Toggle the checked state of other checkboxes based on the "Select All" checkbox
+                document.getElementById(breakfastCheckboxId).checked = !isSelectAllChecked;
+                document.getElementById(lunchCheckboxId).checked = !isSelectAllChecked;
+                document.getElementById(dinnerCheckboxId).checked = !isSelectAllChecked;
             }
         }
+
 
         // end of mealPrepSearch methods 
     },
