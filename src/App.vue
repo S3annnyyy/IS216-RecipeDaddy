@@ -34,7 +34,7 @@
     --text-light-secondary: #9ca2a8;
     --sidebar-width: 300px;
     --grey: #9ca2a8;
-    --red: #ff0000;
+    --navbar-text-active: #EE1D52;
     --border-grey: #cacaca;
     --spacing: 0.3px;
     font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,

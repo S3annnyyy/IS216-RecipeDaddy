@@ -50,16 +50,22 @@ export default {
     },
     methods: {
         handleEnter() {
-            // Add the input value to the search history array
-            this.ingredientList.push(this.searchInput);
+            // check if input is valid
+            if (this.searchInput === '') {
+                alert("Please enter a valid input!")
+            } else {
+                 // Add the input value to the search history array
+                this.ingredientList.push(this.searchInput);
 
-            // Clear the input box
-            this.searchInput = '';
+                // Clear the input box
+                this.searchInput = '';
 
-            console.log('Search History:', this.ingredientList);
-            console.log(`Filled with ${this.ingredientList.length} item(s)`)
-            // populate input as boxes
-            // this.populateInput()
+                console.log('Search History:', this.ingredientList);
+                console.log(`Filled with ${this.ingredientList.length} item(s)`)
+                // populate input as boxes
+                // this.populateInput()
+            }
+           
         },        
         removeItem(item) {
             console.log(`rm btn clicked for ${item} list item`)     
