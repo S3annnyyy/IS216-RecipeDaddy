@@ -380,6 +380,7 @@ export default {
             var mealNum = mealInfo[1];
             var mealStatus = event.target.checked;
 
+            
             // if mealstatus = true, 
             // select mealdate in outputObject, and append mealnum into outputObject[mealDate] 
             // else, get rid of mealnum from specified key in outputObject[mealDate] 
@@ -399,7 +400,8 @@ export default {
             // change the way submit button appears 
             // each date must have at lease one selected meal for submit button to appear 
 
-
+            // creates number of elements in mealCountArr
+            // assigns element val to specifix index in mealCountArr
             this.mealCountArr = [];
             for (let date in this.outputObject) {
                 // console.log(date);
@@ -420,7 +422,133 @@ export default {
                     this.mealValidation = false;
                 }
             }
+
+            console.log(this.mealCountArr)
+            console.log(this.outputObject);
+            console.log(mealInfo + " " + mealStatus);
         },
+
+        selectAll(index) {
+            // Find the index of the currently selected date
+            if (index == -1) {
+                var dateIndex = index + 1;
+            } else {
+                dateIndex = index + 1;
+            }
+
+            if (dateIndex !== -1) {
+                // Index found, proceed to select or deselect the meal buttons for that date
+
+                const breakfastCheckboxId = this.mealDates[dateIndex] + ' 1';
+                const lunchCheckboxId = this.mealDates[dateIndex] + ' 2';
+                const dinnerCheckboxId = this.mealDates[dateIndex] + ' 3';
+
+                // Use the checkbox IDs to toggle the checked state of the meal buttons
+                var selectAllCheckboxId = `selectAllCheckBox ${dateIndex}`;
+                const selectAllCheckbox = document.getElementById(selectAllCheckboxId);
+                const isSelectAllChecked = selectAllCheckbox.checked;
+
+                // Toggle the checked state of other checkboxes based on the "Select All" checkbox
+                document.getElementById(breakfastCheckboxId).checked = isSelectAllChecked;
+                document.getElementById(lunchCheckboxId).checked = isSelectAllChecked;
+                document.getElementById(dinnerCheckboxId).checked = isSelectAllChecked;
+
+                
+
+                var bMealStatus = document.getElementById(breakfastCheckboxId).checked;
+                var lMealStatus = document.getElementById(lunchCheckboxId).checked;
+                var dMealStatus = document.getElementById(dinnerCheckboxId).checked;
+
+                // make sure that this.outputObject is updated correctly with checkbox 
+                if (bMealStatus) {
+                    var mealDate = breakfastCheckboxId.split(' ')[0];
+                    var mealNum = breakfastCheckboxId.split(' ')[1];
+                    // if this.outputObject[mealDate] does not contain mealNum, push
+                    if(!this.outputObject[mealDate].includes(mealNum)){
+                        this.outputObject[mealDate].push(mealNum);
+                    }
+                    
+                }
+                else {
+                    // get index of element to remove 
+                    var mealDate = breakfastCheckboxId.split(' ')[0];
+                    var mealNum = breakfastCheckboxId.split(' ')[1];
+                    var index = this.outputObject[mealDate].indexOf(mealNum);
+                    this.outputObject[mealDate].splice(index, 1);
+                }
+
+                if (lMealStatus) {
+                    var mealDate = lunchCheckboxId.split(' ')[0];
+                    var mealNum = lunchCheckboxId.split(' ')[1];
+                    // if this.outputObject[mealDate] does not contain mealNum, push
+                    if(!this.outputObject[mealDate].includes(mealNum)){
+                        this.outputObject[mealDate].push(mealNum);
+                    }
+                    
+                }
+                else {
+                    // get index of element to remove 
+                    var mealDate = lunchCheckboxId.split(' ')[0];
+                    var mealNum = lunchCheckboxId.split(' ')[1];
+                    var index = this.outputObject[mealDate].indexOf(mealNum);
+                    this.outputObject[mealDate].splice(index, 1);
+                }
+
+
+                if (dMealStatus) {
+                    var mealDate = dinnerCheckboxId.split(' ')[0];
+                    var mealNum = dinnerCheckboxId.split(' ')[1];
+                    // if this.outputObject[mealDate] does not contain mealNum, push
+                    if(!this.outputObject[mealDate].includes(mealNum)){
+                        this.outputObject[mealDate].push(mealNum);
+                    }
+                    
+                }
+                else {
+                    // get index of element to remove 
+                    var mealDate = dinnerCheckboxId.split(' ')[0];
+                    var mealNum = dinnerCheckboxId.split(' ')[1];
+                    var index = this.outputObject[mealDate].indexOf(mealNum);
+                    this.outputObject[mealDate].splice(index, 1);
+                }
+                // end of this.outputObject update with checkbox
+
+                this.mealCountArr = [];
+                for (let date in this.outputObject) {
+                    // console.log(date);
+                    // console.log(this.outputObject[date]);
+
+                    var mealCount = this.outputObject[date].length;
+                    // console.log(date + " mealCount: " + mealCount);
+                    // store all meal counts in 1 array. 
+                    // if the array has elemnt 0, button will not appear
+                    // if elment does not have 0, button will appear 
+                    this.mealCountArr.push(mealCount);
+                }
+
+                this.mealValidation = true;
+                for (var i = 0; i < this.mealCountArr.length; i++) {
+                    // if (this.mealCountArr[i])'
+                    if (this.mealCountArr[i] == 0) {
+                        this.mealValidation = false;
+                    }
+                }
+
+                // if specififc meal checkbox is checked, update output Object 
+                // console.log(breakfastCheckboxId + " " + bMealStatus);
+                // console.log(lunchCheckboxId + " " + lMealStatus);
+                // console.log(dinnerCheckboxId + " " + dMealStatus);
+
+                // update 
+
+                // if selectAll is checked
+                // add into outputObject 
+                console.log(this.outputObject);
+
+            }
+        },
+
+
         submitClick() {
             this.pageOneValidation = false;
             this.pageTwoValidation = true;
@@ -783,32 +911,6 @@ export default {
 
         limitIngredient(event) {
             this.mealPrepLimitIngedient = event.target.checked;
-        },
-        selectAll(index) {
-            // Find the index of the currently selected date
-            if (index == -1) {
-                var dateIndex = index + 1;
-            } else {
-                dateIndex = index + 1;
-            }
-
-            if (dateIndex !== -1) {
-                // Index found, proceed to select or deselect the meal buttons for that date
-                const breakfastCheckboxId = this.mealDates[dateIndex] + ' 1';
-                const lunchCheckboxId = this.mealDates[dateIndex] + ' 2';
-                const dinnerCheckboxId = this.mealDates[dateIndex] + ' 3';
-
-
-                // Use the checkbox IDs to toggle the checked state of the meal buttons
-                var selectAllCheckboxId = `selectAllCheckBox ${dateIndex}`;
-                const selectAllCheckbox = document.getElementById(selectAllCheckboxId);
-                const isSelectAllChecked = selectAllCheckbox.checked;
-
-                // Toggle the checked state of other checkboxes based on the "Select All" checkbox
-                document.getElementById(breakfastCheckboxId).checked = isSelectAllChecked;
-                document.getElementById(lunchCheckboxId).checked = isSelectAllChecked;
-                document.getElementById(dinnerCheckboxId).checked = isSelectAllChecked;
-            }
         }
 
 
