@@ -5,22 +5,24 @@
     color: var(--light);
     border-radius: 10px;
     box-shadow: 0 4px 2px -2px var(--text-light-secondary);
-   
+
 }
 
-.shopping-list-button {   
+.shopping-list-button {
     background-color: var(--light);
     border-radius: 10px;
-    padding: 0.5rem 1rem;    
-    border: 1px solid #194252;      
-    box-shadow: 0 6px 2px -2px var(--dark); 
+    padding: 0.5rem 1rem;
+    border: 1px solid #194252;
+    box-shadow: 0 6px 2px -2px var(--dark);
     width: 100%;
 }
 
 /* shopping list styles */
-.modal-title, .card {
+.modal-title,
+.card {
     color: var(--dark);
 }
+
 .center {
     text-align: center;
     padding: 1%;
@@ -38,7 +40,7 @@
     /* width: 85%; */
     margin-left: auto;
     margin-right: auto;
-   
+
 }
 
 .food-item {
@@ -105,7 +107,7 @@
 
 .selected-date {
     background-color: var(--light);
-    color: var(--dark);    
+    color: var(--dark);
     /* Change this color to your preferred light blue color */
 }
 
@@ -150,6 +152,33 @@
     z-index: 1000;
     text-align: center;
 }
+
+.has-meals {
+    position: relative;
+}
+
+.indicator {
+    position: absolute;
+    top: -20px;
+    /* Adjust the vertical position as needed */
+    right: 0;
+    display: flex;
+    align-items: center;
+}
+
+.red-indicator {
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    width: 30px;
+    /* Adjust the width as needed */
+    height: 30px;
+    /* Adjust the height as needed */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+}
 </style>
 
 <template>
@@ -190,7 +219,7 @@
                                         <h5 class="modal-title" id="exampleModalLabel">Your Shopping List (Selected Week)
                                         </h5>
                                         <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                                            <span class="material-icons-outlined">close</span>        
+                                            <span class="material-icons-outlined">close</span>
                                         </button>
                                     </div>
                                     <div class="modal-body">
@@ -214,7 +243,8 @@
                                                                 :key="itemIndex">
                                                                 <div class="form-check">
                                                                     <input class="form-check-input" type="checkbox"
-                                                                        :id="`check${itemIndex}`" @click="addToCart(no_ingredient)">
+                                                                        :id="`check${itemIndex}`"
+                                                                        @click="addToCart(no_ingredient)">
                                                                     <label class="form-check-label"
                                                                         :for="`check${itemIndex}`">
                                                                         {{ no_ingredient }}
@@ -256,31 +286,39 @@
         <div @click="setCurrentDate(date)" class="col center indivDate" v-for="(date, index) in weekDates" :key="index"
             :class="{ 'selected-date': isDateSelected(date) }">
             <span v-html="formatDate(date)"></span>
+            <div class="indicator" v-if="datesWithMeals.includes(date.toISOString().split('T')[0])">
+                <div class="red-indicator">
+                    {{ mealCounts[date.toISOString().split('T')[0]] }}
+                </div>
+            </div>
         </div>
+
     </div>
 
     <!-- Food Section -->
     <main class="row py-1 mb-3 d-flex justify-content-center" id="food-section">
-    <h4 v-if="mealSchedule.receivedData == null || mealSchedule.receivedData.length == 0" class="text-center">
-        Generate a meal and add it to your schedule!
-    </h4>
+        <h4 v-if="mealSchedule.receivedData == null || mealSchedule.receivedData.length == 0" class="text-center">
+            Generate a meal and add it to your schedule!
+        </h4>
 
-    <div v-else-if="mealSchedule.receivedData.length > 0"
-        class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-3 mx-3 border meal-card" v-for="(meal, index) in mealSchedule.receivedData" :key="index">
-        <h3 class="card-title text-left pt-2">{{ formatMealType(meal.meal_type) }}</h3>
-        <img :src="extractLinkFromParentheses(meal.image_url)" alt="Meal" class="card-img-top img-fluid" style="object-fit: contain;" />
-        <div class="card-body" style="width:100%;">
-            <div class="card-text breakfast-recipe text-center">{{ meal.recipe_name }}</div>
-            <div class="buttons row d-flex justify-content-center">
-                <button class="view-recipe-button col-sm-6 col-md-7 col-lg-3 mt-1" @click="viewRecipe(meal)">View
-                    Recipe</button>
-                <button class="replace-button col-sm-6 col-md-7 col-lg-3 mt-1"
-                    @click="replaceMeal(meal)">Replace</button>
-                <button class="delete-button col-sm-6 col-md-7 col-lg-3 mt-1" @click="deleteMeal(meal)">Delete</button>
+        <div v-else-if="mealSchedule.receivedData.length > 0"
+            class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-3 mx-3 border meal-card"
+            v-for="(meal, index) in mealSchedule.receivedData" :key="index">
+            <h3 class="card-title text-left pt-2">{{ formatMealType(meal.meal_type) }}</h3>
+            <img :src="extractLinkFromParentheses(meal.image_url)" alt="Meal" class="card-img-top img-fluid"
+                style="object-fit: contain;" />
+            <div class="card-body" style="width:100%;">
+                <div class="card-text breakfast-recipe text-center">{{ meal.recipe_name }}</div>
+                <div class="buttons row d-flex justify-content-center">
+                    <button class="view-recipe-button col-sm-6 col-md-7 col-lg-3 mt-1" @click="viewRecipe(meal)">View
+                        Recipe</button>
+                    <button class="replace-button col-sm-6 col-md-7 col-lg-3 mt-1"
+                        @click="replaceMeal(meal)">Replace</button>
+                    <button class="delete-button col-sm-6 col-md-7 col-lg-3 mt-1" @click="deleteMeal(meal)">Delete</button>
+                </div>
             </div>
         </div>
-    </div>
-</main>
+    </main>
 
     <!-- THIS PORTION IS FOR USER AUTHENTICATION CHECK -->
     <div v-if="showLoginAlert" class="overlay" @click="routeBackToHome"></div>
@@ -350,6 +388,7 @@ export default {
             username: sessionStorage.getItem("user"),
             shoppingListMap: {},
             shoppingCart: [],
+            datesWithMeals: [],
         };
     },
     watch: {
@@ -396,6 +435,15 @@ export default {
                 }
             };
         },
+        mealCounts() {
+            const mealCounts = {};
+            this.datesWithMeals.forEach((date) => {
+                const count = this.mealSchedule.receivedData.filter((meal) => meal.meal_date === date).length;
+                mealCounts[date] = count;
+
+            })
+            return mealCounts;
+        }
     },
     methods: {
         addToCart(item) {
@@ -472,6 +520,29 @@ export default {
             });
         },
         async getMealData(username, date, token) {
+            this.datesWithMeals = []; // Clear the array
+
+            const mealRequests = this.dates.map((date) => {
+                return axios.get(`${this.baseUrl}/user-meal-plan?username=${username}&meal_date=${date.toISOString().split("T")[0]}`, {
+                    headers: {
+                        Authorization: `Bearer ${this.token}`,
+                    },
+                });
+            });
+
+            // Use Promise.all to send requests for all dates concurrently
+            Promise.all(mealRequests)
+                .then((mealResponses) => {
+                    mealResponses.forEach((response, index) => {
+                        const mealData = response.data;
+                        if (mealData.length > 0) {
+                            this.datesWithMeals.push(this.dates[index].toISOString().split("T")[0]);
+                        }
+                    });
+                })
+                .catch((error) => {
+                    console.error('Error fetching meal schedule for dates:', error);
+                });
 
             axios
                 .get(`${this.baseUrl}/user-meal-plan?username=${username}&meal_date=${date}`, {
