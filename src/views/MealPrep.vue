@@ -81,7 +81,7 @@
                                         </label>
                                     </div>
                                     <div v-else class="form-check d-flex justify-content-center">
-                                        <input @change="selectAll(-1)" class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                        <input @change="selectAll(-1)" class="form-check-input" type="checkbox" value="" id="selectAllCheckBox 0">
                                         <label class="form-check-label" style="margin-left: 1rem;" for="flexCheckDefault">
                                             Select All
                                         </label>
@@ -131,7 +131,7 @@
                                         </label>
                                     </div>
                                     <div v-else class="form-check d-flex justify-content-center">
-                                        <input @change="selectAll(ind)" class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                        <input @change="selectAll(ind)" class="form-check-input" type="checkbox" value="" :id="'selectAllCheckBox ' + (ind+1)" >
                                         <label class="form-check-label" style="margin-left: 1rem;" for="flexCheckDefault">
                                             Select All
                                         </label>
@@ -798,14 +798,16 @@ export default {
                 const lunchCheckboxId = this.mealDates[dateIndex] + ' 2';
                 const dinnerCheckboxId = this.mealDates[dateIndex] + ' 3';
 
+
                 // Use the checkbox IDs to toggle the checked state of the meal buttons
-                const selectAllCheckbox = document.getElementById(breakfastCheckboxId);
+                var selectAllCheckboxId = `selectAllCheckBox ${dateIndex}`;
+                const selectAllCheckbox = document.getElementById(selectAllCheckboxId);
                 const isSelectAllChecked = selectAllCheckbox.checked;
 
                 // Toggle the checked state of other checkboxes based on the "Select All" checkbox
-                document.getElementById(breakfastCheckboxId).checked = !isSelectAllChecked;
-                document.getElementById(lunchCheckboxId).checked = !isSelectAllChecked;
-                document.getElementById(dinnerCheckboxId).checked = !isSelectAllChecked;
+                document.getElementById(breakfastCheckboxId).checked = isSelectAllChecked;
+                document.getElementById(lunchCheckboxId).checked = isSelectAllChecked;
+                document.getElementById(dinnerCheckboxId).checked = isSelectAllChecked;
             }
         }
 
