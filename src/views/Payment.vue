@@ -142,7 +142,7 @@
 
                         <hr class="my-4">
 
-                        <button class="w-100 btn btn-primary btn-lg" type="submit">Continue to checkout</button>
+                        <button class="w-100 btn btn-primary btn-lg" type="submit" @submit="processPayment()">Continue to checkout</button>
                     </form>
                 </div>
             </div>
@@ -203,6 +203,7 @@ export default {
             cardName: '',
             // Add more payment form fields data
             retrievedData: null,
+            uuid: crypto.randomUUID(), 
         };
     },
     computed: {
@@ -218,6 +219,13 @@ export default {
             // You can use a payment gateway or simulate a payment process
             // Upon successful payment, you can show a success message or navigate to a confirmation page
             // You can also use a library like Stripe for payment processing
+
+            // once user click, parse data and relevant details to receiptPage
+            console.log(this.uuid)
+            this.$router.push({
+                path: `receipt/${this.uuid}`,
+                // query: {data: JSON.stringify(recipeObject)}
+            })
         },
     },
     mounted() {

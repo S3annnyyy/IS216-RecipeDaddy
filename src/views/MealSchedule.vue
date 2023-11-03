@@ -35,7 +35,7 @@
 /* Additional styles for the food section */
 #food-section {
     margin-top: 20px;
-    /* width: 85%; */
+    /* width: 100%; */
     margin-left: auto;
     margin-right: auto;
    
@@ -111,8 +111,8 @@
 
 .card-img-top {
     width: 100%;
-    height: 20vw;
-    object-fit: cover;
+    /* height: 20vw; */
+    /* object-fit: cover; */
 }
 
 .indivDate {
@@ -266,8 +266,8 @@
     </h4>
 
     <div v-else-if="mealSchedule.receivedData.length > 0"
-        class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-3 mx-3 border meal-card" v-for="(meal, index) in mealSchedule.receivedData" :key="index">
-        <h3 class="card-title text-left pt-2">{{ formatMealType(meal.meal_type) }}</h3>
+        class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-3 mx-3 mb-3 border meal-card" v-for="(meal, index) in mealSchedule.receivedData" :key="index">
+        <h3 class="card-title text-left pt-2 text-center">{{ formatMealType(meal.meal_type) }}</h3>
         <img :src="extractLinkFromParentheses(meal.image_url)" alt="Meal" class="card-img-top img-fluid" style="object-fit: contain;" />
         <div class="card-body" style="width:100%;">
             <div class="card-text breakfast-recipe text-center">{{ meal.recipe_name }}</div>
