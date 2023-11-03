@@ -309,7 +309,7 @@ export default {
             mealPrepSelectedUnit: 'Unit',
             mealPrepSelectedAmount: 0,
             mealPrepIngredientList: [],
-            mealPrepInputUnits: ["ml", "litre", "g", "kg", "item-quantity"],
+            mealPrepInputUnits: ["ml", "litre", "g", "kg", "qty"],
             uuid: crypto.randomUUID(),
             mealPrepLimitIngedient: false,
 
@@ -371,7 +371,8 @@ export default {
                 //format to dd/mm/yyyy
                 formattedDay = currentDay < 10 ? '0' + currentDay : currentDay;
                 formattedMonth = currentMonth < 10 ? '0' + currentMonth : currentMonth;
-                formattedDate = `${currentYear}/${formattedMonth}/${formattedDay}`;
+                // formattedDate = `${currentYear}/${formattedMonth}/${formattedDay}`;
+                formattedDate = `${formattedDay}/${formattedMonth}/${currentYear}`;
                 dateArr.push(formattedDate);
             }
 
@@ -1079,7 +1080,7 @@ export default {
       }
   }
 
-  .form-control {
+  .form-control, .form-select {
       background-color: transparent;
       border-radius: 50px;
   }
