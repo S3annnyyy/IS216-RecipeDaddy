@@ -265,4 +265,9 @@ export default {
         box-shadow: 0 8px 2px -2px var(--text-light-secondary);
     }    
 }
+
+button {
+    margin: 0 0.5rem;
+    box-shadow: 0 8px 2px -2px var(--text-light-secondary);
+}
 </style>
