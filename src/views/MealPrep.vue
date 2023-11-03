@@ -87,6 +87,19 @@
                                         <label class="btn btn-outline-primary spacing sameSize"
                                             :for="mealDates[0] + ' 3'">Dinner</label><br>
                                     </div>
+                                    <!-- select all -->
+                                    <div v-if="enteredStartDate == ''" class="form-check d-flex justify-content-center">
+                                        <input @change="limitIngredient" class="form-check-input" type="checkbox" value="" id="flexCheckDefault" disabled>
+                                        <label class="form-check-label" style="margin-left: 1rem;" for="flexCheckDefault">
+                                            Select All
+                                        </label>
+                                    </div>
+                                    <div v-else class="form-check d-flex justify-content-center">
+                                        <input @change="selectAll(-1)" class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                        <label class="form-check-label" style="margin-left: 1rem;" for="flexCheckDefault">
+                                            Select All
+                                        </label>
+                                    </div>    
                                 </div>
                             </div>
                         </div>
@@ -127,6 +140,19 @@
                                         <input @click="addMeal" type="checkbox" class="btn-check" :id="mealDates[ind + 1] + ' 3'" autocomplete="off">
                                         <label class="btn btn-outline-primary spacing sameSize" :for="mealDates[ind + 1] + ' 3'">Dinner</label><br>
                                     </div>
+                                    <!-- select all -->
+                                    <div v-if="enteredStartDate == ''" class="form-check d-flex justify-content-center">
+                                        <input @change="limitIngredient" class="form-check-input" type="checkbox" value="" id="flexCheckDefault" disabled>
+                                        <label class="form-check-label" style="margin-left: 1rem;" for="flexCheckDefault">
+                                            Select All
+                                        </label>
+                                    </div>
+                                    <div v-else class="form-check d-flex justify-content-center">
+                                        <input @change="selectAll(ind)" class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                        <label class="form-check-label" style="margin-left: 1rem;" for="flexCheckDefault">
+                                            Select All
+                                        </label>
+                                    </div>    
                                 </div>
                             </div>
                         </div>
@@ -254,7 +280,7 @@ export default {
     data() {
         return {
             // change to true to redirect to MealPrep page 
-            preferences: true,
+            perences: true,
             planning: false,
             people: 0,  // EXTRACT PEOPLE COUNT FOR SEAN 
             days: 0,
@@ -852,12 +878,31 @@ export default {
         limitIngredient(event) {
             this.mealPrepLimitIngedient = event.target.checked;
         },
-        formatDate(date) {
-            const year = date.getFullYear();
-            const month = (date.getMonth() + 1).toString().padStart(2, '0');
-            const day = date.getDate().toString().padStart(2, '0');
-            return `${year}-${month}-${day}`;
-        },
+        selectAll(index) {
+            // Find the index of the currently selected date
+            if (index == -1) {
+                var dateIndex = index + 1;
+            } else {
+                dateIndex = index + 1;
+            }
+
+            if (dateIndex !== -1) {
+                // Index found, proceed to select or deselect the meal buttons for that date
+                const breakfastCheckboxId = this.mealDates[dateIndex] + ' 1';
+                const lunchCheckboxId = this.mealDates[dateIndex] + ' 2';
+                const dinnerCheckboxId = this.mealDates[dateIndex] + ' 3';
+
+                // Use the checkbox IDs to toggle the checked state of the meal buttons
+                const selectAllCheckbox = document.getElementById(breakfastCheckboxId);
+                const isSelectAllChecked = selectAllCheckbox.checked;
+
+                // Toggle the checked state of other checkboxes based on the "Select All" checkbox
+                document.getElementById(breakfastCheckboxId).checked = !isSelectAllChecked;
+                document.getElementById(lunchCheckboxId).checked = !isSelectAllChecked;
+                document.getElementById(dinnerCheckboxId).checked = !isSelectAllChecked;
+            }
+        }
+
 
         // end of mealPrepSearch methods 
     },
