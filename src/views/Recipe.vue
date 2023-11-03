@@ -195,27 +195,35 @@ export default {
         }
         console.log(userPrompt)
 
-        axios.post(URL, {userPrompt, schema})
-        .then((res) => {            
-            let aiResponse = JSON.parse(res.data.generated_text)
-            console.log(aiResponse)
-            console.log(typeof aiResponse)
-            
-            // initialize recipe title
-            this.placeholder.adhocRecipe.recipeTitle = aiResponse.dish
+        axios.post(URL, { userPrompt, schema })
+        .then((res) => {
+            let aiResponse = JSON.parse(res.data.generated_text);
+            console.log(aiResponse);
+            console.log(typeof aiResponse);
 
-            // initialize step count
-            this.stepCount = aiResponse.instructions.length
+            // Initialize recipe title
+            this.placeholder.adhocRecipe.recipeTitle = aiResponse.dish;
 
-            // initialize steps
-            this.placeholder.adhocRecipe.steps = aiResponse.instructions
+            // Initialize step count
+            this.stepCount = aiResponse.instructions.length;
 
-            // initialize recipe image
-            this.placeholder.adhocRecipe.recipeImg = aiResponse.imageUrl
+            // Initialize steps
+            this.placeholder.adhocRecipe.steps = aiResponse.instructions;
+
+            // Create an Image object to preload the image
+            let image = new Image();
+
+            image.onload = () => {
+            // The image is loaded, so now you can update the Vue.js data property
+            this.placeholder.adhocRecipe.recipeImg = image.src;
+            };
+
+            image.src = aiResponse.imageUrl; // Start loading the image
         })
         .catch((err) => {
-            console.log(`API Call Not Successful: ${err}`)
-        })
+            console.log(`API Call Not Successful: ${err}`);
+        });
+
      
     },
     computed: {
