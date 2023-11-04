@@ -283,6 +283,7 @@
         .router-link-exact-active {
             .text {
                 color: var(--primary);
+                border-bottom: solid 2.5px var(--primary)
             }
         }
     }
