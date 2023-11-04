@@ -98,7 +98,7 @@ export default {
         async replaceMeal() {
             console.log(`Submitted! Selected date is ${this.convertDate(this.inputDate)}`);
             const user = "wowtest";
-            const token = await this.getAuthToken("wowtest@gmail.com", "wowtest"); // Replace with your actual email and password
+            const token = await this.getAuthToken(sessionStorage.getItem("email"), sessionStorage.getItem("password")); // Replace with your actual email and password
             const config = {
                 headers: { Authorization: `Bearer ${token}` },
             };
@@ -154,7 +154,7 @@ export default {
         You are also a prompt generator.
         You will create a prompt that could be used for image-generation based on your generated title of the dish description
         Once I described the image, include the following markdown. shown in the function call schema set_recipe under "imageUrl"
-        ![Image](https://image.pollinations.ai/prompt/{description})
+        https://image.pollinations.ai/prompt/{description}
         where {description} is:
         {sceneDetailed}%20{adjective}%20{charactersDetailed}%20{visualStyle}%20{genre}%20{artistReference}
         Make sure the prompts in the URL are encoded. Don't quote the generated markdown or put any code box around it.
@@ -212,7 +212,15 @@ export default {
                 this.placeholder.adhocRecipe.steps = aiResponse.instructions
 
                 // initialize recipe image
-                this.placeholder.adhocRecipe.recipeImg = aiResponse.imageUrl
+                // Create an Image object to preload the image
+                let image = new Image();
+
+                image.onload = () => {
+                // The image is loaded, so now you can update the Vue.js data property
+                this.placeholder.adhocRecipe.recipeImg = image.src;
+                };
+
+                image.src = aiResponse.imageUrl; // Start loading the image
             })
             .catch((err) => {
                 console.log(`API Call Not Successful: ${err}`)

@@ -37,7 +37,7 @@
 /* Additional styles for the food section */
 #food-section {
     margin-top: 20px;
-    /* width: 85%; */
+    /* width: 100%; */
     margin-left: auto;
     margin-right: auto;
 
@@ -113,8 +113,8 @@
 
 .card-img-top {
     width: 100%;
-    height: 20vw;
-    object-fit: cover;
+    /* height: 20vw; */
+    /* object-fit: cover; */
 }
 
 .indivDate {
@@ -171,14 +171,16 @@
     color: white;
     border-radius: 50%;
     width: 30px;
-    /* Adjust the width as needed */
     height: 30px;
-    /* Adjust the height as needed */
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 16px;
+    position: relative;
+    bottom: 0;
+    left: 0; /* Adjust as needed for the exact positioning */
 }
+
 </style>
 
 <template>
@@ -286,10 +288,8 @@
         <div @click="setCurrentDate(date)" class="col center indivDate" v-for="(date, index) in weekDates" :key="index"
             :class="{ 'selected-date': isDateSelected(date) }">
             <span v-html="formatDate(date)"></span>
-            <div class="indicator" v-if="datesWithMeals.includes(date.toISOString().split('T')[0])">
-                <div class="red-indicator">
-                    {{ mealCounts[date.toISOString().split('T')[0]] }}
-                </div>
+            <div class="red-indicator">
+                {{ mealDataCount[date.toISOString().split("T")[0]] }}
             </div>
         </div>
 
@@ -302,9 +302,9 @@
         </h4>
 
         <div v-else-if="mealSchedule.receivedData.length > 0"
-            class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-3 mx-3 border meal-card"
+            class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-3 mx-3 mb-3 border meal-card"
             v-for="(meal, index) in mealSchedule.receivedData" :key="index">
-            <h3 class="card-title text-left pt-2">{{ formatMealType(meal.meal_type) }}</h3>
+            <h3 class="card-title text-left pt-2 text-center">{{ formatMealType(meal.meal_type) }}</h3>
             <img :src="extractLinkFromParentheses(meal.image_url)" alt="Meal" class="card-img-top img-fluid"
                 style="object-fit: contain;" />
             <div class="card-body" style="width:100%;">
@@ -388,7 +388,7 @@ export default {
             username: sessionStorage.getItem("user"),
             shoppingListMap: {},
             shoppingCart: [],
-            datesWithMeals: [],
+            mealDataCount: {},
         };
     },
     watch: {
@@ -434,15 +434,6 @@ export default {
                     return 'col col-md-4';
                 }
             };
-        },
-        mealCounts() {
-            const mealCounts = {};
-            this.datesWithMeals.forEach((date) => {
-                const count = this.mealSchedule.receivedData.filter((meal) => meal.meal_date === date).length;
-                mealCounts[date] = count;
-
-            })
-            return mealCounts;
         }
     },
     methods: {
@@ -646,6 +637,7 @@ export default {
 
             // Initialize an array to store shopping items
             const shoppingItems = [];
+            const countMap = {};
 
             // Use Promise.all to make multiple API requests concurrently
             Promise.all(
@@ -661,6 +653,7 @@ export default {
                                 return item.isCompleted === false && item.no_ingredients != null;
                             });
                             shoppingItems.push(...shop);
+                            countMap[isoDate] = mealResponse.data.length;
                         })
                         .catch((mealError) => {
                             console.error(`Error fetching meal schedule for date ${isoDate}:`, mealError);
@@ -669,7 +662,6 @@ export default {
             )
                 .then(() => {
                     // At this point, shoppingItems contains all the shopping items for the selected week
-                    console.log(shoppingItems);
                     shoppingItems.forEach((item) => {
                         const date = item.meal_date;
                         const no_ingredients = item.no_ingredients;
@@ -680,8 +672,7 @@ export default {
                             this.shoppingListMap[date].push(no_ingredient + ": " + no_ingredients[no_ingredient]);
                         }
                     })
-
-                    // You can process shoppingItems as needed
+                    this.mealDataCount = countMap
                 })
                 .catch((error) => {
                     console.error('Error fetching shopping list:', error);

@@ -35,7 +35,7 @@
                 <span>Hello&nbsp;{{ loggedUserName }}!</span>                
             </div>
             <div class="profile" v-else>
-                <LoginModal/>
+                <LoginModal @toggle-menu="toggleMenu" /> 
             </div>
             <hr style="width: 80%;">
             <router-link
@@ -169,31 +169,8 @@
 
     .text.scrolled, .profile.scrolled {
         color: var(--dark);
-    }  
-    
-    /* THESE STYLES ARE FOR NAVBAR UNDERLINE INDICATOR */
-    /* .nav-button:hover .text {
-    position: relative;
-  }
+    }   
 
-  .nav-button .text:after {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 2px;
-    background: #EE1D52;
-    bottom: 0;
-    left: 0;
-    transform: scaleX(0);
-    transform-origin: bottom right;
-    transition: transform 0.2s ease-in-out; 
-  }
-
-  .nav-button:hover .text:after {
-    transform: scaleX(1); 
-    transform-origin: bottom left;
-  } */
-  /* END OF STYLING FOR NAVBAR INDICATOR */
 
     .navbar.scrolled {
         background-color: var(--light);
@@ -283,6 +260,7 @@
         .router-link-exact-active {
             .text {
                 color: var(--primary);
+                border-bottom: solid 2.5px var(--primary)
             }
         }
     }
