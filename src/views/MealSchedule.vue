@@ -166,7 +166,7 @@
     align-items: center;
 }
 
-.red-indicator {
+.colour-indicator {
     background-color: #FFA800;
     color: black;
     border-radius: 50%;
@@ -288,7 +288,7 @@
         <div @click="setCurrentDate(date)" class="col center indivDate" v-for="(date, index) in weekDates" :key="index"
             :class="{ 'selected-date': isDateSelected(date) }">
             <span v-html="formatDate(date)"></span>
-            <div class="red-indicator">
+            <div class="colour-indicator">
                 {{ mealDataCount[date.toISOString().split("T")[0]] }}
             </div>
         </div>
@@ -649,11 +649,16 @@ export default {
                             },
                         })
                         .then((mealResponse) => {
+                            console.log("hello");
+                            console.log(mealResponse.data);
                             const shop = mealResponse.data.filter((item) => {
                                 return item.isCompleted === false && item.no_ingredients != null;
                             });
                             shoppingItems.push(...shop);
-                            countMap[isoDate] = mealResponse.data.length;
+                            
+                            countMap[isoDate] = mealResponse.data.filter((item)=>{
+                                return item.isCompleted===false
+                            }).length;
                         })
                         .catch((mealError) => {
                             console.error(`Error fetching meal schedule for date ${isoDate}:`, mealError);
