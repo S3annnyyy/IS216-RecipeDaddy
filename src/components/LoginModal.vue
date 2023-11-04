@@ -241,7 +241,7 @@ async function getUsername() {
             border: none;
             padding: 0.5rem;
             transition: .5s;
-            border-bottom: 1px solid var(--grey);
+            border-bottom: 1px solid var(--grey);            
 
             &:not(:placeholder-shown):not(:focus):invalid {
                 outline: none;
@@ -317,4 +317,23 @@ async function getUsername() {
             text-decoration: underline;
         }
     }
-}</style>
+}
+
+@media (max-width: 800px) {
+    .login-modal {
+        /* padding: 2rem 4rem ; */
+        width: 90%;
+        padding: 1rem 1rem;
+    }  
+   
+    .login-form {
+        .form-group {
+            font-size: 1rem;
+
+            .form-control {
+                font-size: 1rem;
+            }
+        }
+    }
+}
+</style>
