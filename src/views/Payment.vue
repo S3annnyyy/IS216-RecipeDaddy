@@ -6,22 +6,23 @@
                 <div class="col-md-5 col-lg-4 order-md-last" v-if="this.selectedIngredients.length > 0">
                     <h4 class="d-flex justify-content-between align-items-center mb-3">
                         <span class="text-primary">Your cart</span>
-                        <span class="badge bg-primary rounded-pill">3</span>
+                        <span class="badge bg-primary rounded-pill">{{ selectedIngredients.length }}</span>
                     </h4>
                     <ul class="list-group mb-3">
-                        <li class="list-group-item d-flex justify-content-between lh-sm" v-for="ingredient in selectedIngredients">
+                        <li class="list-group-item d-flex justify-content-between lh-sm"
+                            v-for="ingredient in selectedIngredients">
                             <div>
-                                <h6 class="my-0">{{ingredient}}</h6>
-                                <small class="text-muted">{{ ingredient.split(":")[0] }}</small>
+                                <h6 class="my-0" style="text-transform: capitalize">{{ ingredient.split(":")[0] }}</h6>
+                                <small class="text-muted">*Quantity is factored in</small>
                             </div>
-                            <span class="text-muted">$12</span>
+                            <span class="text-muted">{{ shoppingListPrice[ingredient.split(":")[0]].toFixed(2) }}</span>
                         </li>
 
 
                         <!-- Make this dynamic also -->
                         <li class="list-group-item d-flex justify-content-between">
                             <span>Total (SGD)</span>
-                            <strong>{{calculateTotal}}</strong>
+                            <strong>{{ calculateTotal }}</strong>
                         </li>
                     </ul>
 
@@ -142,7 +143,8 @@
 
                         <hr class="my-4">
 
-                        <button class="w-100 btn btn-primary btn-lg" type="submit" @submit="processPayment()">Continue to checkout</button>
+                        <button class="w-100 btn btn-primary btn-lg" type="submit" @submit="processPayment()">Continue to
+                            checkout</button>
                     </form>
                 </div>
             </div>
@@ -203,14 +205,20 @@ export default {
             cardName: '',
             // Add more payment form fields data
             retrievedData: null,
-            uuid: crypto.randomUUID(), 
+            uuid: crypto.randomUUID(),
+            shoppingListPrice: {},
+            randomPrices: [2, 3, 1, 4, 5, 2]
         };
     },
     computed: {
         calculateTotal() {
             // Calculate the total cost of the selected ingredients
             // You can use a library like Numeral.js to format the total
-            return 0;
+            let total = 0;
+            for (const ingredient in this.shoppingListPrice) {
+                total += this.shoppingListPrice[ingredient];
+            }
+            return total.toFixed(2); // Format the total to two decimal places
         },
     },
     methods: {
@@ -227,10 +235,19 @@ export default {
                 // query: {data: JSON.stringify(recipeObject)}
             })
         },
+        addPrices() {
+            this.selectedIngredients = JSON.parse(this.$route.query.data);
+            
+            for (let ingredient of this.selectedIngredients) {
+                let ingredientName = ingredient.split(":")[0];
+                let randomNum = Math.floor(Math.random() * 6); // Generate a random number from 0 to 5
+                this.shoppingListPrice[ingredientName]= this.randomPrices[randomNum]
+            }
+        }
+
     },
     mounted() {
-        this.selectedIngredients = JSON.parse(this.$route.query.data);
-
+        this.addPrices();
         // Set focus to the first input element in the payment form
         this.$nextTick(() => {
             const firstInput = document.querySelector('.form-control'); // Adjust the selector as needed

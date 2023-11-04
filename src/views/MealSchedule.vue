@@ -178,9 +178,9 @@
     font-size: 16px;
     position: relative;
     bottom: 0;
-    left: 0; /* Adjust as needed for the exact positioning */
+    left: 0;
+    /* Adjust as needed for the exact positioning */
 }
-
 </style>
 
 <template>
@@ -232,7 +232,8 @@
                                                         <button class="btn btn-link text-decoration-none" type="button"
                                                             data-bs-toggle="collapse" :data-bs-target="`#collapse${index}`"
                                                             aria-expanded="true" :aria-controls="`collapse${index}`">
-                                                            <span v-html="date"></span>
+                                                            <span v-html="formatCordionDate(date)"
+                                                                style="color: #194252;font-weight: bold;"></span>
                                                         </button>
                                                     </h2>
                                                 </div>
@@ -400,6 +401,7 @@ export default {
         }
     },
     computed: {
+
         formattedDates() {
             return this.dates.map(date => date.toISOString().split("T")[0]);
         }
@@ -464,6 +466,7 @@ export default {
             return `${dayOfWeek}<br> ${dayOfMonth}`;
         },
         formatCordionDate(date) {
+            date = new Date(date);
             const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
             const dayOfWeek = daysOfWeek[date.getDay()];
             const dayOfMonth = date.getDate();
@@ -623,11 +626,13 @@ export default {
                 .then(response => {
                     console.log(`Meal plan with ID ${mealId} deleted.`);
                     // Optionally, you can handle any further actions, such as updating the UI.
+                    this.getShoppingList()
                 })
                 .catch(error => {
                     console.error(`Error deleting meal plan: ${error}`);
                     // Handle the error as needed, e.g., show an error message.
                 });
+            
             this.mealSchedule.receivedData = this.mealSchedule.receivedData.filter(item => item.id !== mealId);
 
         },
@@ -649,15 +654,15 @@ export default {
                             },
                         })
                         .then((mealResponse) => {
-                            console.log("hello");
                             console.log(mealResponse.data);
                             const shop = mealResponse.data.filter((item) => {
                                 return item.isCompleted === false && item.no_ingredients != null;
                             });
-                            shoppingItems.push(...shop);
                             
-                            countMap[isoDate] = mealResponse.data.filter((item)=>{
-                                return item.isCompleted===false
+                            shoppingItems.push(...shop);
+
+                            countMap[isoDate] = mealResponse.data.filter((item) => {
+                                return item.isCompleted === false
                             }).length;
                         })
                         .catch((mealError) => {
@@ -666,6 +671,7 @@ export default {
                 )
             )
                 .then(() => {
+                    this.shoppingListMap = {}
                     // At this point, shoppingItems contains all the shopping items for the selected week
                     shoppingItems.forEach((item) => {
                         const date = item.meal_date;
