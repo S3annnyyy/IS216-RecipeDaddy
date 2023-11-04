@@ -167,8 +167,8 @@
 }
 
 .red-indicator {
-    background-color: red;
-    color: white;
+    background-color: #FFA800;
+    color: black;
     border-radius: 50%;
     width: 30px;
     height: 30px;
