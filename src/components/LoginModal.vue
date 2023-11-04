@@ -165,7 +165,7 @@ async function getUsername() {
     width: 100vw;
     height: 100vh;
     /* ensures sidebar unclickable when modal is active */
-    z-index: 999;
+    z-index: 999999;
 
     background-color: var(--blur-color-scheme);
     backdrop-filter: blur(3px);
