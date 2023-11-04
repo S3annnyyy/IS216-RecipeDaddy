@@ -39,7 +39,7 @@
 
 <script>
 import axios from 'axios'
-import AnimatedPlaceholder from '../components/AnimatedPlaceholder.vue'
+import AnimatedPlaceholder from '../../components/AnimatedPlaceholder.vue'
 
 export default {
     data() {

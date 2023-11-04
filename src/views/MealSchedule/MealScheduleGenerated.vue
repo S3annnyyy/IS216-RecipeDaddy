@@ -35,8 +35,8 @@
 
 <script>
 import axios from 'axios'
-import AnimatedPlaceholder from '../components/AnimatedPlaceholder.vue'
-import LoginFailed from '../components/LoginFailed.vue'
+import AnimatedPlaceholder from '../../components/AnimatedPlaceholder.vue'
+import LoginFailed from '../../components/LoginFailed.vue'
 
 export default {
     data() {

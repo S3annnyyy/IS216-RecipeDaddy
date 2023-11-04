@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import Blob from "../components/Blob.vue"
+import Blob from "../../components/Blob.vue"
 
 export default {
     data() {

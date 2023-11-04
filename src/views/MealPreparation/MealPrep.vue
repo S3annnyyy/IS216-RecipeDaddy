@@ -273,8 +273,8 @@
 
 <script>
 import axios from 'axios'
-import LoginFailed from "../components/LoginFailed.vue";
-import LoadingSVG from "../components/LoadingSVG.vue";
+import LoginFailed from "../../components/LoginFailed.vue";
+import LoadingSVG from "../../components/LoadingSVG.vue";
 
 export default {
     data() {

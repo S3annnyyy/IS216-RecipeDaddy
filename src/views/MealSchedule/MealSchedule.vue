@@ -158,7 +158,7 @@
         <div class="col-lg-12 col-md-12 col-sm-12">
             <h1>Meal Schedule</h1>
             <div>
-                <img style="padding-right: 0.5rem; padding-bottom: 0.5rem;" src="../assets/chef-hat.png" alt="">
+                <img style="padding-right: 0.5rem; padding-bottom: 0.5rem;" src="../../assets/chef-hat.png" alt="">
                 <span>{{ currentWeekStartText }} - {{ currentWeekEndText }}</span>
             </div>
         </div>
@@ -309,7 +309,7 @@
 } */
 import { formatDate } from "@vueuse/core";
 import axios from "axios";
-import LoginFailed from "../components/LoginFailed.vue";
+import LoginFailed from "../../components/LoginFailed.vue";
 import { handleError } from "vue";
 
 Date.prototype.GetFirstDayOfWeek = function () {
