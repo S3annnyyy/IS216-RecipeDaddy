@@ -100,6 +100,8 @@ export default {
             }
             const response = await axios.post(`${URL}/api/token`, requestData)
             this.authToken = response.data.access
+            // console.log(response.data.access)
+            sessionStorage.setItem("AuthToken", response.data.access)
             return response.data.access
         },       
         handleSignUp() {
@@ -121,14 +123,17 @@ export default {
                     console.log(res)     
                    
                     // Get authentication token which will then store to localStorage and route user back home
-                    let token = this.getAuthToken(this.signUpEmail, this.signUpPw)
+                    const token = this.getAuthToken(this.signUpEmail, this.signUpPw)
                     console.log(token, typeof token) 
                     // Store token and username in session storage
-                    sessionStorage.setItem("AuthToken", token)
-                    sessionStorage.setItem("user", this.username)                    
+                    // console.log(this.authToken)
+                    // sessionStorage.setItem("AuthToken", token)
+                    sessionStorage.setItem("user", this.username) 
+                    sessionStorage.setItem("password", this.signUpPw)
+                    sessionStorage.setItem("email", this.signUpEmail)                   
                     // route user back home + make sure modal is close
                     localStorage.setItem("isModalOpen", false)
-                    this.$router.push({path: '/'})                                        
+                    this.$router.push({path: '/'}).then(() => {window.location.realod()})                                        
                 })
                 .catch((err) => {
                     console.log(err.response.data)
