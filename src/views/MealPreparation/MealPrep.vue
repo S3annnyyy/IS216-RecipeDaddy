@@ -273,8 +273,8 @@
 
 <script>
 import axios from 'axios'
-import LoginFailed from "../components/LoginFailed.vue";
-import LoadingSVG from "../components/LoadingSVG.vue";
+import LoginFailed from "../../components/LoginFailed.vue";
+import LoadingSVG from "../../components/LoadingSVG.vue";
 
 export default {
     data() {
@@ -897,7 +897,7 @@ export default {
                 };
 
                 // CALL GPT-305 daVinci endpoint with prompt as body
-                const URL = "http://127.0.0.1:8000/get-ai-prompt"
+                const URL = `${import.meta.env.VITE_BACKEND_BASE_URL}/get-ai-prompt`
                 await axios.post(URL, { userPrompt, schema })
                     .then((res) => {
                         console.log(typeof res.data);
@@ -972,7 +972,7 @@ export default {
             try {
                 const email = sessionStorage.getItem("email");
                 const password = sessionStorage.getItem("password");
-                const baseUrl = "http://127.0.0.1:8000";
+                const baseUrl = import.meta.env.VITE_BACKEND_BASE_URL;
                 const requestData = {
                     email: email,
                     password: password,

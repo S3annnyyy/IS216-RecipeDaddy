@@ -78,8 +78,8 @@
     // backend essential data
     const userEmail = ref("")
     const userPassword = ref("")
-    const authToken = ref("")
-    const URL = "http://127.0.0.1:8000"
+    const authToken = ref("")  
+    const URL = import.meta.env.VITE_BACKEND_BASE_URL
     
     function handleLogin() {
         console.log('Form submitted');
@@ -165,7 +165,7 @@ async function getUsername() {
     width: 100vw;
     height: 100vh;
     /* ensures sidebar unclickable when modal is active */
-    z-index: 999;
+    z-index: 999999;
 
     background-color: var(--blur-color-scheme);
     backdrop-filter: blur(3px);
@@ -241,7 +241,7 @@ async function getUsername() {
             border: none;
             padding: 0.5rem;
             transition: .5s;
-            border-bottom: 1px solid var(--grey);
+            border-bottom: 1px solid var(--grey);            
 
             &:not(:placeholder-shown):not(:focus):invalid {
                 outline: none;
@@ -317,4 +317,23 @@ async function getUsername() {
             text-decoration: underline;
         }
     }
-}</style>
+}
+
+@media (max-width: 800px) {
+    .login-modal {
+        /* padding: 2rem 4rem ; */
+        width: 90%;
+        padding: 1rem 1rem;
+    }  
+   
+    .login-form {
+        .form-group {
+            font-size: 1rem;
+
+            .form-control {
+                font-size: 1rem;
+            }
+        }
+    }
+}
+</style>

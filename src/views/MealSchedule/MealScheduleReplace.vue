@@ -39,7 +39,7 @@
 
 <script>
 import axios from 'axios'
-import AnimatedPlaceholder from '../components/AnimatedPlaceholder.vue'
+import AnimatedPlaceholder from '../../components/AnimatedPlaceholder.vue'
 
 export default {
     data() {
@@ -56,7 +56,7 @@ export default {
                 }
             },
             id: this.$route.params.id,
-            baseUrl: "http://127.0.0.1:8000",
+            baseUrl: import.meta.env.VITE_BACKEND_BASE_URL,
             previousData: JSON.parse(this.$route.query.data),
             
         };
@@ -148,7 +148,7 @@ export default {
         console.log(this.previousData);
 
         // CALL GPT-305 daVinci endpoint with prompt as body
-        const URL = "http://127.0.0.1:8000/get-ai-prompt"
+        const URL = `${import.meta.env.VITE_BACKEND_BASE_URL}/get-ai-prompt`
         const userPrompt = `
         Create a recipe that is similar to ${this.previousData.recipe_name}, from the same cuisine but not have the same title and image using just the following ingredients: ${Object.keys(this.previousData.have_ingredients)}. DO NOT use any additional ingredients.Return the data as a JSON object
         You are also a prompt generator.

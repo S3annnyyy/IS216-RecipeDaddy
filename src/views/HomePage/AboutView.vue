@@ -1,7 +1,7 @@
 <script setup>
 import { defineProps } from 'vue'; // Import defineProps
-import WasteSVG from '../assets/waste.svg';
-import unsdgSVG from '../assets/unsdg.svg';
+import WasteSVG from '../../assets/waste.svg';
+import unsdgSVG from '../../assets/unsdg.svg';
 import { useMotion } from '@vueuse/motion'
 import { ref, computed, onMounted } from 'vue'
 
@@ -19,10 +19,10 @@ const template = {
     }
   }
 }
-const targetEl = ref()
-const targetEl2 = ref()
-const targetEl3 = ref()
-const targetEl4 = ref()
+const targetEl = ref(null)
+const targetEl2 = ref(null)
+const targetEl3 = ref(null)
+const targetEl4 = ref(null)
 
 useMotion(targetEl, template)
 useMotion(targetEl2, template)
@@ -54,12 +54,12 @@ onMounted(() => {
 
 const props = defineProps(); // Define props
 
-import SeanPortrait from "../assets/portraits/sean.jpg"
-import SyahmimPortrait from "../assets/portraits/syahmim.jpg"
-import GabrielPortrait from "../assets/portraits/gabriel.jpg"
-import JunKaiPortrait from "../assets/portraits/junkai.jpg"
-import HuixuanPortrait from "../assets/portraits/huixuan.jpg"
-import TheGodFather from "../assets/portraits/chatgpt.png"
+import SeanPortrait from "../../assets/portraits/sean.jpg"
+import SyahmimPortrait from "../../assets/portraits/syahmim.jpg"
+import GabrielPortrait from "../../assets/portraits/gabriel.jpg"
+import JunKaiPortrait from "../../assets/portraits/junkai.jpg"
+import HuixuanPortrait from "../../assets/portraits/huixuan.jpg"
+import TheGodFather from "../../assets/portraits/chatgpt.png"
 
 var people = [
   {name: "Sean Yap", imageSrc: SeanPortrait, about: "Y2 Information Systems Major", desc: '"You this read wrong."', githubLink: "https://github.com/S3annnyyy",linkedinLink: "https://www.linkedin.com/in/seanyckang/"},
