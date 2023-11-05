@@ -99,8 +99,7 @@ export default {
                 password: password,
             }
             const response = await axios.post(`${URL}/api/token`, requestData)
-            this.authToken = response.data.access
-            // console.log(response.data.access)
+            this.authToken = response.data.access           
             sessionStorage.setItem("AuthToken", response.data.access)
             return response.data.access
         },       
@@ -133,7 +132,7 @@ export default {
                     sessionStorage.setItem("email", this.signUpEmail)                   
                     // route user back home + make sure modal is close
                     localStorage.setItem("isModalOpen", false)
-                    this.$router.push({path: '/'}).then(() => {window.location.realod()})                                        
+                    this.$router.push({path: '/'})                                                          
                 })
                 .catch((err) => {
                     console.log(err.response.data)
@@ -148,7 +147,7 @@ export default {
                         this.username = ''
                     }
                     alert(errorMsg.join("\n"))               
-                })
+                })                
             } else {
                 this.promptToCheck = "Please confirm that you have read and agree to T&Cs"    
             }

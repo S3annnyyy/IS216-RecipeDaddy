@@ -53,19 +53,18 @@
 <script setup>
     import { ref, onMounted, onBeforeUnmount, watch } from 'vue';
     import { useRoute } from 'vue-router'
-    import LoginModal from './LoginModal.vue';
+    import LoginModal from '../components/loginmodal.vue';
 
     // retrieve token from session if any and get username 
     const isLoggedIn = ref(sessionStorage.getItem("AuthToken")); 
+    
     function getUserName() {
         if (sessionStorage.getItem("user")) {
             return sessionStorage.getItem("user")
         } else {return ""}
-    }
-    const loggedUserName = getUserName()
-    console.log(loggedUserName)
-
-    console.log(loggedUserName)
+    }  
+      const loggedUserName = getUserName()
+    
     const contents = [
     { textName: 'Home', icon: 'home', link: '/' },
     { textName: 'Recipe Search', icon: 'visibility', link: '/recipesearch' },
@@ -108,9 +107,9 @@
             scrolledPastVideo.value = false;
         } else {
             scrolledPastVideo.value = true;
-        }
+        }        
         localStorage.setItem("scrolledPastVideo", scrolledPastVideo.value)
-    });
+    });   
 </script>
   
 <style scoped>
