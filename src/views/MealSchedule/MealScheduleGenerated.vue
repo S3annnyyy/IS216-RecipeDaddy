@@ -85,7 +85,7 @@ export default {
             this.$router.push({ name: 'replacement', query: { data: JSON.stringify(this.data) }, params: { id: this.data.id } });  
         },
         completeMeal(){
-            axios.put(`http://127.0.0.1:8000/user-meal-plan?id=${this.data.id}`, {
+            axios.put(`${import.meta.env.VITE_BACKEND_BASE_URL}/user-meal-plan?id=${this.data.id}`, {
                 "isCompleted":true
             },{
                 headers:{

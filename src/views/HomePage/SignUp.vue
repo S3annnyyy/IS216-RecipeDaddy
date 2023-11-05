@@ -93,7 +93,7 @@ export default {
             if (this.checked) {this.promptToCheck = ''}            
         },
         async getAuthToken(email, password) {
-            const URL = "http://127.0.0.1:8000"
+            const URL = import.meta.env.VITE_BACKEND_BASE_URL
             const requestData = {
                 email: email,
                 password: password,
@@ -107,7 +107,7 @@ export default {
                 console.log('form submitted');
 
                 // CREATE ACCOUNT
-                const URL = "http://127.0.0.1:8000/user"
+                const URL = `${import.meta.env.VITE_BACKEND_BASE_URL}/user`
                 const body = {
                     "username": this.username,
                     "email": this.signUpEmail,

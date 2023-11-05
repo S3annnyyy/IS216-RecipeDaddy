@@ -78,8 +78,8 @@
     // backend essential data
     const userEmail = ref("")
     const userPassword = ref("")
-    const authToken = ref("")
-    const URL = "http://127.0.0.1:8000"
+    const authToken = ref("")  
+    const URL = import.meta.env.VITE_BACKEND_BASE_URL
     
     function handleLogin() {
         console.log('Form submitted');

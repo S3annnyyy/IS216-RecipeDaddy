@@ -345,7 +345,7 @@ export default {
 
             },
             showLoginAlert: false,
-            baseUrl: "http://127.0.0.1:8000",
+            baseUrl: import.meta.env.VITE_BACKEND_BASE_URL,
             token: null,
             username: sessionStorage.getItem("user"),
             shoppingListMap: {},

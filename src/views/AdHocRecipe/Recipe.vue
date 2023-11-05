@@ -124,7 +124,7 @@ export default {
                 "image_url": imgUrl
             }
             // send to backend
-            const URL = "http://127.0.0.1:8000/user-meal-plan"
+            const URL = `${import.meta.env.VITE_BACKEND_BASE_URL}/user-meal-plan`
             const token = sessionStorage.getItem("AuthToken")
             console.log(token)
             const config = {
@@ -157,7 +157,7 @@ export default {
         this.promptuuid = this.$route.params.id; // get promptuuid   
 
         // CALL GPT-305 daVinci endpoint with prompt as body
-        const URL = "http://127.0.0.1:8000/get-ai-prompt"
+        const URL = `${import.meta.env.VITE_BACKEND_BASE_URL}/get-ai-prompt`
         const userPrompt = JSON.parse(this.$route.query.data).prompt
         
         const schema = { //Define schema for JSON response
