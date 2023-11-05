@@ -18,7 +18,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-12 text-center">
                     <p class="text-muted small mb-4 mb-md-0">&copy; 2023 RecipeDaddy, Inc. All rights reserved.</p>
                 </div>
             </div>
