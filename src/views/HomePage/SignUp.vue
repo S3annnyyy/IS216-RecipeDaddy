@@ -15,7 +15,7 @@
                 <div class="section-signup-2">
                     <div class="section-signup-2-main">
                         <h1 class="section-signup-2-title">Sign Up</h1>
-                            <form class="section-signup-2-form" @submit.prevent="handleSignUp">
+                            <div class="section-signup-2-form">
                                 <div class="signup-form">
                                     <div class='divider'></div>
                                     <div class="form-group">
@@ -45,7 +45,7 @@
                                         <p style="color: red; height: 1rem;">{{ promptToCheck }}</p>                                     
                                     </div>
                                     <div class="form-group">
-                                        <button class="signup-button">Create an Account</button>
+                                        <button class="signup-button" @click="handleSignUp()">Create an Account</button>
                                     </div>
                                     <div class="form-group">
                                         <p>Already have an account? 
@@ -56,7 +56,7 @@
                                         <p><router-link :to="{name: 'home'}" class="link"><span class="material-icons">home</span></router-link></p>
                                     </div>
                                 </div>
-                            </form>
+                            </div>
                     </div>
                 </div>
             </div>
@@ -93,21 +93,26 @@ export default {
             if (this.checked) {this.promptToCheck = ''}            
         },
         async getAuthToken(email, password) {
-            const URL = import.meta.env.VITE_BACKEND_BASE_URL
+        const URL = import.meta.env.VITE_BACKEND_BASE_URL;
             const requestData = {
                 email: email,
                 password: password,
+            };
+
+            try {
+                const response = await axios.post(`${URL}/api/token`, requestData);
+                this.authToken = response.data.access;
+                sessionStorage.setItem("AuthToken", response.data.access);
+                this.$router.push({ path: '/' });
+            } catch (error) {
+                alert("There was an error signing up, please try again!")
             }
-            const response = await axios.post(`${URL}/api/token`, requestData)
-            this.authToken = response.data.access           
-            sessionStorage.setItem("AuthToken", response.data.access)
-            return response.data.access
-        },       
+        },   
         handleSignUp() {
             if (this.checked) {
                 console.log('form submitted');
 
-                // CREATE ACCOUNT
+                // CREATE ACCOUNT DETAILS
                 const URL = `${import.meta.env.VITE_BACKEND_BASE_URL}/user`
                 const body = {
                     "username": this.username,
@@ -122,8 +127,8 @@ export default {
                     console.log(res)     
                    
                     // Get authentication token which will then store to localStorage and route user back home
-                    const token = this.getAuthToken(this.signUpEmail, this.signUpPw)
-                    console.log(token, typeof token) 
+                    // const token = this.getAuthToken(this.signUpEmail, this.signUpPw)
+                    // console.log(token, typeof token) 
                     // Store token and username in session storage
                     // console.log(this.authToken)
                     // sessionStorage.setItem("AuthToken", token)
@@ -132,7 +137,7 @@ export default {
                     sessionStorage.setItem("email", this.signUpEmail)                   
                     // route user back home + make sure modal is close
                     localStorage.setItem("isModalOpen", false)
-                    this.$router.push({path: '/'})                                                          
+                    this.getAuthToken(this.signUpEmail, this.signUpPw)                                                                    
                 })
                 .catch((err) => {
                     console.log(err.response.data)
