@@ -7,7 +7,7 @@
                         <h1 class="section-signup-1-title">Recipe Daddy</h1>
                         <p class="section-signup-1-text">Welcome!</p>
                         <div class="section-signup-1-img">
-                            <img src="../assets/mockup_signup.png" alt="">                            
+                            <img src="../../assets/mockup_signup.png" alt="">                            
                         </div>
                     </div>
                 </div>
