@@ -7,7 +7,7 @@
                         <h1 class="section-signup-1-title">Recipe Daddy</h1>
                         <p class="section-signup-1-text">Welcome!</p>
                         <div class="section-signup-1-img">
-                            <img src="../../assets/mockup_signup.png" alt="">                            
+                            <img src="../../assets/signup_page.svg" alt="">                            
                         </div>
                     </div>
                 </div>
@@ -209,7 +209,7 @@ img {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: center;
     padding-top: 50px;
     width: 100%;
     height: 100%;
