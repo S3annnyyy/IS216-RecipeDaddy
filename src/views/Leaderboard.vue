@@ -452,35 +452,21 @@ export default {
         },
         // Countdown timer
         updateCountdown() {
-            // const now = new Date();
-            // const dayOfWeek = now.getDay(); // 0 (Sunday) to 6 (Saturday)
-
-            // // Calculate the time remaining until the next Sunday at 23:59:59
-            // const daysUntilSunday = 7 - dayOfWeek;
-            // const hoursUntilMidnight = 23 - now.getHours();
-            // const minutesUntilMidnight = 59 - now.getMinutes();
-            // const secondsUntilMidnight = 59 - now.getSeconds();
-
-            // const totalSecondsRemaining = daysUntilSunday * 24 * 60 * 60 +
-            //     hoursUntilMidnight * 60 * 60 +
-            //     minutesUntilMidnight * 60 +
-            //     secondsUntilMidnight;
-
-            // const days = Math.floor(totalSecondsRemaining / (24 * 60 * 60));
-            // const hours = Math.floor((totalSecondsRemaining % (24 * 60 * 60)) / (60 * 60));
-            // const minutes = Math.floor((totalSecondsRemaining % (60 * 60)) / 60);
-
-            // document.getElementById('day').innerHTML = days;
-            // document.getElementById('hour').innerHTML = hours;
-            // document.getElementById('min').innerHTML = minutes;
-
-
             const now = new Date();
-            const hoursUntilMidnight = 23 - now.getHours();
-            const minutesUntilMidnight = 59 - now.getMinutes();
-            const secondsUntilMidnight = 59 - now.getSeconds();
+            const dayOfWeek = now.getDay(); // 0 (Sunday) to 6 (Saturday)
 
-            const totalSecondsRemaining = hoursUntilMidnight * 60 * 60 +
+            // Calculate the time remaining until the next Sunday at 23:59:59
+            if (dayOfWeek == 0) {
+                var daysUntilSunday = 0;
+            } else {
+                var daysUntilSunday = 7 - dayOfWeek;
+            }
+            var hoursUntilMidnight = 23 - now.getHours();
+            var minutesUntilMidnight = 59 - now.getMinutes();
+            var secondsUntilMidnight = 59 - now.getSeconds();
+
+            const totalSecondsRemaining = daysUntilSunday * 24 * 60 * 60 +
+                hoursUntilMidnight * 60 * 60 +
                 minutesUntilMidnight * 60 +
                 secondsUntilMidnight;
 
@@ -491,6 +477,7 @@ export default {
             document.getElementById('day').innerHTML = days;
             document.getElementById('hour').innerHTML = hours;
             document.getElementById('min').innerHTML = minutes;
+
         },
         sortByFoodSaved(arr) {
             // Use the Array sort() method to sort the array
