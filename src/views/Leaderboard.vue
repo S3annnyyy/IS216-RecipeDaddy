@@ -397,7 +397,7 @@ export default {
             const authToken = sessionStorage.AuthToken;
             const user = sessionStorage.user;
             // get data from backend 
-            const baseUrl = process.meta.env.VITE_BACKEND_BASE_URL;
+            const baseUrl = import.meta.env.VITE_BACKEND_BASE_URL;
 
             // get leaderboard data 
             this.$axios.get(`${baseUrl}/leaderboard`, {
