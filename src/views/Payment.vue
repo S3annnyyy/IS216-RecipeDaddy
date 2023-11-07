@@ -10,12 +10,12 @@
                     </h4>
                     <ul class="list-group mb-3">
                         <li class="list-group-item d-flex justify-content-between lh-sm"
-                            v-for="ingredient in selectedIngredients">
+                            v-for="ingredient in shoppingListPrice">
                             <div>
-                                <h6 class="my-0" style="text-transform: capitalize">{{ ingredient.split(":")[0] }}</h6>
+                                <h6 class="my-0" style="text-transform: capitalize">{{ ingredient.name }}</h6>
                                 <small class="text-muted">*Quantity is factored in</small>
                             </div>
-                            <span class="text-muted">{{ shoppingListPrice[ingredient.split(":")[0]].toFixed(2) }}</span>
+                            <span class="text-muted">{{ ingredient.price }}</span>
                         </li>
 
 
@@ -39,7 +39,7 @@
 
                 <div class="col-md-7 col-lg-8">
                     <h4 class="mb-3">Billing address</h4>
-                    <form class="needs-validation" novalidate>
+                    <div class="needs-validation" novalidate>
                         <div class="row g-3">
                             <div class="col-sm-6">
                                 <label for="firstName" class="form-label">First name</label>
@@ -143,9 +143,9 @@
 
                         <hr class="my-4">
 
-                        <button class="w-100 btn btn-primary btn-lg" type="submit" @submit="processPayment()">Continue to
+                        <button class="w-100 btn btn-primary btn-lg" type="submit" @click="processPayment()">Continue to
                             checkout</button>
-                    </form>
+                    </div>
                 </div>
             </div>
         </main>
@@ -197,6 +197,8 @@
 </template>
   
 <script>
+import { v4 as uuidv4 } from 'uuid';
+
 export default {
     data() {
         return {
@@ -205,8 +207,8 @@ export default {
             cardName: '',
             // Add more payment form fields data
             retrievedData: null,
-            uuid: crypto.randomUUID(),
-            shoppingListPrice: {},
+            uuid: uuidv4(),
+            shoppingListPrice: [],
             randomPrices: [2, 3, 1, 4, 5, 2]
         };
     },
@@ -215,10 +217,10 @@ export default {
             // Calculate the total cost of the selected ingredients
             // You can use a library like Numeral.js to format the total
             let total = 0;
-            for (const ingredient in this.shoppingListPrice) {
-                total += this.shoppingListPrice[ingredient];
+            for (const ingredient of this.shoppingListPrice) {
+                total += ingredient.price;
             }
-            return total.toFixed(2); // Format the total to two decimal places
+            return total; // Format the total to two decimal places
         },
     },
     methods: {
@@ -230,21 +232,37 @@ export default {
 
             // once user click, parse data and relevant details to receiptPage
             console.log(this.uuid)
+            // Prepare the data you want to pass to the Receipt component
+            const dataToPass = {
+                id: this.uuid,
+                shoppingListPrice: this.shoppingListPrice,
+            };
+
+
+            console.log(dataToPass);
+
+            // Use $router.push to navigate to the Receipt component and pass the data as route parameters
             this.$router.push({
-                path: `receipt/${this.uuid}`,
-                // query: {data: JSON.stringify(recipeObject)}
-            })
+                name: 'paymentreceipt',
+                params: {
+                    id: this.uuid,
+                },
+                query: {
+                    shoppingListPrice: JSON.stringify(this.shoppingListPrice),
+
+                }
+            });
+
         },
         addPrices() {
             this.selectedIngredients = JSON.parse(this.$route.query.data);
-            
+
             for (let ingredient of this.selectedIngredients) {
                 let ingredientName = ingredient.split(":")[0];
                 let randomNum = Math.floor(Math.random() * 6); // Generate a random number from 0 to 5
-                this.shoppingListPrice[ingredientName]= this.randomPrices[randomNum]
+                this.shoppingListPrice.push({ "price": randomNum, "name": ingredientName });
             }
         }
-
     },
     mounted() {
         this.addPrices();

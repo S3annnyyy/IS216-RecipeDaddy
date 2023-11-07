@@ -36,16 +36,16 @@ const template = {
     opacity: 1,
     y: 0,
     transition: {
-      delay: 800,
+      delay: 400,
     }
   }
 }
 
 const targetEl = ref(null)
-const targetEl2 = ref(null)
+// const targetEl2 = ref(null)
 
 useMotion(targetEl, template)
-useMotion(targetEl2, template)
+// useMotion(targetEl2, template)
 </script>
 
 <style scoped>
