@@ -397,7 +397,7 @@ export default {
             const authToken = sessionStorage.AuthToken;
             const user = sessionStorage.user;
             // get data from backend 
-            const baseUrl = "http://127.0.0.1:8000";
+            const baseUrl = process.meta.env.VITE_BACKEND_BASE_URL;
 
             // get leaderboard data 
             this.$axios.get(`${baseUrl}/leaderboard`, {
@@ -442,7 +442,7 @@ export default {
                             this.individualRanking = i + 1;
                         }
                     }
-                    this.individualFoodSaved = this.individualData.food_saved;
+                    this.individualFoodSaved = this.individualData.food_saved;                    
                 })
                 .catch(error => {
                     console.error(error);
