@@ -473,10 +473,11 @@ export default {
       const days = Math.floor(totalSecondsRemaining / (24 * 60 * 60))
       const hours = Math.floor((totalSecondsRemaining % (24 * 60 * 60)) / (60 * 60))
       const minutes = Math.floor((totalSecondsRemaining % (60 * 60)) / 60)
-
-      document.getElementById('day').innerHTML = days
-      document.getElementById('hour').innerHTML = hours
-      document.getElementById('min').innerHTML = minutes
+      try {
+        document.getElementById('day').innerHTML = days
+        document.getElementById('hour').innerHTML = hours
+        document.getElementById('min').innerHTML = minutes
+      } catch {}
     },
     sortByFoodSaved(arr) {
       // Use the Array sort() method to sort the array
