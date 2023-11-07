@@ -8,7 +8,7 @@
             <router-link
                 v-for="(el, i) in contents"
                 :key="i"
-                :to="{ path: el.link }"
+                :to="{ name: el.linkName }"
                 class="nav-button">
                 <span class="text" :class="{ scrolled: scrolledPastVideo }">{{ el.textName }}</span>
             </router-link>
@@ -66,12 +66,12 @@
       const loggedUserName = getUserName()
     
     const contents = [
-    { textName: 'Home', icon: 'home', link: '/' },
-    { textName: 'Recipe Search', icon: 'visibility', link: '/recipesearch' },
-    { textName: 'Meal Prep', icon: 'group', link: '/mealprep' },
-    { textName: 'Meal Schedule', icon: 'group', link: '/mealschedule' },
-    { textName: 'Leaderboard', icon: 'group', link: '/leaderboard' },     
-    { textName: 'Contact Us', icon: 'email', link: '/contact' },
+    { textName: 'Home', icon: 'home', link: '/', linkName: 'home' },
+    { textName: 'Recipe Search', icon: 'visibility', link: '/recipesearch', linkName: 'recipesearch'},
+    { textName: 'Meal Prep', icon: 'group', link: '/mealprep', linkName: 'mealprep'},
+    { textName: 'Meal Schedule', icon: 'group', link: '/mealschedule', linkName: 'mealschedule'},
+    { textName: 'Leaderboard', icon: 'group', link: '/leaderboard', linkName: 'leaderboard'},     
+    { textName: 'Contact Us', icon: 'email', link: '/contact', linkName: 'contact'},
     
     ]; // routing contents + icons for navigation bar
     const isMenuOpen = ref(localStorage.getItem("isMenuOpen") === true); // Initialization for Mobile Navigation bar
@@ -159,12 +159,12 @@
         color: var(--light);
         transition: color 0.3s ease; 
     }
-    .router-link-exact-active {
+    .router-link-active {
             .text {
                 color: var(--navbar-text-active);
                 border-bottom: solid 2.5px var(--navbar-text-active)
             }
-        }
+    }
 
     .text.scrolled, .profile.scrolled {
         color: var(--dark);
@@ -256,7 +256,7 @@
         .section {
             display: none; /* Hide the desktop menu items on smaller screens */
         }
-        .router-link-exact-active {
+        .router-link-active {
             .text {
                 color: var(--primary);
                 border-bottom: solid 2.5px var(--primary)

@@ -38,7 +38,7 @@
 
                 <div class="col-md-7 col-lg-8">
                     <h4 class="mb-3">Billing address</h4>
-                    <form class="needs-validation" novalidate>
+                    <div class="needs-validation" novalidate>
                         <div class="row g-3">
                             <div class="col-sm-6">
                                 <label for="firstName" class="form-label">First name</label>
@@ -142,8 +142,8 @@
 
                         <hr class="my-4">
 
-                        <button class="w-100 btn btn-primary btn-lg" type="submit" @submit="processPayment()">Continue to checkout</button>
-                    </form>
+                        <button class="w-100 btn btn-primary btn-lg" type="submit" @click="processPayment()">Continue to checkout</button>
+                    </div>
                 </div>
             </div>
         </main>
@@ -223,9 +223,9 @@ export default {
             // once user click, parse data and relevant details to receiptPage
             console.log(this.uuid)
             this.$router.push({
-                path: `receipt/${this.uuid}`,
-                // query: {data: JSON.stringify(recipeObject)}
+                path: `/payment/receipt/${this.uuid}`,                
             })
+            
         },
     },
     mounted() {

@@ -58,14 +58,12 @@ const router = createRouter({
     {
       path: '/payment',
       name: 'payment',
-      component: () => import('../views/Payment.vue'),
-      children: [
-        {
-          path: '/receipt/:id',
-          name: 'payment.receipt',
-          component: () => import('../views/Receipt.vue')
-        }
-      ]
+      component: () => import('../views/Payment.vue'),      
+    },
+    {
+      path: '/payment/receipt/:id',
+      name: 'paymentreceipt',
+      component: () => import('../views/Receipt.vue')
     },
     {
       path: '/contact',
