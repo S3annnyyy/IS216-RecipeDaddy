@@ -35,6 +35,7 @@
 
 <script>
 import Blob from "../../components/Blob.vue"
+import { v4 as uuidv4 } from 'uuid';
 
 export default {
     data() {
@@ -45,7 +46,7 @@ export default {
             selectedCuisine: 'Cuisine Type',
             inputFormat: ["Text", "OCR"],
             inputCuisine: ["Chinese", "Japanese", "Indian", "Peranakan", "Western"],
-            uuid: crypto.randomUUID(),           
+            uuid: uuidv4(),           
         };
     },
     methods: {

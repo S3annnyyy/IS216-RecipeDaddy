@@ -275,6 +275,7 @@
 import axios from 'axios'
 import LoginFailed from "../../components/LoginFailed.vue";
 import LoadingSVG from "../../components/LoadingSVG.vue";
+import { v4 as uuidv4 } from 'uuid';
 
 export default {
     data() {
@@ -301,7 +302,7 @@ export default {
             selectedCuisine: 'Cuisine Type',
             inputFormat: ["Text", "OCR"],
             inputCuisine: ["Chinese", "Japanese", "Indian", "Peranakan", "Western"],
-            uuid: crypto.randomUUID(),
+            uuid: uuidv4(),
 
 
             // mealPrepSearch data
@@ -310,7 +311,7 @@ export default {
             mealPrepSelectedAmount: 0,
             mealPrepIngredientList: [],
             mealPrepInputUnits: ["ml", "litre", "g", "kg", "qty"],
-            uuid: crypto.randomUUID(),
+            uuid: uuidv4(),
             mealPrepLimitIngedient: false,
 
             // FINAL OUTPUT OBJECT (JUN KAI)

@@ -195,6 +195,8 @@
 </template>
   
 <script>
+import { v4 as uuidv4 } from 'uuid';
+
 export default {
     data() {
         return {
@@ -203,7 +205,7 @@ export default {
             cardName: '',
             // Add more payment form fields data
             retrievedData: null,
-            uuid: crypto.randomUUID(), 
+            uuid: uuidv4(), 
         };
     },
     computed: {
