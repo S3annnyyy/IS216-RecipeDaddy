@@ -1,5 +1,5 @@
 <template>
-    <div class="row justify-content-center">
+    <div class="row justify-content-center mt-5">
         <div class="col-10 receipt-content">
             <div class="container justify-content-center text-center">
                 <div class="row">
@@ -128,57 +128,55 @@ export default {
 </script>
 
 <style scoped>
+.receipt-container {
+    display: flex;
+    justify-content: center;
+}
+
 .receipt-content {
-    height: 70vh;
-    width: 30vw;
+    width: 100%;
+    max-width: 400px;
+    /* Adjust the maximum width as needed for mobile screens */
     background-color: white;
-    margin-top: 2rem;
     box-shadow: 5px 5px 19px #ccc;
+    padding: 1rem;
 }
 
 .invoice-header {
     background-color: #194252;
     color: white;
-    margin-top: 1rem;
     border-radius: 20px;
     box-shadow: 0 4px 2px -2px var(--text-light-secondary);
     padding: 5px;
-    display: flex;
-    flex-direction: column;
+    text-align: center;
 }
 
-.user-details {
-    font-size: 0.8rem;
+.euser-details {
     text-align: left;
-    margin-left: 1rem;
+}
 
-    .col>p {
-        margin: 0
-    }
+.ingredients {
+    margin-top: 1rem;
 }
 
 .receipt-list-row {
     display: flex;
     justify-content: space-between;
-    position: relative;
+    margin-bottom: 0.5rem;
 }
 
-.ingredients {
-    margin: 0 1rem;
-}
-
-.flex-grow {
+.receipt-item {
     flex: 1;
+    text-transform: capitalize;
+}
+
+.receipt-cost {
+    flex: 1;
+    text-align: right;
 }
 
 .bottom-message {
     margin-top: 1rem;
-}
-
-.flex-container {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    /* Make the container occupy the full height */
+    text-align: center;
 }
 </style>
