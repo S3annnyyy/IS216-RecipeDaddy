@@ -35,6 +35,7 @@
 
 <script>
 import Blob from "../../components/Blob.vue"
+import { v4 as uuidv4 } from 'uuid';
 
 export default {
     data() {
@@ -45,7 +46,7 @@ export default {
             selectedCuisine: 'Cuisine Type',
             inputFormat: ["Text", "OCR"],
             inputCuisine: ["Chinese", "Japanese", "Indian", "Peranakan", "Western"],
-            uuid: crypto.randomUUID(),           
+            uuid: uuidv4(),           
         };
     },
     methods: {
@@ -89,7 +90,8 @@ export default {
             https://image.pollinations.ai/prompt/{description}
             where {description} is:
             {sceneDetailed}%20{adjective}%20{charactersDetailed}%20{visualStyle}%20{genre}%20{artistReference}
-            Make sure the prompts in the URL are encoded. Don't quote the generated markdown or put any code box around it.`            
+            Make sure the prompts in the URL are encoded. Don't quote the generated markdown or put any code box around it.
+            Come up with at least 10 steps for the recipe`            
             return result
         },
         validateInput() {
