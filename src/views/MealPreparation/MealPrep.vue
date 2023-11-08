@@ -966,6 +966,8 @@ export default {
                     })
                     .catch((err) => {
                         console.log(`API Call Not Successful: ${err}`)
+                        alert("There is currently an issue with OpenAI servers, please try again later!")
+                        this.$router.push({path: '/'})
                     })
             }
         },

@@ -222,6 +222,8 @@ export default {
         })
         .catch((err) => {
             console.log(`API Call Not Successful: ${err}`);
+            alert("There was an error, please try again later")
+            this.$router.push({path: '/'})
         });
 
      
