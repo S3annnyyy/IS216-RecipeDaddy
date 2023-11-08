@@ -54,7 +54,9 @@ export default {
                 { price: "6.99", name: "chicken" },
                 { price: "6.99", name: "chicken" },
             ],
-            retrievedList: []
+            retrievedList: [],
+            baseUrl: import.meta.env.VITE_BACKEND_BASE_URL,
+            token: sessionStorage.getItem("AuthToken")
         }
     },
     computed: {
@@ -70,7 +72,57 @@ export default {
     mounted() {
         const shoppingListPrice = this.$route.query.shoppingListPrice;
         this.retrievedList = JSON.parse(shoppingListPrice);
-        console.log(this.retrievedList);
+        for (let each of this.retrievedList) {
+            let currentMeal = this.updateRetrievedList(each.meal_id);
+
+        }
+
+
+
+
+
+    },
+    methods: {
+        async fetchMealsWithId(id) {
+            try {
+                const response = await this.$axios.get(`${this.baseUrl}/user-meal-plan`, {
+                    params: {
+                        id: id
+                    },
+                    headers: {
+                        Authorization: `Bearer ${this.token}`
+                    }
+                });
+                return response.data;
+            } catch (error) {
+                console.error(error);
+                throw error; // Handle the error appropriately
+            }
+        },
+        async updateRetrievedList(id) {
+            try {
+                // Fetch meals with the specified ID
+                const meals = await this.fetchMealsWithId(id);
+                const eachMeal = meals[0]
+                let no_ingredients_original = eachMeal.no_ingredients;
+                for (let keyToDelete of this.retrievedList) {
+                    delete no_ingredients_original[keyToDelete.name];
+                }
+
+
+                // Send a PUT request to update the data
+                await this.$axios.put(`${this.baseUrl}/user-meal-plan?id=${id}`, {
+                    no_ingredients: no_ingredients_original
+                }, {
+                    headers: {
+                        Authorization: `Bearer ${this.token}`
+                    }
+                });
+            } catch (error) {
+                console.error(error);
+                // Handle the error appropriately
+            }
+        }
     },
 }
 </script>

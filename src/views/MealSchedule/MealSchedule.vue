@@ -249,8 +249,9 @@
                                                                         :id="`check${itemIndex}`"
                                                                         @click="addToCart(no_ingredient)">
                                                                     <label class="form-check-label"
-                                                                        :for="`check${itemIndex}`">
-                                                                        {{ no_ingredient }}
+                                                                        :for="`check${itemIndex}`"
+                                                                        style="text-transform: capitalize;">
+                                                                        {{ no_ingredient.no_ingredient }}
                                                                     </label>
                                                                 </div>
                                                             </div>
@@ -385,7 +386,7 @@ export default {
             },
             showLoginAlert: false,
             baseUrl: import.meta.env.VITE_BACKEND_BASE_URL,
-            token: null,
+            token: sessionStorage.getItem("AuthToken"),
             username: sessionStorage.getItem("user"),
             shoppingListMap: {},
             shoppingCart: [],
@@ -632,7 +633,7 @@ export default {
                     console.error(`Error deleting meal plan: ${error}`);
                     // Handle the error as needed, e.g., show an error message.
                 });
-            
+
             this.mealSchedule.receivedData = this.mealSchedule.receivedData.filter(item => item.id !== mealId);
 
         },
@@ -658,8 +659,9 @@ export default {
                             const shop = mealResponse.data.filter((item) => {
                                 return item.isCompleted === false && item.no_ingredients != null;
                             });
-                            
+
                             shoppingItems.push(...shop);
+                            console.log(shoppingItems)
 
                             countMap[isoDate] = mealResponse.data.filter((item) => {
                                 return item.isCompleted === false
@@ -676,13 +678,33 @@ export default {
                     shoppingItems.forEach((item) => {
                         const date = item.meal_date;
                         const no_ingredients = item.no_ingredients;
+                        const meal_id = item.id;
                         if (!this.shoppingListMap[date]) {
                             this.shoppingListMap[date] = [];
                         }
                         for (let no_ingredient in no_ingredients) {
-                            this.shoppingListMap[date].push(no_ingredient + ": " + no_ingredients[no_ingredient]);
+                            console.log(no_ingredient);
+
+                            let objToAppend = { meal_id: meal_id, no_ingredient: no_ingredient }
+                            // Check if no_ingredient already exists in the shopping list for this date
+                            const existingItem = this.shoppingListMap[date].find((existingItem) => existingItem.no_ingredient === no_ingredient);
+
+                            if (existingItem) {
+                                // Update the quantity or any other relevant properties
+                                existingItem.meal_id = meal_id; // You can update other properties here
+                            } else {
+                                // Add the new item to the list
+                                this.shoppingListMap[date].push(objToAppend);
+                            }
+
+
+                            //     if (!this.shoppingListMap[date].includes(no_ingredient)){
+                            //     this.shoppingListMap[date].push(no_ingredient);
+                            // }
                         }
+                        console.log(this.shoppingListMap[date]);
                     })
+                    console.log(this.shoppingListMap);
                     this.mealDataCount = countMap
                 })
                 .catch((error) => {

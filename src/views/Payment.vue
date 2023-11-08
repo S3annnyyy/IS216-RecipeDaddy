@@ -199,8 +199,6 @@
 <script>
 import { v4 as uuidv4 } from 'uuid';
 
-import { v4 as uuidv4 } from 'uuid';
-
 export default {
     data() {
         return {
@@ -251,18 +249,16 @@ export default {
                 },
                 query: {
                     shoppingListPrice: JSON.stringify(this.shoppingListPrice),
-
                 }
             });
 
         },
         addPrices() {
             this.selectedIngredients = JSON.parse(this.$route.query.data);
-
             for (let ingredient of this.selectedIngredients) {
-                let ingredientName = ingredient.split(":")[0];
+                let ingredientName = ingredient.no_ingredient.split(":")[0];
                 let randomNum = Math.floor(Math.random() * 6); // Generate a random number from 0 to 5
-                this.shoppingListPrice.push({ "price": randomNum, "name": ingredientName });
+                this.shoppingListPrice.push({ "price": randomNum, "name": ingredientName, "meal_id": ingredient.meal_id });
             }
         }
     },
