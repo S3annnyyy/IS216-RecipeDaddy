@@ -65,36 +65,15 @@
                                 </div>
                             </div>
 
-                            <div class="col-12">
+                            <div class="col-9">
                                 <label for="address2" class="form-label">Address 2 <span
                                         class="text-muted">(Optional)</span></label>
                                 <input type="text" class="form-control" id="address2" placeholder="Apartment or suite">
                             </div>
 
-                            <div class="col-md-5">
-                                <label for="country" class="form-label">Country</label>
-                                <select class="form-select" id="country" required>
-                                    <option value="">Choose...</option>
-                                    <option>United States</option>
-                                </select>
-                                <div class="invalid-feedback">
-                                    Please select a valid country.
-                                </div>
-                            </div>
-
-                            <div class="col-md-4">
-                                <label for="state" class="form-label">State</label>
-                                <select class="form-select" id="state" required>
-                                    <option value="">Choose...</option>
-                                    <option>California</option>
-                                </select>
-                                <div class="invalid-feedback">
-                                    Please provide a valid state.
-                                </div>
-                            </div>
 
                             <div class="col-md-3">
-                                <label for="zip" class="form-label">Zip</label>
+                                <label for="zip" class="form-label">Postal code</label>
                                 <input type="text" class="form-control" id="zip" placeholder="" required>
                                 <div class="invalid-feedback">
                                     Zip code required.
@@ -118,7 +97,7 @@
 
                             <div class="col-md-6">
                                 <label for="cc-number" class="form-label">Credit card number</label>
-                                <input type="text" class="form-control" id="cc-number" placeholder="" required>
+                                <input class="form-control" id="cc-number" type="tel" inputmode="numeric" pattern="[0-9\s]{13,19}" autocomplete="cc-number" maxlength="19" placeholder="xxxx xxxx xxxx xxxx" required>
                                 <div class="invalid-feedback">
                                     Credit card number is required
                                 </div>
@@ -126,7 +105,7 @@
 
                             <div class="col-md-3">
                                 <label for="cc-expiration" class="form-label">Expiration</label>
-                                <input type="text" class="form-control" id="cc-expiration" placeholder="" required>
+                                <input type="text" class="form-control" id="cc-expiration" placeholder="04/20" pattern="([0-9]{2}[/]?){2}" required>
                                 <div class="invalid-feedback">
                                     Expiration date required
                                 </div>
@@ -134,7 +113,7 @@
 
                             <div class="col-md-3">
                                 <label for="cc-cvv" class="form-label">CVV</label>
-                                <input type="text" class="form-control" id="cc-cvv" placeholder="" required>
+                                <input type="text" class="form-control" id="cc-cvv" placeholder="" maxlength="3" pattern="[0-9\s]{3}" required>
                                 <div class="invalid-feedback">
                                     Security code required
                                 </div>
