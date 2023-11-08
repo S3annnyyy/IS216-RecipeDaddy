@@ -1,7 +1,7 @@
 <template>
     <div>
         <main class="container">
-            <div class="row g-5 mt-3">
+            <form class="row g-5 mt-3" @submit.prevent="processPayment()">
                 <!-- Probably do dynamic mapping of ingredients purchased here -->
                 <div class="col-md-5 col-lg-4 order-md-last" v-if="this.selectedIngredients.length > 0">
                     <h4 class="d-flex justify-content-between align-items-center mb-3">
@@ -143,11 +143,11 @@
 
                         <hr class="my-4">
 
-                        <button class="w-100 btn btn-primary btn-lg" type="submit" @click="processPayment()">Continue to
+                        <button class="w-100 btn btn-primary btn-lg" type="submit">Continue to
                             checkout</button>
                     </div>
                 </div>
-            </div>
+            </form>
         </main>
 
         <footer class="my-5 pt-5 text-muted text-center text-small">
