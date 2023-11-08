@@ -154,7 +154,7 @@
         font-size: 5em;
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: 1000px) {
         .header {
             font-size: 2rem;
             width: 100%;
@@ -165,4 +165,17 @@
             font-size: 4em;
         }
     };
+
+    @media (max-width: 500px) {
+        .header {
+            font-size: 1.5rem;
+            width: 100%;
+            padding-bottom: 1rem;
+        }
+
+        .material-symbols-outlined {
+            font-size: 3rem;
+        }
+    };
+    
 </style>

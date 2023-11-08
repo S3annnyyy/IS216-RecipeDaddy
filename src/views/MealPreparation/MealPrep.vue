@@ -231,7 +231,7 @@
                         <div class="input-group input-group-md mealPrepSearch-bar-content">
                             <input type="text" class="form-control mealPrepIngredient" placeholder="Enter ingredient, unit & amount and press enter!" @keydown.enter="mealPrepHandleSubmit" v-model="mealPrepSearchInput">
                             
-                            <input type="number" class="form-control amount" placeholder="Amount" v-model="mealPrepSelectedAmount" v-on:change="mealPrepHandleAmount">
+                            <input type="number" class="form-control amount" placeholder="Amount" min="1" v-model="mealPrepSelectedAmount" v-on:change="mealPrepHandleAmount">
 
                             <button class="btn dropdown-toggle unit" type="button" data-bs-toggle="dropdown" aria-expanded="false">{{ mealPrepSelectedUnit }}</button>   
                             <ol class="dropdown-menu">
@@ -273,8 +273,9 @@
 
 <script>
 import axios from 'axios'
-import LoginFailed from "../components/LoginFailed.vue";
-import LoadingSVG from "../components/LoadingSVG.vue";
+import LoginFailed from "../../components/LoginFailed.vue";
+import LoadingSVG from "../../components/LoadingSVG.vue";
+import { v4 as uuidv4 } from 'uuid';
 
 export default {
     data() {
@@ -301,7 +302,7 @@ export default {
             selectedCuisine: 'Cuisine Type',
             inputFormat: ["Text", "OCR"],
             inputCuisine: ["Chinese", "Japanese", "Indian", "Peranakan", "Western"],
-            uuid: crypto.randomUUID(),
+            uuid: uuidv4(),
 
 
             // mealPrepSearch data
@@ -310,7 +311,7 @@ export default {
             mealPrepSelectedAmount: 0,
             mealPrepIngredientList: [],
             mealPrepInputUnits: ["ml", "litre", "g", "kg", "qty"],
-            uuid: crypto.randomUUID(),
+            uuid: uuidv4(),
             mealPrepLimitIngedient: false,
 
             // FINAL OUTPUT OBJECT (JUN KAI)
@@ -671,7 +672,7 @@ export default {
         },
         mealPrepValidateInput() {
             let errors = []
-            if (this.mealPrepSelectedAmount === 0) { errors.push("Please input an appropriate amount\n") }
+            if (this.mealPrepSelectedAmount === 0 || this.mealPrepSelectedAmount < 0) { errors.push("Please input an appropriate amount\n") }
             if (this.mealPrepSelectedUnit === "Unit") { errors.push("Please add in an appropriate unit\n") }
             if (this.mealPrepSearchInput === "") { errors.push("Input cannot be empty\n") }
 
@@ -897,7 +898,7 @@ export default {
                 };
 
                 // CALL GPT-305 daVinci endpoint with prompt as body
-                const URL = "http://127.0.0.1:8000/get-ai-prompt"
+                const URL = `${import.meta.env.VITE_BACKEND_BASE_URL}/get-ai-prompt`
                 await axios.post(URL, { userPrompt, schema })
                     .then((res) => {
                         console.log(typeof res.data);
@@ -965,6 +966,8 @@ export default {
                     })
                     .catch((err) => {
                         console.log(`API Call Not Successful: ${err}`)
+                        alert("There is currently an issue with OpenAI servers, please try again later!")
+                        this.$router.push({path: '/'})
                     })
             }
         },
@@ -972,7 +975,7 @@ export default {
             try {
                 const email = sessionStorage.getItem("email");
                 const password = sessionStorage.getItem("password");
-                const baseUrl = "http://127.0.0.1:8000";
+                const baseUrl = import.meta.env.VITE_BACKEND_BASE_URL;
                 const requestData = {
                     email: email,
                     password: password,

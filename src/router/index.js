@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '../views/HomeView.vue'
+import Home from '../views/HomePage/HomeView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -12,53 +12,43 @@ const router = createRouter({
     {
       path: '/about',
       name: 'about',
-      component: () => import('../views/AboutView.vue')
-    },
-    {
-      path: '/mealprep',
-      name: 'mealprep',
-      component: () => import('../views/MealPrep.vue')
-    },
-    {
-      path: '/mealprep/search/:id',
-      name: 'mealprepsearch',
-      component: () => import('../views/MealPrepSearch.vue')
-    },
-    {
-      path: '/recipesearch',
-      name: 'recipesearch',
-      component: () => import('../views/RecipeSearch.vue')
-    },
-    {
-      path: '/recipesearch/:id',
-      name: 'recipesearchgenerated',
-      component: () => import('../views/Recipe.vue')
-    },
-    {
-      path: '/preferences',
-      name: 'preferences',
-      component: () => import('../views/Preferences.vue')
+      component: () => import('../views/HomePage/AboutView.vue')
     },
     {
       path: '/signup',
       name: 'signup',
       meta: { hideNavbar: true },
-      component: () => import('../views/SignUp.vue')
+      component: () => import('../views/HomePage/SignUp.vue')
     },
+    {
+      path: '/mealprep',
+      name: 'mealprep',
+      component: () => import('../views/MealPreparation/MealPrep.vue')
+    },    
+    {
+      path: '/recipesearch',
+      name: 'recipesearch',
+      component: () => import('../views/AdHocRecipe/RecipeSearch.vue')
+    },
+    {
+      path: '/recipesearch/:id',
+      name: 'recipesearchgenerated',
+      component: () => import('../views/AdHocRecipe/Recipe.vue')
+    },       
     {
       path: '/mealschedule',
       name: 'mealschedule',
-      component: () => import('../views/MealSchedule.vue')
+      component: () => import('../views/MealSchedule/MealSchedule.vue')
     },
     {
       path: '/mealschedule/:id',
       name: 'mealschedulegenerated',
-      component: () => import('../views/MealScheduleGenerated.vue')
+      component: () => import('../views/MealSchedule/MealScheduleGenerated.vue')
     },
     {
       path:'/mealschedule/replacement/:id',
       name: 'replacement',
-      component: () => import('../views/MealScheduleReplace.vue')
+      component: () => import('../views/MealSchedule/MealScheduleReplace.vue')
     },
     {
       path: '/leaderboard',
@@ -68,26 +58,24 @@ const router = createRouter({
     {
       path: '/payment',
       name: 'payment',
-      component: () => import('../views/Payment.vue'),
-      children: [
-        {
-          path: '/receipt/:id',
-          name: 'payment.receipt',
-          component: () => import('../views/Receipt.vue')
-        }
-      ]
+      component: () => import('../views/Payment.vue'),      
+    },
+    {
+      path: '/payment/receipt/:id',
+      name: 'paymentreceipt',
+      component: () => import('../views/Receipt.vue'),
     },
     {
       path: '/contact',
       name: 'contact',
-      component: () => import('../views/ContactPage.vue')
+      component: () => import('../views/HomePage/ContactPage.vue')
     },
     // error 404
     {
       path: '/:catchAll(.*)',
       name: 'error404',
       meta: { hideNavbar: true },
-      component: () => import('../views/error404.vue')
+      component: () => import('../views/HomePage/error404.vue')
     }
   ]
 })

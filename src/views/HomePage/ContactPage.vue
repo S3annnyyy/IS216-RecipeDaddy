@@ -34,7 +34,7 @@
 
 <script>
 import axios from 'axios'
-import LoginFailed from "../components/LoginFailed.vue";
+import LoginFailed from "../../components/LoginFailed.vue";
 
 export default {    
     data()  {

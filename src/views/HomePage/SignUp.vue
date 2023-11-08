@@ -7,7 +7,7 @@
                         <h1 class="section-signup-1-title">Recipe Daddy</h1>
                         <p class="section-signup-1-text">Welcome!</p>
                         <div class="section-signup-1-img">
-                            <img src="../assets/mockup_signup.png" alt="">                            
+                            <img src="../../assets/signup_page.svg" alt="">                            
                         </div>
                     </div>
                 </div>
@@ -15,7 +15,7 @@
                 <div class="section-signup-2">
                     <div class="section-signup-2-main">
                         <h1 class="section-signup-2-title">Sign Up</h1>
-                            <form class="section-signup-2-form" @submit.prevent="handleSignUp">
+                            <div class="section-signup-2-form">
                                 <div class="signup-form">
                                     <div class='divider'></div>
                                     <div class="form-group">
@@ -45,7 +45,7 @@
                                         <p style="color: red; height: 1rem;">{{ promptToCheck }}</p>                                     
                                     </div>
                                     <div class="form-group">
-                                        <button class="signup-button">Create an Account</button>
+                                        <button class="signup-button" @click="handleSignUp()">Create an Account</button>
                                     </div>
                                     <div class="form-group">
                                         <p>Already have an account? 
@@ -56,7 +56,7 @@
                                         <p><router-link :to="{name: 'home'}" class="link"><span class="material-icons">home</span></router-link></p>
                                     </div>
                                 </div>
-                            </form>
+                            </div>
                     </div>
                 </div>
             </div>
@@ -93,21 +93,27 @@ export default {
             if (this.checked) {this.promptToCheck = ''}            
         },
         async getAuthToken(email, password) {
-            const URL = "http://127.0.0.1:8000"
+        const URL = import.meta.env.VITE_BACKEND_BASE_URL;
             const requestData = {
                 email: email,
                 password: password,
+            };
+
+            try {
+                const response = await axios.post(`${URL}/api/token`, requestData);
+                this.authToken = response.data.access;
+                sessionStorage.setItem("AuthToken", response.data.access);
+                this.$router.push({ path: '/' });
+            } catch (error) {
+                alert("There was an error signing up, please try again!")
             }
-            const response = await axios.post(`${URL}/api/token`, requestData)
-            this.authToken = response.data.access
-            return response.data.access
-        },       
+        },   
         handleSignUp() {
             if (this.checked) {
                 console.log('form submitted');
 
-                // CREATE ACCOUNT
-                const URL = "http://127.0.0.1:8000/user"
+                // CREATE ACCOUNT DETAILS
+                const URL = `${import.meta.env.VITE_BACKEND_BASE_URL}/user`
                 const body = {
                     "username": this.username,
                     "email": this.signUpEmail,
@@ -121,14 +127,17 @@ export default {
                     console.log(res)     
                    
                     // Get authentication token which will then store to localStorage and route user back home
-                    let token = this.getAuthToken(this.signUpEmail, this.signUpPw)
-                    console.log(token, typeof token) 
+                    // const token = this.getAuthToken(this.signUpEmail, this.signUpPw)
+                    // console.log(token, typeof token) 
                     // Store token and username in session storage
-                    sessionStorage.setItem("AuthToken", token)
-                    sessionStorage.setItem("user", this.username)                    
+                    // console.log(this.authToken)
+                    // sessionStorage.setItem("AuthToken", token)
+                    sessionStorage.setItem("user", this.username) 
+                    sessionStorage.setItem("password", this.signUpPw)
+                    sessionStorage.setItem("email", this.signUpEmail)                   
                     // route user back home + make sure modal is close
                     localStorage.setItem("isModalOpen", false)
-                    this.$router.push({path: '/'})                                        
+                    this.getAuthToken(this.signUpEmail, this.signUpPw)                                                                    
                 })
                 .catch((err) => {
                     console.log(err.response.data)
@@ -143,7 +152,7 @@ export default {
                         this.username = ''
                     }
                     alert(errorMsg.join("\n"))               
-                })
+                })                
             } else {
                 this.promptToCheck = "Please confirm that you have read and agree to T&Cs"    
             }
@@ -200,7 +209,7 @@ img {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: center;
     padding-top: 50px;
     width: 100%;
     height: 100%;

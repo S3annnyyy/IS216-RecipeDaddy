@@ -8,7 +8,7 @@
             <router-link
                 v-for="(el, i) in contents"
                 :key="i"
-                :to="{ path: el.link }"
+                :to="{ name: el.linkName }"
                 class="nav-button">
                 <span class="text" :class="{ scrolled: scrolledPastVideo }">{{ el.textName }}</span>
             </router-link>
@@ -35,7 +35,7 @@
                 <span>Hello&nbsp;{{ loggedUserName }}!</span>                
             </div>
             <div class="profile" v-else>
-                <LoginModal/>
+                <LoginModal @toggle-menu="toggleMenu" /> 
             </div>
             <hr style="width: 80%;">
             <router-link
@@ -53,26 +53,25 @@
 <script setup>
     import { ref, onMounted, onBeforeUnmount, watch } from 'vue';
     import { useRoute } from 'vue-router'
-    import LoginModal from './LoginModal.vue';
+    import LoginModal from '../components/loginmodal.vue';
 
     // retrieve token from session if any and get username 
     const isLoggedIn = ref(sessionStorage.getItem("AuthToken")); 
+    
     function getUserName() {
         if (sessionStorage.getItem("user")) {
             return sessionStorage.getItem("user")
         } else {return ""}
-    }
-    const loggedUserName = getUserName()
-    console.log(loggedUserName)
-
-    console.log(loggedUserName)
+    }  
+      const loggedUserName = getUserName()
+    
     const contents = [
-    { textName: 'Home', icon: 'home', link: '/' },
-    { textName: 'Recipe Search', icon: 'visibility', link: '/recipesearch' },
-    { textName: 'Meal Prep', icon: 'group', link: '/mealprep' },
-    { textName: 'Meal Schedule', icon: 'group', link: '/mealschedule' },
-    { textName: 'Leaderboard', icon: 'group', link: '/leaderboard' },     
-    { textName: 'Contact Us', icon: 'email', link: '/contact' },
+    { textName: 'Home', icon: 'home', link: '/', linkName: 'home' },
+    { textName: 'Recipe Search', icon: 'visibility', link: '/recipesearch', linkName: 'recipesearch'},
+    { textName: 'Meal Prep', icon: 'group', link: '/mealprep', linkName: 'mealprep'},
+    { textName: 'Meal Schedule', icon: 'group', link: '/mealschedule', linkName: 'mealschedule'},
+    { textName: 'Leaderboard', icon: 'group', link: '/leaderboard', linkName: 'leaderboard'},     
+    { textName: 'Contact Us', icon: 'email', link: '/contact', linkName: 'contact'},
     
     ]; // routing contents + icons for navigation bar
     const isMenuOpen = ref(localStorage.getItem("isMenuOpen") === true); // Initialization for Mobile Navigation bar
@@ -108,9 +107,9 @@
             scrolledPastVideo.value = false;
         } else {
             scrolledPastVideo.value = true;
-        }
+        }        
         localStorage.setItem("scrolledPastVideo", scrolledPastVideo.value)
-    });
+    });   
 </script>
   
 <style scoped>
@@ -160,40 +159,17 @@
         color: var(--light);
         transition: color 0.3s ease; 
     }
-    .router-link-exact-active {
+    .router-link-active {
             .text {
                 color: var(--navbar-text-active);
                 border-bottom: solid 2.5px var(--navbar-text-active)
             }
-        }
+    }
 
     .text.scrolled, .profile.scrolled {
         color: var(--dark);
-    }  
-    
-    /* THESE STYLES ARE FOR NAVBAR UNDERLINE INDICATOR */
-    /* .nav-button:hover .text {
-    position: relative;
-  }
+    }   
 
-  .nav-button .text:after {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 2px;
-    background: #EE1D52;
-    bottom: 0;
-    left: 0;
-    transform: scaleX(0);
-    transform-origin: bottom right;
-    transition: transform 0.2s ease-in-out; 
-  }
-
-  .nav-button:hover .text:after {
-    transform: scaleX(1); 
-    transform-origin: bottom left;
-  } */
-  /* END OF STYLING FOR NAVBAR INDICATOR */
 
     .navbar.scrolled {
         background-color: var(--light);
@@ -280,9 +256,10 @@
         .section {
             display: none; /* Hide the desktop menu items on smaller screens */
         }
-        .router-link-exact-active {
+        .router-link-active {
             .text {
                 color: var(--primary);
+                border-bottom: solid 2.5px var(--primary)
             }
         }
     }

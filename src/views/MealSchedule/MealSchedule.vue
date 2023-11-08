@@ -5,22 +5,24 @@
     color: var(--light);
     border-radius: 10px;
     box-shadow: 0 4px 2px -2px var(--text-light-secondary);
-   
+
 }
 
-.shopping-list-button {   
+.shopping-list-button {
     background-color: var(--light);
     border-radius: 10px;
-    padding: 0.5rem 1rem;    
-    border: 1px solid #194252;      
-    box-shadow: 0 6px 2px -2px var(--dark); 
+    padding: 0.5rem 1rem;
+    border: 1px solid #194252;
+    box-shadow: 0 6px 2px -2px var(--dark);
     width: 100%;
 }
 
 /* shopping list styles */
-.modal-title, .card {
+.modal-title,
+.card {
     color: var(--dark);
 }
+
 .center {
     text-align: center;
     padding: 1%;
@@ -38,7 +40,7 @@
     /* width: 100%; */
     margin-left: auto;
     margin-right: auto;
-   
+
 }
 
 .food-item {
@@ -105,7 +107,7 @@
 
 .selected-date {
     background-color: var(--light);
-    color: var(--dark);    
+    color: var(--dark);
     /* Change this color to your preferred light blue color */
 }
 
@@ -150,6 +152,35 @@
     z-index: 1000;
     text-align: center;
 }
+
+.has-meals {
+    position: relative;
+}
+
+.indicator {
+    position: absolute;
+    top: -20px;
+    /* Adjust the vertical position as needed */
+    right: 0;
+    display: flex;
+    align-items: center;
+}
+
+.colour-indicator {
+    background-color: #FFA800;
+    color: black;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    position: relative;
+    bottom: 0;
+    left: 0;
+    /* Adjust as needed for the exact positioning */
+}
 </style>
 
 <template>
@@ -158,7 +189,7 @@
         <div class="col-lg-12 col-md-12 col-sm-12">
             <h1>Meal Schedule</h1>
             <div>
-                <img style="padding-right: 0.5rem; padding-bottom: 0.5rem;" src="../assets/chef-hat.png" alt="">
+                <img style="padding-right: 0.5rem; padding-bottom: 0.5rem;" src="../../assets/chef-hat.png" alt="">
                 <span>{{ currentWeekStartText }} - {{ currentWeekEndText }}</span>
             </div>
         </div>
@@ -190,7 +221,7 @@
                                         <h5 class="modal-title" id="exampleModalLabel">Your Shopping List (Selected Week)
                                         </h5>
                                         <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                                            <span class="material-icons-outlined">close</span>        
+                                            <span class="material-icons-outlined">close</span>
                                         </button>
                                     </div>
                                     <div class="modal-body">
@@ -201,7 +232,8 @@
                                                         <button class="btn btn-link text-decoration-none" type="button"
                                                             data-bs-toggle="collapse" :data-bs-target="`#collapse${index}`"
                                                             aria-expanded="true" :aria-controls="`collapse${index}`">
-                                                            <span v-html="date"></span>
+                                                            <span v-html="formatCordionDate(date)"
+                                                                style="color: #194252;font-weight: bold;"></span>
                                                         </button>
                                                     </h2>
                                                 </div>
@@ -214,10 +246,12 @@
                                                                 :key="itemIndex">
                                                                 <div class="form-check">
                                                                     <input class="form-check-input" type="checkbox"
-                                                                        :id="`check${itemIndex}`" @click="addToCart(no_ingredient)">
+                                                                        :id="`check${itemIndex}`"
+                                                                        @click="addToCart(no_ingredient)">
                                                                     <label class="form-check-label"
-                                                                        :for="`check${itemIndex}`">
-                                                                        {{ no_ingredient }}
+                                                                        :for="`check${itemIndex}`"
+                                                                        style="text-transform: capitalize;">
+                                                                        {{ no_ingredient.no_ingredient }}
                                                                     </label>
                                                                 </div>
                                                             </div>
@@ -256,31 +290,37 @@
         <div @click="setCurrentDate(date)" class="col center indivDate" v-for="(date, index) in weekDates" :key="index"
             :class="{ 'selected-date': isDateSelected(date) }">
             <span v-html="formatDate(date)"></span>
+            <div class="colour-indicator">
+                {{ mealDataCount[date.toISOString().split("T")[0]] }}
+            </div>
         </div>
+
     </div>
 
     <!-- Food Section -->
     <main class="row py-1 mb-3 d-flex justify-content-center" id="food-section">
-    <h4 v-if="mealSchedule.receivedData == null || mealSchedule.receivedData.length == 0" class="text-center">
-        Generate a meal and add it to your schedule!
-    </h4>
+        <h4 v-if="mealSchedule.receivedData == null || mealSchedule.receivedData.length == 0" class="text-center">
+            Generate a meal and add it to your schedule!
+        </h4>
 
-    <div v-else-if="mealSchedule.receivedData.length > 0"
-        class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-3 mx-3 mb-3 border meal-card" v-for="(meal, index) in mealSchedule.receivedData" :key="index">
-        <h3 class="card-title text-left pt-2 text-center">{{ formatMealType(meal.meal_type) }}</h3>
-        <img :src="extractLinkFromParentheses(meal.image_url)" alt="Meal" class="card-img-top img-fluid" style="object-fit: contain;" />
-        <div class="card-body" style="width:100%;">
-            <div class="card-text breakfast-recipe text-center">{{ meal.recipe_name }}</div>
-            <div class="buttons row d-flex justify-content-center">
-                <button class="view-recipe-button col-sm-6 col-md-7 col-lg-3 mt-1" @click="viewRecipe(meal)">View
-                    Recipe</button>
-                <button class="replace-button col-sm-6 col-md-7 col-lg-3 mt-1"
-                    @click="replaceMeal(meal)">Replace</button>
-                <button class="delete-button col-sm-6 col-md-7 col-lg-3 mt-1" @click="deleteMeal(meal)">Delete</button>
+        <div v-else-if="mealSchedule.receivedData.length > 0"
+            class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-3 mx-3 mb-3 border meal-card"
+            v-for="(meal, index) in mealSchedule.receivedData" :key="index">
+            <h3 class="card-title text-left pt-2 text-center">{{ formatMealType(meal.meal_type) }}</h3>
+            <img :src="extractLinkFromParentheses(meal.image_url)" alt="Meal" class="card-img-top img-fluid"
+                style="object-fit: contain;" />
+            <div class="card-body" style="width:100%;">
+                <div class="card-text breakfast-recipe text-center">{{ meal.recipe_name }}</div>
+                <div class="buttons row d-flex justify-content-center">
+                    <button class="view-recipe-button col-sm-6 col-md-7 col-lg-3 mt-1" @click="viewRecipe(meal)">View
+                        Recipe</button>
+                    <button class="replace-button col-sm-6 col-md-7 col-lg-3 mt-1"
+                        @click="replaceMeal(meal)">Replace</button>
+                    <button class="delete-button col-sm-6 col-md-7 col-lg-3 mt-1" @click="deleteMeal(meal)">Delete</button>
+                </div>
             </div>
         </div>
-    </div>
-</main>
+    </main>
 
     <!-- THIS PORTION IS FOR USER AUTHENTICATION CHECK -->
     <div v-if="showLoginAlert" class="overlay" @click="routeBackToHome"></div>
@@ -309,7 +349,7 @@
 } */
 import { formatDate } from "@vueuse/core";
 import axios from "axios";
-import LoginFailed from "../components/LoginFailed.vue";
+import LoginFailed from "../../components/LoginFailed.vue";
 import { handleError } from "vue";
 
 Date.prototype.GetFirstDayOfWeek = function () {
@@ -345,11 +385,12 @@ export default {
 
             },
             showLoginAlert: false,
-            baseUrl: "http://127.0.0.1:8000",
-            token: null,
+            baseUrl: import.meta.env.VITE_BACKEND_BASE_URL,
+            token: sessionStorage.getItem("AuthToken"),
             username: sessionStorage.getItem("user"),
             shoppingListMap: {},
             shoppingCart: [],
+            mealDataCount: {},
         };
     },
     watch: {
@@ -361,6 +402,7 @@ export default {
         }
     },
     computed: {
+
         formattedDates() {
             return this.dates.map(date => date.toISOString().split("T")[0]);
         }
@@ -395,7 +437,7 @@ export default {
                     return 'col col-md-4';
                 }
             };
-        },
+        }
     },
     methods: {
         addToCart(item) {
@@ -425,6 +467,7 @@ export default {
             return `${dayOfWeek}<br> ${dayOfMonth}`;
         },
         formatCordionDate(date) {
+            date = new Date(date);
             const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
             const dayOfWeek = daysOfWeek[date.getDay()];
             const dayOfMonth = date.getDate();
@@ -472,6 +515,29 @@ export default {
             });
         },
         async getMealData(username, date, token) {
+            this.datesWithMeals = []; // Clear the array
+
+            const mealRequests = this.dates.map((date) => {
+                return axios.get(`${this.baseUrl}/user-meal-plan?username=${username}&meal_date=${date.toISOString().split("T")[0]}`, {
+                    headers: {
+                        Authorization: `Bearer ${this.token}`,
+                    },
+                });
+            });
+
+            // Use Promise.all to send requests for all dates concurrently
+            Promise.all(mealRequests)
+                .then((mealResponses) => {
+                    mealResponses.forEach((response, index) => {
+                        const mealData = response.data;
+                        if (mealData.length > 0) {
+                            this.datesWithMeals.push(this.dates[index].toISOString().split("T")[0]);
+                        }
+                    });
+                })
+                .catch((error) => {
+                    console.error('Error fetching meal schedule for dates:', error);
+                });
 
             axios
                 .get(`${this.baseUrl}/user-meal-plan?username=${username}&meal_date=${date}`, {
@@ -561,11 +627,13 @@ export default {
                 .then(response => {
                     console.log(`Meal plan with ID ${mealId} deleted.`);
                     // Optionally, you can handle any further actions, such as updating the UI.
+                    this.getShoppingList()
                 })
                 .catch(error => {
                     console.error(`Error deleting meal plan: ${error}`);
                     // Handle the error as needed, e.g., show an error message.
                 });
+
             this.mealSchedule.receivedData = this.mealSchedule.receivedData.filter(item => item.id !== mealId);
 
         },
@@ -575,6 +643,7 @@ export default {
 
             // Initialize an array to store shopping items
             const shoppingItems = [];
+            const countMap = {};
 
             // Use Promise.all to make multiple API requests concurrently
             Promise.all(
@@ -586,10 +655,17 @@ export default {
                             },
                         })
                         .then((mealResponse) => {
+                            console.log(mealResponse.data);
                             const shop = mealResponse.data.filter((item) => {
                                 return item.isCompleted === false && item.no_ingredients != null;
                             });
+
                             shoppingItems.push(...shop);
+                            console.log(shoppingItems)
+
+                            countMap[isoDate] = mealResponse.data.filter((item) => {
+                                return item.isCompleted === false
+                            }).length;
                         })
                         .catch((mealError) => {
                             console.error(`Error fetching meal schedule for date ${isoDate}:`, mealError);
@@ -597,20 +673,39 @@ export default {
                 )
             )
                 .then(() => {
+                    this.shoppingListMap = {}
                     // At this point, shoppingItems contains all the shopping items for the selected week
-                    console.log(shoppingItems);
                     shoppingItems.forEach((item) => {
                         const date = item.meal_date;
                         const no_ingredients = item.no_ingredients;
+                        const meal_id = item.id;
                         if (!this.shoppingListMap[date]) {
                             this.shoppingListMap[date] = [];
                         }
                         for (let no_ingredient in no_ingredients) {
-                            this.shoppingListMap[date].push(no_ingredient + ": " + no_ingredients[no_ingredient]);
-                        }
-                    })
+                            console.log(no_ingredient);
 
-                    // You can process shoppingItems as needed
+                            let objToAppend = { meal_id: meal_id, no_ingredient: no_ingredient }
+                            // Check if no_ingredient already exists in the shopping list for this date
+                            const existingItem = this.shoppingListMap[date].find((existingItem) => existingItem.no_ingredient === no_ingredient);
+
+                            if (existingItem) {
+                                // Update the quantity or any other relevant properties
+                                existingItem.meal_id = meal_id; // You can update other properties here
+                            } else {
+                                // Add the new item to the list
+                                this.shoppingListMap[date].push(objToAppend);
+                            }
+
+
+                            //     if (!this.shoppingListMap[date].includes(no_ingredient)){
+                            //     this.shoppingListMap[date].push(no_ingredient);
+                            // }
+                        }
+                        console.log(this.shoppingListMap[date]);
+                    })
+                    console.log(this.shoppingListMap);
+                    this.mealDataCount = countMap
                 })
                 .catch((error) => {
                     console.error('Error fetching shopping list:', error);

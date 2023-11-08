@@ -1,7 +1,7 @@
 <template>
   <main class="row justify-content-center">
     <div class="video-container">
-      <video src="../assets/video.mp4" muted loop autoplay class="video-obj" id="video-obj"></video>      
+      <video src="../../assets/video.mp4" muted loop autoplay class="video-obj" id="video-obj"></video>      
       <div class="video-text">
         <WordAnimation />
       </div>       
@@ -23,9 +23,9 @@
 <script setup>
 import { useMotion } from '@vueuse/motion'
 import { ref, onMounted } from 'vue'
-import AboutView from './AboutView.vue'
-import Footer from '../components/Footer.vue'
-import WordAnimation from '../components/WordAnimation.vue'
+import AboutView from '../HomePage/aboutview.vue'
+import Footer from '../../components/Footer.vue'
+import WordAnimation from '../../components/WordAnimation.vue'
 
 const template = {
   initial: {
@@ -36,16 +36,16 @@ const template = {
     opacity: 1,
     y: 0,
     transition: {
-      delay: 800,
+      delay: 400,
     }
   }
 }
 
-const targetEl = ref()
-const targetEl2 = ref()
+const targetEl = ref(null)
+// const targetEl2 = ref(null)
 
 useMotion(targetEl, template)
-useMotion(targetEl2, template)
+// useMotion(targetEl2, template)
 </script>
 
 <style scoped>
