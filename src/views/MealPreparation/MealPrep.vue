@@ -231,7 +231,7 @@
                         <div class="input-group input-group-md mealPrepSearch-bar-content">
                             <input type="text" class="form-control mealPrepIngredient" placeholder="Enter ingredient, unit & amount and press enter!" @keydown.enter="mealPrepHandleSubmit" v-model="mealPrepSearchInput">
                             
-                            <input type="number" class="form-control amount" placeholder="Amount" v-model="mealPrepSelectedAmount" v-on:change="mealPrepHandleAmount">
+                            <input type="number" class="form-control amount" placeholder="Amount" min="1" v-model="mealPrepSelectedAmount" v-on:change="mealPrepHandleAmount">
 
                             <button class="btn dropdown-toggle unit" type="button" data-bs-toggle="dropdown" aria-expanded="false">{{ mealPrepSelectedUnit }}</button>   
                             <ol class="dropdown-menu">
@@ -672,7 +672,7 @@ export default {
         },
         mealPrepValidateInput() {
             let errors = []
-            if (this.mealPrepSelectedAmount === 0) { errors.push("Please input an appropriate amount\n") }
+            if (this.mealPrepSelectedAmount === 0 || this.mealPrepSelectedAmount < 0) { errors.push("Please input an appropriate amount\n") }
             if (this.mealPrepSelectedUnit === "Unit") { errors.push("Please add in an appropriate unit\n") }
             if (this.mealPrepSearchInput === "") { errors.push("Input cannot be empty\n") }
 
