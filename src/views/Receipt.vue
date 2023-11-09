@@ -1,5 +1,5 @@
 <template>
-    <div class="row justify-content-center mt-5">
+    <div class="row justify-content-center">
         <div class="col-10 receipt-content">
             <div class="container justify-content-center text-center">
                 <div class="row">
@@ -108,7 +108,7 @@ export default {
                 for (let keyToDelete of this.retrievedList) {
                     delete no_ingredients_original[keyToDelete.name];
                 }
-
+                console.log(eachMeal)
 
                 // Send a PUT request to update the data
                 await this.$axios.put(`${this.baseUrl}/user-meal-plan?id=${id}`, {
@@ -128,55 +128,57 @@ export default {
 </script>
 
 <style scoped>
-.receipt-container {
-    display: flex;
-    justify-content: center;
-}
-
 .receipt-content {
-    width: 100%;
-    max-width: 400px;
-    /* Adjust the maximum width as needed for mobile screens */
+    height: 70vh;
+    width: 30vw;
     background-color: white;
+    margin-top: 2rem;
     box-shadow: 5px 5px 19px #ccc;
-    padding: 1rem;
 }
 
 .invoice-header {
     background-color: #194252;
     color: white;
+    margin-top: 1rem;
     border-radius: 20px;
     box-shadow: 0 4px 2px -2px var(--text-light-secondary);
     padding: 5px;
-    text-align: center;
+    display: flex;
+    flex-direction: column;
 }
 
-.euser-details {
+.user-details {
+    font-size: 0.8rem;
     text-align: left;
-}
+    margin-left: 1rem;
 
-.ingredients {
-    margin-top: 1rem;
+    .col>p {
+        margin: 0
+    }
 }
 
 .receipt-list-row {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 0.5rem;
+    position: relative;
 }
 
-.receipt-item {
-    flex: 1;
-    text-transform: capitalize;
+.ingredients {
+    margin: 0 1rem;
 }
 
-.receipt-cost {
+.flex-grow {
     flex: 1;
-    text-align: right;
 }
 
 .bottom-message {
     margin-top: 1rem;
-    text-align: center;
+}
+
+.flex-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    /* Make the container occupy the full height */
 }
 </style>

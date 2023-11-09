@@ -633,9 +633,7 @@ export default {
                     console.error(`Error deleting meal plan: ${error}`);
                     // Handle the error as needed, e.g., show an error message.
                 });
-
             this.mealSchedule.receivedData = this.mealSchedule.receivedData.filter(item => item.id !== mealId);
-
         },
         async getShoppingList() {
             // Create a temporary array to store ISO date strings
@@ -738,7 +736,6 @@ export default {
     components: {
         LoginFailed,
     }
-
 }
 
 
