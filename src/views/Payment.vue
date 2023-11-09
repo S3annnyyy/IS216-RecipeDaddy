@@ -1,7 +1,7 @@
 <template>
     <div>
         <main class="container">
-            <div class="row g-5 mt-3">
+            <form class="row g-5 mt-3" @submit.prevent="processPayment()">
                 <!-- Probably do dynamic mapping of ingredients purchased here -->
                 <div class="col-md-5 col-lg-4 order-md-last" v-if="this.selectedIngredients.length > 0">
                     <h4 class="d-flex justify-content-between align-items-center mb-3">
@@ -18,14 +18,12 @@
                             <span class="text-muted">{{ ingredient.price }}</span>
                         </li>
 
-
                         <!-- Make this dynamic also -->
                         <li class="list-group-item d-flex justify-content-between">
                             <span>Total (SGD)</span>
                             <strong>{{ calculateTotal }}</strong>
                         </li>
                     </ul>
-
                 </div>
                 <div class="col-md-5 col-lg-4 order-md-last" v-else>
                     <h4 class="d-flex justify-content-between align-items-center mb-3">
@@ -36,118 +34,82 @@
 
                 <!-- End of Shopping cart -->
 
-
                 <div class="col-md-7 col-lg-8">
                     <h4 class="mb-3">Billing address</h4>
                     <div class="needs-validation" novalidate>
                         <div class="row g-3">
                             <div class="col-sm-6">
                                 <label for="firstName" class="form-label">First name</label>
-                                <input type="text" class="form-control" id="firstName" placeholder="" value="" required>
-                                <div class="invalid-feedback">
-                                    Valid first name is required.
-                                </div>
+                                <input type="text" class="form-control" id="firstName" placeholder="" value="" required />
+                                <div class="invalid-feedback">Valid first name is required.</div>
                             </div>
 
                             <div class="col-sm-6">
                                 <label for="lastName" class="form-label">Last name</label>
-                                <input type="text" class="form-control" id="lastName" placeholder="" value="" required>
-                                <div class="invalid-feedback">
-                                    Valid last name is required.
-                                </div>
+                                <input type="text" class="form-control" id="lastName" placeholder="" value="" required />
+                                <div class="invalid-feedback">Valid last name is required.</div>
                             </div>
 
                             <div class="col-12">
                                 <label for="address" class="form-label">Address</label>
-                                <input type="text" class="form-control" id="address" placeholder="1234 Main St" required>
-                                <div class="invalid-feedback">
-                                    Please enter your shipping address.
-                                </div>
+                                <input type="text" class="form-control" id="address" placeholder="1234 Main St" required />
+                                <div class="invalid-feedback">Please enter your shipping address.</div>
                             </div>
 
-                            <div class="col-12">
+                            <div class="col-9">
                                 <label for="address2" class="form-label">Address 2 <span
                                         class="text-muted">(Optional)</span></label>
-                                <input type="text" class="form-control" id="address2" placeholder="Apartment or suite">
-                            </div>
-
-                            <div class="col-md-5">
-                                <label for="country" class="form-label">Country</label>
-                                <select class="form-select" id="country" required>
-                                    <option value="">Choose...</option>
-                                    <option>United States</option>
-                                </select>
-                                <div class="invalid-feedback">
-                                    Please select a valid country.
-                                </div>
-                            </div>
-
-                            <div class="col-md-4">
-                                <label for="state" class="form-label">State</label>
-                                <select class="form-select" id="state" required>
-                                    <option value="">Choose...</option>
-                                    <option>California</option>
-                                </select>
-                                <div class="invalid-feedback">
-                                    Please provide a valid state.
-                                </div>
+                                <input type="text" class="form-control" id="address2" placeholder="Apartment or suite" />
                             </div>
 
                             <div class="col-md-3">
-                                <label for="zip" class="form-label">Zip</label>
-                                <input type="text" class="form-control" id="zip" placeholder="" required>
-                                <div class="invalid-feedback">
-                                    Zip code required.
-                                </div>
+                                <label for="zip" class="form-label">Postal code</label>
+                                <input type="text" class="form-control" id="zip" placeholder="" required />
+                                <div class="invalid-feedback">Zip code required.</div>
                             </div>
                         </div>
 
-                        <hr class="my-4">
+                        <hr class="my-4" />
 
                         <h4 class="mb-3">Payment</h4>
 
                         <div class="row gy-3">
                             <div class="col-md-6">
                                 <label for="cc-name" class="form-label">Name on card</label>
-                                <input type="text" class="form-control" id="cc-name" placeholder="" required>
+                                <input type="text" class="form-control" id="cc-name" placeholder="" required />
                                 <small class="text-muted">Full name as displayed on card</small>
-                                <div class="invalid-feedback">
-                                    Name on card is required
-                                </div>
+                                <div class="invalid-feedback">Name on card is required</div>
                             </div>
 
                             <div class="col-md-6">
                                 <label for="cc-number" class="form-label">Credit card number</label>
-                                <input type="text" class="form-control" id="cc-number" placeholder="" required>
-                                <div class="invalid-feedback">
-                                    Credit card number is required
-                                </div>
+                                <input class="form-control" id="cc-number" type="tel" inputmode="numeric"
+                                    pattern="[0-9\s]{13,19}" autocomplete="cc-number" maxlength="19"
+                                    placeholder="xxxx xxxx xxxx xxxx" required />
+                                <div class="invalid-feedback">Credit card number is required</div>
                             </div>
 
                             <div class="col-md-3">
                                 <label for="cc-expiration" class="form-label">Expiration</label>
-                                <input type="text" class="form-control" id="cc-expiration" placeholder="" required>
-                                <div class="invalid-feedback">
-                                    Expiration date required
-                                </div>
+                                <input type="text" class="form-control" id="cc-expiration" placeholder="04/20"
+                                    pattern="([0-9]{2}[/]?){2}" required />
+                                <div class="invalid-feedback">Expiration date required</div>
                             </div>
 
                             <div class="col-md-3">
                                 <label for="cc-cvv" class="form-label">CVV</label>
-                                <input type="text" class="form-control" id="cc-cvv" placeholder="" required>
-                                <div class="invalid-feedback">
-                                    Security code required
-                                </div>
+                                <input type="text" class="form-control" id="cc-cvv" placeholder="" maxlength="3"
+                                    pattern="[0-9\s]{3}" required />
+                                <div class="invalid-feedback">Security code required</div>
                             </div>
                         </div>
 
-                        <hr class="my-4">
+                        <hr class="my-4" />
 
-                        <button class="w-100 btn btn-primary btn-lg" type="submit" @click="processPayment()">Continue to
-                            checkout</button>
+                        <button class="w-100 btn btn-primary btn-lg" type="submit">Continue to checkout</button>
                     </div>
                 </div>
-            </div>
+            </form>
         </main>
 
         <footer class="my-5 pt-5 text-muted text-center text-small">
@@ -159,8 +121,6 @@
             </ul>
         </footer>
     </div>
-
-
 
     <!-- <div class="payment-container">
         <h1>Payment</h1>
@@ -195,9 +155,9 @@
         </div>
     </div> -->
 </template>
-  
+
 <script>
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from 'uuid'
 
 export default {
     data() {
@@ -210,18 +170,18 @@ export default {
             uuid: uuidv4(),
             shoppingListPrice: [],
             randomPrices: [2, 3, 1, 4, 5, 2]
-        };
+        }
     },
     computed: {
         calculateTotal() {
             // Calculate the total cost of the selected ingredients
             // You can use a library like Numeral.js to format the total
-            let total = 0;
+            let total = 0
             for (const ingredient of this.shoppingListPrice) {
-                total += ingredient.price;
+                total += ingredient.price
             }
-            return total; // Format the total to two decimal places
-        },
+            return total // Format the total to two decimal places
+        }
     },
     methods: {
         processPayment() {
@@ -235,63 +195,67 @@ export default {
             // Prepare the data you want to pass to the Receipt component
             const dataToPass = {
                 id: this.uuid,
-                shoppingListPrice: this.shoppingListPrice,
-            };
+                shoppingListPrice: this.shoppingListPrice
+            }
 
-
-            console.log(dataToPass);
+            console.log(dataToPass)
 
             // Use $router.push to navigate to the Receipt component and pass the data as route parameters
             this.$router.push({
                 name: 'paymentreceipt',
                 params: {
-                    id: this.uuid,
+                    id: this.uuid
                 },
                 query: {
-                    shoppingListPrice: JSON.stringify(this.shoppingListPrice),
+                    shoppingListPrice: JSON.stringify(this.shoppingListPrice)
                 }
-            });
-
+            })
         },
         addPrices() {
-            this.selectedIngredients = JSON.parse(this.$route.query.data);
+            this.selectedIngredients = JSON.parse(this.$route.query.data)
             for (let ingredient of this.selectedIngredients) {
-                let ingredientName = ingredient.no_ingredient.split(":")[0];
-                let randomNum = Math.floor(Math.random() * 5)+1; // Generate a random number from 0 to 5
-                this.shoppingListPrice.push({ "price": randomNum, "name": ingredientName, "meal_id": ingredient.meal_id });
+                let ingredientName = ingredient.no_ingredient.split(':')[0]
+                let randomNum = Math.floor(Math.random() * 6) + 1 // Generate a random number from 0 to 5
+                this.shoppingListPrice.push({
+                    price: randomNum,
+                    name: ingredientName,
+                    meal_id: ingredient.meal_id
+                })
             }
         }
     },
     mounted() {
-        this.addPrices();
+        this.addPrices()
         // Set focus to the first input element in the payment form
         this.$nextTick(() => {
-            const firstInput = document.querySelector('.form-control'); // Adjust the selector as needed
+            const firstInput = document.querySelector('.form-control') // Adjust the selector as needed
             if (firstInput) {
-                firstInput.focus();
+                firstInput.focus()
             }
-        });
-        // idk how the fk the syntasx works but it does form validation HELP 
-        (function () {
-            'use strict'
+        })
+            // idk how the fk the syntasx works but it does form validation HELP
+            ; (function () {
+                'use strict'
 
-            var forms = document.querySelectorAll('.needs-validation')
+                var forms = document.querySelectorAll('.needs-validation')
 
-            Array.prototype.slice.call(forms)
-                .forEach(function (form) {
-                    form.addEventListener('submit', function (event) {
-                        if (!form.checkValidity()) {
-                            event.preventDefault()
-                            event.stopPropagation()
-                        }
+                Array.prototype.slice.call(forms).forEach(function (form) {
+                    form.addEventListener(
+                        'submit',
+                        function (event) {
+                            if (!form.checkValidity()) {
+                                event.preventDefault()
+                                event.stopPropagation()
+                            }
 
-                        form.classList.add('was-validated')
-                    }, false)
+                            form.classList.add('was-validated')
+                        },
+                        false
+                    )
                 })
-        })()
+            })()
     }
-};
+}
 </script>
-  
+
 <style scoped></style>
-  

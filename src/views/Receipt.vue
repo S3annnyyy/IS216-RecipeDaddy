@@ -1,13 +1,13 @@
 <template>
     <div class="row justify-content-center">
-        <div class="col-10 receipt-content">
+        <div class="col-xl-10 col-l-10 col-md-10 col-sm-10 receipt-content">
             <div class="container justify-content-center text-center">
                 <div class="row">
                     <h4 class="invoice-header">Invoice</h4>
                 </div>
 
-                <div class="row flex-grow euser-details">
-                    <div class="col flex-container">
+                <div class="row flex-grow user-details">
+                    <div class="col-xl-10 col-l-10 col-md-10 col-sm-10 flex-container">
                         <p><b>Payment made on:</b> {{ todayDate }}</p>
                         <p><b>Name: </b>{{ userName }}</p>
                         <p><b>Email: </b>{{ userEmail }}</p>
@@ -109,7 +109,6 @@ export default {
                     delete no_ingredients_original[keyToDelete.name];
                 }
                 console.log(eachMeal)
-
                 // Send a PUT request to update the data
                 await this.$axios.put(`${this.baseUrl}/user-meal-plan?id=${id}`, {
                     no_ingredients: no_ingredients_original
@@ -179,6 +178,13 @@ export default {
     display: flex;
     flex-direction: column;
     height: 100%;
-    /* Make the container occupy the full height */
+  
+}
+
+@media (max-width: 1300px) {
+    .receipt-content {
+        width: auto;
+        height: auto;       
+    }
 }
 </style>

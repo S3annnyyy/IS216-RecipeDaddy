@@ -241,7 +241,7 @@
                                                 <div :id="`collapse${index}`" class="collapse"
                                                     :aria-labelledby="`heading${index}`" data-parent="#accordionExample">
                                                     <div class="card-body">
-                                                        <div v-if="shoppingListMap[date]">
+                                                        <div v-if="shoppingListMap[date] && shoppingListMap[date].length!=0">
                                                             <div v-for="(no_ingredient, itemIndex) in shoppingListMap[date]"
                                                                 :key="itemIndex">
                                                                 <div class="form-check">
